@@ -2,10 +2,10 @@ package ua.stu.scplib.graphic;
 
 import java.io.IOException; 
 
-import ua.stu.scplib.dicom.ArrayCopyUtilities;
-import ua.stu.scplib.dicom.BinaryInputStream;
-import ua.stu.scplib.scpecg.SCPECG;
-import ua.stu.scplib.scpecg.Section3;
+import ua.stu.scplib.attribute.ArrayCopyUtilities;
+import ua.stu.scplib.attribute.BinaryInputStream;
+import ua.stu.scplib.structure.SCPECG;
+import ua.stu.scplib.structure.Section3;
 
 
 /**

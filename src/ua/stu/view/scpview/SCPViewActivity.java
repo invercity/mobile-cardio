@@ -1,46 +1,46 @@
 package ua.stu.view.scpview;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.TargetApi;
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
 
-//import com.viewpagerindicator.UnderlinePageIndicator;
 public class SCPViewActivity extends Activity
 {
-	
 	private PatientInfo patientInfo;
-	private FragmentTransaction fTrans;
+	private OtherInfo otherInfo;
+	
+	private static String test = "/mnt/sdcard/Example.scp";
 	
     /** Called when the activity is first created. */
     @TargetApi(11) @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
         
         patientInfo = new PatientInfo();
+        otherInfo = new OtherInfo();
         
         LayoutInflater inflater = LayoutInflater.from(this);
         List<View> pages = new ArrayList<View>();
         
         View page = inflater.inflate(R.layout.main, null);
-        LinearLayout linearLayout = (LinearLayout) page.findViewById(R.id.main_linear_layout);
         pages.add(page);
         
         page = patientInfo.onCreateView(inflater,null,savedInstanceState);
+        pages.add(page);
+        
+        page = otherInfo.onCreateView(inflater,null,savedInstanceState);
         pages.add(page);
         
         SamplePagerAdapter pagerAdapter = new SamplePagerAdapter(pages);
@@ -50,24 +50,50 @@ public class SCPViewActivity extends Activity
         
         setContentView(viewPager);
         
-        Log.d("Main Tag", "Oncreate");
+        /*Temporary code*/
+        
+//        SCPECG scpecg = read(test);
+//        String lastName=scpecg.getNamedField("LastName");
+//        String id=scpecg.getNamedField("PatientIdentificationNumber");
+//        String db=scpecg.getNamedField("DateOfBirth");
+//        String race=scpecg.getNamedField("Race");
+//        String depnum=scpecg.getNamedField("departmentNumber");
+//        String devid=scpecg.getNamedField("deviceID");
+//        String devtype=scpecg.getNamedField("deviceType");
+//        String time=scpecg.getNamedField("TimeOfAcquisition");
+//        
+//        patientInfo.setLastName(lastName);
+//        patientInfo.setIdPatient(id);
+//        patientInfo.setBithDate(db);
+//        patientInfo.setRace(race);
+//        
+//        otherInfo.setDepNum(depnum);
+//        otherInfo.setIdDev(devid);
+//        otherInfo.setTypeDev(devtype);
+//        otherInfo.setTimeECG(time);
+        
+        /*********/
     }
     
-    @TargetApi(11)
-    public void onClick(View v) {
-        fTrans = getFragmentManager().beginTransaction();
-        fTrans.addToBackStack(null);
-        switch (v.getId()) {
-        case R.id.btnAdd:
-          fTrans.add(R.id.frgmCont, patientInfo);
-          break;
-        case R.id.btnRemove:
-          fTrans.remove(patientInfo);
-          break;
-
-        default:
-          break;
-        }
-        fTrans.commit();
-     }
+//    private SCPECG read (String file)
+//    {
+//    	BinaryInputStream i = null;
+//		SCPECG scpecg=null;
+//		
+//		try {
+//			i = new BinaryInputStream(new BufferedInputStream(new FileInputStream(new File(file))),false);
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//  		       		
+//		try {
+//			scpecg = new SCPECG(i,false);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		return scpecg;
+//    }
 }

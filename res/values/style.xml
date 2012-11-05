@@ -26,4 +26,10 @@
         <item name="android:layout_height">fill_parent</item>
         <item name="android:textSize">20dp</item>
     </style>
+    <style name="CheckStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:checked">false</item>
+        <item name="android:clickable">false</item>
+    </style>
 </resources>

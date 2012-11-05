@@ -5,35 +5,8 @@
     android:layout_height="fill_parent"
     android:layout_centerInParent="true"
     android:orientation="vertical">
-    <!--   <ua.stu.view.scpview.MyDemo
+    <ua.stu.view.scpview.MyDemo
     	android:id="@+id/mdemo"
 		android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-    	/> --> 
-    	<Button
-		 android:id="@+id/btnAdd"
-		 android:layout_width="wrap_content"
-		 android:layout_height="wrap_content"
-		 android:onClick="onClick"
-		 android:text="add">
-		</Button>
-		<Button
-		 android:id="@+id/btnRemove"
-		 android:layout_width="wrap_content"
-		 android:layout_height="wrap_content"
-		 android:onClick="onClick"
-		 android:text="remove">
-		</Button>
-		<Button
-		 android:id="@+id/btnReplace"
-		 android:layout_width="wrap_content"
-		 android:layout_height="wrap_content"
-		 android:onClick="onClick"
-		 android:text="replace">
-		</Button>
-		<FrameLayout
-		 android:id="@+id/frgmCont"
-		 android:layout_width="match_parent"
-		 android:layout_height="match_parent">
-		</FrameLayout>
+        android:layout_height="fill_parent"/>
 </LinearLayout>

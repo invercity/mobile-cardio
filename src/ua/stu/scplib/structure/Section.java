@@ -228,14 +228,18 @@ public class Section {
 	 * @param	bytes	the array of bytes, possibly with embedded nulls
 	 * @return		the <code>String</code> value
 	 */
+	//Имеется ошибка на джаве на андроиде все ок. Ошибка в использованиии ByteArrayBuffer
+	
+	//Ошибку исправил при появление других ошибо типа появления нулей сделать проход по массиву на проверку нуля 
 	public static String makeStringFromByteArrayRemovingAnyNulls(byte[] bytes) {
-		ByteArrayBuffer ba =new ByteArrayBuffer(0);
+/*		ByteArrayBuffer ba =new ByteArrayBuffer(0);
 		for (int i=0; i<bytes.length; ++i) {
 			if (bytes[i] == 0) {
 				// should stop at null ??
 			}
 			else {
 				ba.append(bytes[i]);
+				
 			}
 		}		
 		String result="";
@@ -244,7 +248,16 @@ public class Section {
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}*/	
+		String result="";
+		try {
+			result = new String(new String(bytes,SCPECG.getNameOfCodeFild()).getBytes("UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
 		return result;
+		
 	}
 }

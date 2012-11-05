@@ -54,14 +54,14 @@ public class Section1 extends Section {
 		}
 		
 	}
-	
+	//															tag,
 	private FieldDictionaryEntry[] dictionary = {
 			new FieldDictionaryEntry("LastName",  				0,	2, 1,  64, 40, "Text"),
 			new FieldDictionaryEntry("FirstName", 				1,	2, 1,  64, 40, "Text"),
 			new FieldDictionaryEntry("PatientIdentificationNumber",		2,	1, 1,  64, 40, "Text"),
 			new FieldDictionaryEntry("SecondLastName",			3,	0, 1,  64, 40, "Text"),
 			new FieldDictionaryEntry("Age",					4,	0, 1,   3,  3, "Age"),
-			new FieldDictionaryEntry("DateOfBirth",				5,	0, 1,   4,  4, "Date"),
+			new FieldDictionaryEntry("DateOfBirth",			5,	0, 1,   4,  4, "Date"),
 			new FieldDictionaryEntry("Height",				6,	0, 1,   3,  3, "Height"),
 			new FieldDictionaryEntry("Weight",				7,	0, 1,   3,  3, "Weight"),
 			new FieldDictionaryEntry("Sex",					8,	0, 1,   1,  1, "Sex"),
@@ -180,10 +180,11 @@ public class Section1 extends Section {
 		void read() throws IOException {
 			if (length > 0) {
 				value = new byte[length];
-				i.readInsistently(value,0,length);
+				i.readInsistently(value,0,length);				
 				sectionBytesRemaining-=length;
 				bytesRead+=length;
 			}
+			
 		}
 		
 		boolean isTerminator() {
@@ -250,6 +251,9 @@ public class Section1 extends Section {
 			return value == null ? "" : makeStringFromByteArrayRemovingAnyNulls(value);
 		}
 	}
+	
+	
+	
 	
 	private class TextField extends Field {
 		TextField(int tag, int length) {
@@ -442,8 +446,8 @@ public class Section1 extends Section {
 		}
 	}
 
-	private static String[] sexDescriptors = { "Not Known", "Male", "Female", null, null, null, null, null, null, "Unspecified" };
-	private static String[] raceDescriptors = { "Unspecified", "Caucasian", "Black", "Oriental" };
+	private static String[] sexDescriptors = { "Неизвестно", "Мужской", "Женский", null, null, null, null, null, null, "Unspecified" };
+	private static String[] raceDescriptors = { "Неизвестно", "Европеоидная", "Афроамериканская", "Нордическая" };
 	private static String[] statCodeDescriptors = { "Routine", 
 		"Emergency 1", "Emergency 2", "Emergency 3", "Emergency 4", "Emergency 5", "Emergency 6", "Emergency 7", "Emergency 8", "Emergency 9", "Emergency 10" };
 	
@@ -665,7 +669,7 @@ public class Section1 extends Section {
 		}
 
 		void read() throws IOException {
-			if (length == 6) {
+			if (length == 4) {
 				yyyy=i.readUnsigned16();
 				bytesRead+=2;
 				sectionBytesRemaining-=2;
@@ -725,11 +729,11 @@ public class Section1 extends Section {
 		
 		public String getValueAsString() {
 			StringBuffer strbuf = new StringBuffer();
-			strbuf.append(yyyy);
-			strbuf.append("/");
-			strbuf.append(mm);
-			strbuf.append("/");
 			strbuf.append(dd);
+			strbuf.append(".");			
+			strbuf.append(mm);
+			strbuf.append(".");
+			strbuf.append(yyyy);
 			return strbuf.toString();
 		}
 	}
@@ -1384,14 +1388,16 @@ public class Section1 extends Section {
 	public String getConcatenatedStringValuesOfAllOccurencesOfNamedField(String fieldName) {
 		String s = null;
 		FieldDictionaryEntry entry = getDictionaryFieldByName(fieldName);
+		
 		if (entry != null) {
 			StringBuffer strbuf = new StringBuffer();
 			ArrayList fieldsForThisTag = fields[entry.tag];
+			
 			if (fieldsForThisTag != null) {
 				Iterator li = fieldsForThisTag.iterator();
 				while (li.hasNext()) {
 					Field field = (Field)(li.next());
-					if (field != null) {
+					if (field != null) {						
 						strbuf.append(field.getValueAsString());
 					}
 				}

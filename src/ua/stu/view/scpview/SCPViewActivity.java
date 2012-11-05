@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ua.stu.scplib.attribute.BinaryInputStream;
+import ua.stu.scplib.structure.SCPECG;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Bundle;
@@ -20,7 +23,7 @@ public class SCPViewActivity extends Activity
 	private PatientInfo patientInfo;
 	private OtherInfo otherInfo;
 	
-	private static String test = "/mnt/sdcard/Example.scp";
+	private static String test = "/mnt/sdcard/22.scp";
 	
     /** Called when the activity is first created. */
     @TargetApi(11) @Override
@@ -52,48 +55,50 @@ public class SCPViewActivity extends Activity
         
         /*Temporary code*/
         
-//        SCPECG scpecg = read(test);
-//        String lastName=scpecg.getNamedField("LastName");
-//        String id=scpecg.getNamedField("PatientIdentificationNumber");
-//        String db=scpecg.getNamedField("DateOfBirth");
-//        String race=scpecg.getNamedField("Race");
-//        String depnum=scpecg.getNamedField("departmentNumber");
-//        String devid=scpecg.getNamedField("deviceID");
-//        String devtype=scpecg.getNamedField("deviceType");
-//        String time=scpecg.getNamedField("TimeOfAcquisition");
-//        
-//        patientInfo.setLastName(lastName);
-//        patientInfo.setIdPatient(id);
-//        patientInfo.setBithDate(db);
-//        patientInfo.setRace(race);
-//        
-//        otherInfo.setDepNum(depnum);
-//        otherInfo.setIdDev(devid);
-//        otherInfo.setTypeDev(devtype);
-//        otherInfo.setTimeECG(time);
+        SCPECG scpecg = read(test);
+        String lastName=scpecg.getNamedField("LastName");
+        String id=scpecg.getNamedField("PatientIdentificationNumber");
+        String db=scpecg.getNamedField("DateOfBirth");
+        String race=scpecg.getNamedField("Race");
+        String depnum=scpecg.getNamedField("departmentNumber");
+        String devid=scpecg.getNamedField("deviceID");
+        String devtype=scpecg.getNamedField("deviceType");
+        String time=scpecg.getNamedField("TimeOfAcquisition");
+        String fn=scpecg.getNamedField("FirstName");
+        
+        patientInfo.setLastName(lastName);
+        patientInfo.setFirstName(fn);
+        patientInfo.setIdPatient(id);
+        patientInfo.setBithDate(db);
+        patientInfo.setRace(race);
+        
+        otherInfo.setDepNum(depnum);
+        otherInfo.setIdDev(devid);
+        otherInfo.setTypeDev(devtype);
+        otherInfo.setTimeECG(time);
         
         /*********/
     }
     
-//    private SCPECG read (String file)
-//    {
-//    	BinaryInputStream i = null;
-//		SCPECG scpecg=null;
-//		
-//		try {
-//			i = new BinaryInputStream(new BufferedInputStream(new FileInputStream(new File(file))),false);
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//  		       		
-//		try {
-//			scpecg = new SCPECG(i,false);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		return scpecg;
-//    }
+    private SCPECG read (String file)
+    {
+    	BinaryInputStream i = null;
+		SCPECG scpecg=null;
+		
+		try {
+			i = new BinaryInputStream(new BufferedInputStream(new FileInputStream(new File(file))),false);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+  		       		
+		try {
+			scpecg = new SCPECG(i,false);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return scpecg;
+    }
 }

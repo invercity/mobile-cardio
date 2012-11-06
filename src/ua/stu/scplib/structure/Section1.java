@@ -92,8 +92,14 @@ public class Section1 extends Section {
 			new FieldDictionaryEntry("ElectrodeConfigurationCode", 		33,	0, 1,   2,  2, "Electrode"),
 			new FieldDictionaryEntry("DateTimeZone", 			34,	0, 1,  64, 40, "TimeZone"),
 			new FieldDictionaryEntry("FreeTextMedicalHistory", 		35,	0, 99, 80, 80, "Text"),
+			new FieldDictionaryEntry("PostCode", 		200,	0, 99, 80, 80, "Text"),
+			new FieldDictionaryEntry("District", 		201,	0, 99, 80, 80, "Text"),
+			new FieldDictionaryEntry("Region", 		202,	0, 99, 80, 80, "Text"),
+			new FieldDictionaryEntry("Town", 		203,	0, 99, 80, 80, "Text"),
+			new FieldDictionaryEntry("Street", 		204,	0, 99, 80, 80, "Text"),
+			new FieldDictionaryEntry("House", 		205,	0, 99, 80, 80, "Text"),
+			new FieldDictionaryEntry("TimeOfresidence", 		206,	0, 1, 4, 4, "TimeOfres"),
 		};
-		
 	public FieldDictionaryEntry[] getDictionary() {
 		return dictionary;
 	}
@@ -372,6 +378,43 @@ public class Section1 extends Section {
 			strbuf.append(">");
 			return strbuf.toString();
 		}
+	}
+	
+	private class TimeOfres extends Field {
+		int time;
+		
+		TimeOfres(int tag, int length) {
+			this.tag=tag;
+			this.length=length;
+		}
+		String validate() {
+			StringBuffer strbuf = new StringBuffer();
+			strbuf.append(super.validate());
+			return strbuf.toString();
+		}
+
+
+		void read() throws IOException {
+			if (length > 0) {
+				value = new byte[length];
+				time= i.readSigned32();
+				sectionBytesRemaining-=length;
+				bytesRead+=length;
+			}
+		}
+		
+		public String toString() {
+			StringBuffer strbuf = new StringBuffer();
+			strbuf.append(super.toString());
+			strbuf.append(" <");
+			strbuf.append(value == null ? "" : new String(String.valueOf(time)));
+			strbuf.append(">");
+			return strbuf.toString();
+		}
+		public String getValueAsString() {
+			return value == null ? "" : String.valueOf(time);
+		}
+	
 	}
 	
 	private static String[] ageUnitsDescription = { "Unspecified", "Years", "Months", "Weeks", "Days", "Hours" };
@@ -1292,8 +1335,11 @@ public class Section1 extends Section {
 				else if (className.equals("Electrode")) {
 					field = new TwinCodedValueField(tag,length,electrodePlacement12LeadDescriptors,electrodePlacementXYZLeadDescriptors);
 				}
-				if (className.equals("TimeZone")) {
+				else if (className.equals("TimeZone")) {
 					field = new TimeZoneField(tag,length);
+				}
+				else if (className.equals("TimeOfres")) {
+					field = new TimeOfres(tag,length);
 				}
 
 			}
@@ -1396,7 +1442,7 @@ public class Section1 extends Section {
 			if (fieldsForThisTag != null) {
 				Iterator li = fieldsForThisTag.iterator();
 				while (li.hasNext()) {
-					Field field = (Field)(li.next());
+					Field field = (Field)(li.next());					
 					if (field != null) {						
 						strbuf.append(field.getValueAsString());
 					}

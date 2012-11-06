@@ -23,7 +23,7 @@ public class SCPViewActivity extends Activity
 	private PatientInfo patientInfo;
 	private OtherInfo otherInfo;
 	
-	private static String test = "/mnt/sdcard/11.scp";
+	private static String test = "/mnt/sdcard/22.scp";
 	
     /** Called when the activity is first created. */
     @TargetApi(11) @Override

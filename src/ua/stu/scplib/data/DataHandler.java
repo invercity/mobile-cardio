@@ -14,7 +14,7 @@ import ua.stu.scplib.structure.Section1.FieldDictionaryEntry;
 public class DataHandler {
 	 private BinaryInputStream i = null;
      private SCPECG scpecg=null;
-	 //private String 
+/*     //Информация для вкладки Пациента
      private String patientId;
      private String firstName;
      private String lastName;
@@ -25,12 +25,32 @@ public class DataHandler {
      private String weight;//вес
      private String sex;
      private String race;//расса
-     private String drugs;//прупараты
+     private String drugs;//припараты
      private String systolicBloodPressure;//систолическое давление
      private String diastolicBloodPressure;//диастолическое давление
      private String diagnosisOrReferralIndication;//Диагноз или направлени
+     private String freeTextMedicalHistory;//История болезни
+*/   
+/*     private String postCode;//История болезни
+     private String region;
+     private String	district;
+     private String	town;
+     private String	street;
+     private String	house;
+     private String	timeOfresidence;*/
      
-     /*private String acquiringDeviceIdentificationNumber;
+     
+     
+     //информация для вкладки прочее
+     
+     //Устройство для получения ЭКГ
+     private String manufacturer;
+     private String departmentNumber;
+     private String deviceID;
+     private String deviceType;
+    // private String ;
+    
+     private String acquiringDeviceIdentificationNumber;
      private String analyzingDeviceIdentificationNumber;
      private String acquiringInstitutionDescription;
      private String analyzingInstitutionDescription;
@@ -39,7 +59,6 @@ public class DataHandler {
      private String referringPhysician;
      private String latestConfirmingPhysician;
      private String technicianDescription;
-     private String roomDescription;
      private String statCode;
      private String dateOfAcquisition;
      private String timeOfAcquisition;
@@ -51,12 +70,11 @@ public class DataHandler {
      private String medicalHistoryCodes;
      private String electrodeConfigurationCode;
      private String dateTimeZone;
-     private String freeTextMedicalHistory;*/
      
      
      
-     //getters
-     public BinaryInputStream getI() {
+     
+    public BinaryInputStream getI() {
 		return i;
 	}
 	public SCPECG getScpecg() {
@@ -79,7 +97,7 @@ public class DataHandler {
 			}
 			else return "";			
 	}
-	
+	// Гетеры для вкладки Пациента
 	public String getPatientId() {
 		return scpecg.getNamedField("PatientIdentificationNumber");
 	}
@@ -120,8 +138,106 @@ public class DataHandler {
 		return  scpecg.getNamedField("DiastolicBloodPressure");
 	}
 	public String getDiagnosisOrReferralIndication() {
-		return  scpecg.getNamedField("DiagnosisOrReferralIndication");
+		return  scpecg.getNamedField("DiagnosisOrReferralIndication");		
 	}
+	public String getFreeTextMedicalHistory() {
+		return scpecg.getNamedField("FreeTextMedicalHistory");
+	}
+	  //Адрес пациента
+	public String getPostCode() {
+		return scpecg.getNamedField("PostCode");
+	}		
+	public String getRegion() {
+		return scpecg.getNamedField("Region");
+	}
+	public String getDistrict() {
+		return scpecg.getNamedField("District");
+	}
+	public String getTown() {
+		return scpecg.getNamedField("Town");
+	}
+	public String getStreet() {
+		return scpecg.getNamedField("Street");
+	}
+	public String getHouse() {
+		return scpecg.getNamedField("House");
+	}
+	public String getTimeOfresidence() {
+		return scpecg.getNamedField("TimeOfresidence");
+	}
+	
+	///////////////////////////////////
+	//Гетеры для вкладки Прочее
+	public String getAcquiringDeviceIdentificationNumber() {
+		return  scpecg.getNamedField("AcquiringDeviceIdentificationNumber");
+	}
+	
+	public String getAnalyzingDeviceIdentificationNumber() {
+		return  scpecg.getNamedField("AnalyzingDeviceIdentificationNumber");
+	}
+	public String getAcquiringInstitutionDescription() {
+		return scpecg.getNamedField("AcquiringInstitutionDescription");
+	}
+	/*public String getAnalyzingInstitutionDescription() {
+		return scpecg.getNamedField("AnalyzingInstitutionDescription");
+	}
+	public String getAcquiringDepartmentDescription() {
+		return scpecg.getNamedField("AcquiringDepartmentDescription");
+	}
+	public String getAnalyzingDepartmentDescription() {
+		return scpecg.getNamedField("AnalyzingDepartmentDescription");
+	}
+	public String getReferringPhysician() {
+		return scpecg.getNamedField("ReferringPhysician");
+	}
+	public String getLatestConfirmingPhysician() {
+		return scpecg.getNamedField("LatestConfirmingPhysician");
+	}
+	public String getTechnicianDescription() {
+		return scpecg.getNamedField("TechnicianDescription");
+	}
+	public String getRoomDescription() {
+		return scpecg.getNamedField("RoomDescription");
+	}
+	public String getStatCode() {
+		return scpecg.getNamedField("StatCode");
+	}
+	public String getDateOfAcquisition() {
+		return scpecg.getNamedField("DateOfAcquisition");
+	}
+	public String getTimeOfAcquisition() {
+		return scpecg.getNamedField("TimeOfAcquisition");
+	}
+	public String getBaselineFilter() {
+		return scpecg.getNamedField("BaselineFilter");
+	}
+	public String getLowPassFilter() {
+		return scpecg.getNamedField("LowPassFilter");
+	}
+	public String getFilterBitmap() {
+		return scpecg.getNamedField("FilterBitmap");
+	}
+	
+	public String geteCGSequenceNumber() {
+		return scpecg.getNamedField("CGSequenceNumber");
+	}
+	
+	public String getElectrodeConfigurationCode() {
+		return scpecg.getNamedField("ElectrodeConfigurationCode");
+	}
+	public String getDateTimeZone() {
+		return scpecg.getNamedField("DateTimeZone");
+	}
+		public String getMedicalHistoryCodes() {
+		return scpecg.getNamedField("MedicalHistoryCodes");
+	}
+		public String getFreeTextField() {
+		return scpecg.getNamedField("FreeTextField");
+	}
+*/
+	
+	
+	
 	/**
 	 * <p>Open file and create SCPECGG.</p>
 	 *
@@ -139,6 +255,7 @@ public class DataHandler {
 			e.printStackTrace();
 		} 
      }
+	
 	/**
 	 * @param	#1 SCPECG data filename,
 	 */
@@ -150,6 +267,7 @@ public class DataHandler {
 	public static void main(String arg[]) {
 		System.out.println("Start");
 		DataHandler dh =new DataHandler("/home/ivan/11.scp");
+		//вывод инфы о пациенте
 		System.out.println(dh.getFirstName());
 		System.out.println(dh.getAge());
 		System.out.println(dh.getLastName());
@@ -164,9 +282,32 @@ public class DataHandler {
 		System.out.println(dh.getSystolicBloodPressure());
 		System.out.println(dh.getDiastolicBloodPressure());
 		System.out.println(dh.getDiagnosisOrReferralIndication());
-		System.out.println();
-		System.out.println();
-		
+		System.out.println(dh.getFreeTextMedicalHistory());
+		System.out.println(dh.getPostCode());
+		System.out.println(dh.getDistrict());
+		System.out.println(dh.getStreet());
+		System.out.println(dh.getRegion());
+		System.out.println(dh.getTown());
+		System.out.println(dh.getHouse());
+		System.out.println(dh.getTimeOfresidence());
+		//System.out.println(dh.getAcquiringInstitutionDescription());
+		//System.out.println(dh.getAnalyzingDeviceIdentificationNumber());
+		/*	System.out.println(dh.getAnalyzingDepartmentDescription());
+		System.out.println(dh.getAnalyzingDeviceIdentificationNumber());
+		System.out.println(dh.getAnalyzingInstitutionDescription());
+		System.out.println(dh.getBaselineFilter());
+		System.out.println(dh.getDateOfAcquisition());
+		System.out.println(dh.getDateTimeZone());
+		System.out.println(dh.geteCGSequenceNumber());
+		System.out.println(dh.getElectrodeConfigurationCode());
+		System.out.println(dh.getFilterBitmap());
+		System.out.println(dh.getFreeTextField());
+		System.out.println(dh.getFreeTextMedicalHistory());
+		System.out.println(dh.getLatestConfirmingPhysician());
+		System.out.println(dh.getLowPassFilter());
+		System.out.println(dh.getMedicalHistoryCodes());
+		System.out.println(dh.getReferringPhysician());
+		System.out.println(dh.getStatCode());*/
 		System.out.println("End");
 	}
 }

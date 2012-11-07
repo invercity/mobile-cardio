@@ -1,11 +1,15 @@
-package ua.stu.scplib.graphic;
+package ua.stu.view.scpview;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+
 import ua.stu.scplib.attribute.BinaryInputStream;
+import ua.stu.scplib.graphic.SCPSourceECG;
+import ua.stu.scplib.graphic.SourceECG;
+
 import and.awt.BasicStroke;
 import and.awt.Color;
 import and.awt.geom.GeneralPath;
@@ -17,6 +21,7 @@ import net.pbdavey.awt.AwtView;
 import net.pbdavey.awt.Font;
 import net.pbdavey.awt.Graphics2D;
 import net.pbdavey.awt.RenderingHints;
+
 
 
 public class ECGPanel extends AwtView {
@@ -86,8 +91,8 @@ public class ECGPanel extends AwtView {
 	}
 	
 	public void init() {
-		//nTilesPerColumn = 0;
-		//int nTilesPerRow = 
+		int nTilesPerColumn = 12;
+		int nTilesPerRow = 1;
 		// image params
 		float horizontalPixelsPerMilliSecond = 0;
 		float milliMetresPerPixel = 0;
@@ -124,7 +129,7 @@ public class ECGPanel extends AwtView {
 				horizontalPixelsPerMilliSecond,verticalPixelsPerMilliVolt,
 				timeOffsetInMilliSeconds,
 				sourceECG.getDisplaySequence(),
-				800,400,fillBackgroundFirst);
+				400,400,fillBackgroundFirst);
 		
 	}
 
@@ -135,7 +140,9 @@ public class ECGPanel extends AwtView {
 	 */
 	@Override
 	public void paint(Graphics2D g2) {
+		System.out.println("Paint init");
 		init();
+		System.out.println("Paint start");
 		Color backgroundColor = Color.white;
 		Color curveColor = Color.blue;
 		Color boxColor = Color.black;
@@ -153,6 +160,8 @@ public class ECGPanel extends AwtView {
 		
 		g2.setBackground(backgroundColor);
 		g2.setColor(backgroundColor);
+		  setBackground(backgroundColor);
+	     // setForeground(backgroundColor);
 		if (fillBackgroundFirst) {
 			g2.fill(new Rectangle2D.Float(0,0,width,height));
 		}
@@ -167,18 +176,20 @@ public class ECGPanel extends AwtView {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 
 		g2.setColor(gridColor);
-
+		// setForeground(gridColor);
+			System.out.println(gridWidth);
 		float drawingOffsetY = 0;
 		for (int row=0;row<nTilesPerColumn;++row) {
 			float drawingOffsetX = 0;
 			for (int col=0;col<nTilesPerRow;++col) {
-				g2.setStroke(new BasicStroke(gridWidth));
+				//g2.setStroke(new BasicStroke(gridWidth));
+				System.out.println(widthOfTileInMilliSeconds);				
 				for (float time=0; time<widthOfTileInMilliSeconds; time+=200) {
 					float x = drawingOffsetX+time/widthOfPixelInMilliSeconds;
 					g2.draw(new Line2D.Float(x,drawingOffsetY,x,drawingOffsetY+heightOfTileInPixels));
 				}
 
-				g2.setStroke(new BasicStroke(gridWidth));
+				//g2.setStroke(new BasicStroke(gridWidth));
 				for (float milliVolts=-heightOfTileInMilliVolts/2; milliVolts<=heightOfTileInMilliVolts/2; milliVolts+=0.5) {
 					float y = drawingOffsetY + heightOfTileInPixels/2 + milliVolts/heightOfTileInMilliVolts*heightOfTileInPixels;
 					g2.draw(new Line2D.Float(drawingOffsetX,y,drawingOffsetX+widthOfTileInPixels,y));
@@ -189,7 +200,8 @@ public class ECGPanel extends AwtView {
 			drawingOffsetY+=heightOfTileInPixels;
 		}
 
-		g2.setColor(boxColor);
+	/*	//g2.setColor(boxColor);
+		 setForeground(boxColor);
 		g2.setStroke(new BasicStroke(boxWidth));
 
 		drawingOffsetY = 0;
@@ -221,11 +233,12 @@ public class ECGPanel extends AwtView {
 			}
 			drawingOffsetY+=heightOfTileInPixels;
 		}
-
+*/
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);	// ugly without
 
 		g2.setColor(curveColor);
-		g2.setStroke(new BasicStroke(curveWidth));
+		//setForeground(curveColor);
+		//g2.setStroke(new BasicStroke(curveWidth));
 
 		float interceptY = heightOfTileInPixels/2;
 		float widthOfSampleInPixels=samplingIntervalInMilliSeconds/widthOfPixelInMilliSeconds;
@@ -241,7 +254,7 @@ public class ECGPanel extends AwtView {
 		}
 
 		drawingOffsetY = 0;
-		channel=0;
+		int channel = 0;
 		GeneralPath thePath = new GeneralPath();
 		for (int row=0;row<nTilesPerColumn && channel<numberOfChannels;++row) {
 			float drawingOffsetX = 0;
@@ -272,6 +285,7 @@ public class ECGPanel extends AwtView {
 			}
 			drawingOffsetY+=heightOfTileInPixels;
 		}
+		System.out.println("Paint End");
 		return;
 	}
 }

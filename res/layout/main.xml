@@ -5,8 +5,8 @@
     android:layout_height="fill_parent"
     android:layout_centerInParent="true"
     android:orientation="vertical">
-      <ua.stu.view.scplib.graphic.ECGPanel
-    	android:id="@+id/mdemo"
+      <ua.stu.view.scpview.ECGPanel
+    	android:id="@+id/ecgpanel"
 		android:layout_width="fill_parent"
         android:layout_height="fill_parent"
     	/>      	

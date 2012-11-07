@@ -35,6 +35,7 @@ public final class R {
         public static final int diagnose_patient_value=0x7f070040;
         public static final int dya_press_patient=0x7f070025;
         public static final int dya_press_patient_value=0x7f070026;
+        public static final int ecgpanel=0x7f070001;
         public static final int father_patient=0x7f070011;
         public static final int father_patient_layout=0x7f070010;
         public static final int father_patient_value=0x7f070012;
@@ -52,7 +53,6 @@ public final class R {
         public static final int life_patient_value=0x7f07003d;
         public static final int lvMain=0x7f070003;
         public static final int main_linear_layout=0x7f070000;
-        public static final int mdemo=0x7f070001;
         public static final int name_patient=0x7f07000e;
         public static final int name_patient_layout=0x7f07000d;
         public static final int name_patient_value=0x7f07000f;

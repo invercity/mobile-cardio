@@ -3,7 +3,6 @@ package ua.stu.view.scpview;
 import java.util.ArrayList;
 import java.util.List;
 
-import ua.stu.scplib.graphic.ECGPanel;
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;

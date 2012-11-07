@@ -1,5 +1,8 @@
 package ua.stu.scplib.data;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import ua.stu.scplib.attribute.BinaryInputStream;
@@ -27,11 +30,12 @@ public class DataHandler {
 	 *			#2 number of tiles per column
 	 *			#3 the number of tiles per row,
 	 *			#4 time offset in milliseconds for the left edge of the display
+	 * @throws FileNotFoundException 
 	 */
-	DataHandler(String filename) {
+	DataHandler(String filename) throws FileNotFoundException {
 				sourceECG = null;
 				BinaryInputStream i = null;
-				//BinaryInputStream i = new BinaryInputStream(new BufferedInputStream(new FileInputStream(filename)),false);		// little endian
+				i = new BinaryInputStream(new BufferedInputStream(new FileInputStream(filename)),false);		// little endian
 				
 				try {
 					sourceECG = new SCPSourceECG(i,truederiveAdditionalLeads);

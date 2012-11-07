@@ -3,6 +3,8 @@ package ua.stu.view.scpview;
 import java.util.ArrayList;
 import java.util.List;
 
+import ua.stu.scplib.graphic.ECGPanel;
+
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -52,22 +54,4 @@ public class SCPViewActivity extends Activity
         
         Log.d("Main Tag", "Oncreate");
     }
-    
-    @TargetApi(11)
-    public void onClick(View v) {
-        fTrans = getFragmentManager().beginTransaction();
-        fTrans.addToBackStack(null);
-        switch (v.getId()) {
-        case R.id.btnAdd:
-          fTrans.add(R.id.frgmCont, patientInfo);
-          break;
-        case R.id.btnRemove:
-          fTrans.remove(patientInfo);
-          break;
-
-        default:
-          break;
-        }
-        fTrans.commit();
-     }
 }

@@ -186,7 +186,8 @@ public class Section1 extends Section {
 		void read() throws IOException {
 			if (length > 0) {
 				value = new byte[length];
-				i.readInsistently(value,0,length);				
+				
+				i.readInsistently(value,0,length);					
 				sectionBytesRemaining-=length;
 				bytesRead+=length;
 			}
@@ -853,12 +854,21 @@ public class Section1 extends Section {
 			return strbuf.toString();
 		}
 		
-		public String getValueAsString() {
+		public String getValueAsString() {			
 			StringBuffer strbuf = new StringBuffer();
+			if (hh >=0 && hh < 10) {
+				strbuf.append("0");
+			}
 			strbuf.append(hh);
 			strbuf.append(":");
+			if (mm >= 0 && mm < 10) {
+				strbuf.append("0");
+			}
 			strbuf.append(mm);
 			strbuf.append(":");
+			if (ss >= 0 && ss < 10) {
+				strbuf.append("0");
+			}
 			strbuf.append(ss);
 			return strbuf.toString();
 		}

@@ -250,13 +250,13 @@ public class Section {
 			e.printStackTrace();
 		}*/	
 		String result="";
-		try {
+		try {		
 			result = new String(new String(bytes,SCPECG.getNameOfCodeFild()).getBytes("UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+//System.out.println(result);
 		return result;
 		
 	}

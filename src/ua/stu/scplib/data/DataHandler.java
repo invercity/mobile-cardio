@@ -104,12 +104,22 @@ public class DataHandler {
 	
 	public static void main(String arg[]) {
 		System.out.println("Start");		
-		 DataHandler dh =new DataHandler("/home/ivan/11.scp");
-
-		 System.out.println(dh.getPInfo().getFirstName());
-		 System.out.println(dh.getOInfo().getAcquiringDeviceIdentificationNumber());
-		 //System.out.println(dh.getOInfo().getAnalyzingDeviceIdentificationNumber());
-		
+		 DataHandler dh =new DataHandler("/home/ivan/22.scp");
+		 System.out.println(dh.getOInfo().getManufacturer());
+		 System.out.println(dh.getOInfo().getPOSCP());
+		 System.out.println(dh.getOInfo().getSerialNumber());
+		 System.out.println(dh.getOInfo().getVersionPO());
+		 System.out.println(dh.getOInfo().getPrint());
+		 System.out.println(dh.getOInfo().getAnalysis());
+		 System.out.println(dh.getOInfo().getReceive());
+		 System.out.println(dh.getOInfo().getStorage());
+		// System.out.println(dh.getOInfo().getInstitutionNumber());
+		 //System.out.println(scpecg.getNamedField("AcquiringDeviceIdentificationNumber"));
+		 //System.out.println(dh.getOInfo().getDepartmentNumber());
+		// System.out.println(dh.getOInfo().getDeviceID());
+		 //System.out.println(dh.getOInfo().getDeviceType());		 
+		 //System.out.println(dh.getOInfo().getModel());
+		 //System.out.println(dh.getOInfo().getFrequency());
 		 /* System.out.println(dh.getOInfo().getAnalyzingDepartmentDescription());
 		  System.out.println(dh.getOInfo().getAnalyzingDeviceIdentificationNumber());
 		 System.out.println(dh.getOInfo().getAnalyzingInstitutionDescription());

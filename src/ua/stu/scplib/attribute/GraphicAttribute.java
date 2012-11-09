@@ -1,9 +1,7 @@
-package ua.stu.scplib.graphic;
+package ua.stu.scplib.attribute;
 
 import java.io.IOException; 
 
-import ua.stu.scplib.attribute.ArrayCopyUtilities;
-import ua.stu.scplib.attribute.BinaryInputStream;
 import ua.stu.scplib.structure.SCPECG;
 import ua.stu.scplib.structure.Section3;
 
@@ -14,7 +12,7 @@ import ua.stu.scplib.structure.Section3;
  *
  * @author	dclunie
  */
-public class SCPSourceECG extends SourceECG {
+public class GraphicAttribute extends GraphicAttributeBase {
 
 	/***/
 	//private static final String identString = "@(#) $Header: /userland/cvs/pixelmed/imgbook/com/pixelmed/displaywave/SCPSourceECG.java,v 1.7 2004/01/25 03:47:19 dclunie Exp $";
@@ -129,7 +127,7 @@ public class SCPSourceECG extends SourceECG {
 	 * @param	deriveAdditionalLeads			if true, compute extra unipolar leads when necessary (i.e. make 12 from 8)
 	 * @exception	IOException
 	 */
-	public SCPSourceECG(BinaryInputStream i,boolean deriveAdditionalLeads) throws IOException {
+	public GraphicAttribute(BinaryInputStream i,boolean deriveAdditionalLeads) throws IOException {
 		super();
 		SCPECG scpecg = new SCPECG(i,false/*verbose*/);
 		doCommonConstructorStuff(scpecg,deriveAdditionalLeads);
@@ -142,7 +140,7 @@ public class SCPSourceECG extends SourceECG {
 	 * @param	deriveAdditionalLeads			if true, compute extra unipolar leads when necessary (i.e. make 12 from 8)
 	 * @exception	IOException
 	 */
-	public SCPSourceECG(SCPECG scpecg,boolean deriveAdditionalLeads) throws IOException {
+	public GraphicAttribute(SCPECG scpecg,boolean deriveAdditionalLeads) throws IOException {
 		super();
 		doCommonConstructorStuff(scpecg,deriveAdditionalLeads);
 	}

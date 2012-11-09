@@ -1,4 +1,4 @@
-package ua.stu.scplib.graphic;
+package ua.stu.scplib.attribute;
 
 /**
  * <p>An abstract class that encapsulates the features and values from an ECG source,
@@ -6,7 +6,7 @@ package ua.stu.scplib.graphic;
  *
  * @author	dclunie
  */
-public abstract class SourceECG {
+public abstract class GraphicAttributeBase {
 
 	protected short[][] samples;	// numberOfChannels arrays of nSamplesPerChannel shorts
 	protected int numberOfChannels;

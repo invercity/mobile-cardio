@@ -1,6 +1,15 @@
-package ua.stu.scplib.graphic;
+package ua.stu.view.scpview;
 
-import and.awt.BasicStroke;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+
+import ua.stu.scplib.attribute.BinaryInputStream;
+import ua.stu.scplib.attribute.GraphicAttribute;
+import ua.stu.scplib.attribute.GraphicAttributeBase;
+
 import and.awt.Color;
 import and.awt.geom.GeneralPath;
 import and.awt.geom.Line2D;
@@ -12,8 +21,7 @@ import net.pbdavey.awt.Font;
 import net.pbdavey.awt.Graphics2D;
 import net.pbdavey.awt.RenderingHints;
 
-
-public class ECGPanel extends AwtView {
+public class GraphicView extends AwtView {
 	private short[][] samples;
 	private int numberOfChannels;
 	private int nSamplesPerChannel;
@@ -29,16 +37,16 @@ public class ECGPanel extends AwtView {
 	private int width;
 	private int height;
 	private boolean fillBackgroundFirst;
-	
-	public ECGPanel(Context context) {
+
+	public GraphicView(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
 	}
-	
-	public ECGPanel(Context context, AttributeSet attribSet) {
+
+	public GraphicView(Context context, AttributeSet attribSet) {
 		super(context, attribSet);
 	}
-	
+
 	/**
 	 * <p>Construct a component containing an array of tiles of ECG waveforms.</p>
 	 *
@@ -79,6 +87,49 @@ public class ECGPanel extends AwtView {
 		this.fillBackgroundFirst = fillBackgroundFirst;
 	}
 
+	public void init() {
+		int nTilesPerColumn = 12;
+		int nTilesPerRow = 1;
+		// image params
+		float horizontalPixelsPerMilliSecond = 0;
+		float milliMetresPerPixel = 0;
+		// i don't know, what does it mean
+		boolean truederiveAdditionalLeads = false;
+
+		GraphicAttributeBase sourceECG = null;
+		BinaryInputStream i = null;
+		try {
+			i = new BinaryInputStream(new BufferedInputStream(new FileInputStream("/mnt/sdcard/Example.scp")),false);
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}		// little endian
+
+		try {
+			sourceECG = new GraphicAttribute(i,truederiveAdditionalLeads);
+		} catch (IOException e) {e.printStackTrace();}
+
+		// assume screen is 72 dpi aka 72/25.4 pixels/mm
+		milliMetresPerPixel = (float)(25.4/72);
+
+		// ECG's normally printed at 25mm/sec and 10 mm/mV
+		horizontalPixelsPerMilliSecond = 25/(1000*milliMetresPerPixel);
+
+		float verticalPixelsPerMilliVolt = 10/(milliMetresPerPixel);
+		setParameters(sourceECG.getSamples(),
+				sourceECG.getNumberOfChannels(),
+				sourceECG.getNumberOfSamplesPerChannel(),
+				sourceECG.getChannelNames(),
+				nTilesPerColumn,nTilesPerRow,
+				sourceECG.getSamplingIntervalInMilliSeconds(),
+				sourceECG.getAmplitudeScalingFactorInMilliVolts(),
+				horizontalPixelsPerMilliSecond,verticalPixelsPerMilliVolt,
+				timeOffsetInMilliSeconds,
+				sourceECG.getDisplaySequence(),
+				400,400,fillBackgroundFirst);
+
+	}
+
 	/**
 	 * @param	g2
 	 * @param	r
@@ -86,30 +137,35 @@ public class ECGPanel extends AwtView {
 	 */
 	@Override
 	public void paint(Graphics2D g2) {
+		//System.out.println("Paint init");
+		init();
+		//System.out.println("Paint start");
 		Color backgroundColor = Color.white;
 		Color curveColor = Color.blue;
 		Color boxColor = Color.black;
 		Color gridColor = Color.red;
 		Color channelNameColor = Color.black;
-		
-		float curveWidth = 1.5f;
-		float boxWidth = 2;
-		float gridWidth = 1;
-		
+
+		//float curveWidth = 0.8f;
+		//float boxWidth = 0.5f;
+		//float gridWidth = 0.3f;
+
 		Font channelNameFont = new Font("SansSerif",0,14);
-		
+
 		int channelNameXOffset = 10;
 		int channelNameYOffset = 20;
-		
+
 		g2.setBackground(backgroundColor);
 		g2.setColor(backgroundColor);
+		  setBackground(backgroundColor);
+	     // setForeground(backgroundColor);
 		if (fillBackgroundFirst) {
 			g2.fill(new Rectangle2D.Float(0,0,width,height));
 		}
-		
+
 		float widthOfTileInPixels = (float)width/nTilesPerRow;
 		float heightOfTileInPixels = (float)height/nTilesPerColumn;
-		
+
 		float widthOfTileInMilliSeconds = widthOfPixelInMilliSeconds*widthOfTileInPixels;
 		float  heightOfTileInMilliVolts =  heightOfPixelInMilliVolts*heightOfTileInPixels;
 
@@ -117,18 +173,20 @@ public class ECGPanel extends AwtView {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 
 		g2.setColor(gridColor);
-
+		// setForeground(gridColor);
+			//System.out.println(gridWidth);
 		float drawingOffsetY = 0;
 		for (int row=0;row<nTilesPerColumn;++row) {
 			float drawingOffsetX = 0;
 			for (int col=0;col<nTilesPerRow;++col) {
-				g2.setStroke(new BasicStroke(gridWidth));
+				//g2.setStroke(new BasicStroke(gridWidth));
+				//System.out.println(widthOfTileInMilliSeconds);				
 				for (float time=0; time<widthOfTileInMilliSeconds; time+=200) {
 					float x = drawingOffsetX+time/widthOfPixelInMilliSeconds;
 					g2.draw(new Line2D.Float(x,drawingOffsetY,x,drawingOffsetY+heightOfTileInPixels));
 				}
 
-				g2.setStroke(new BasicStroke(gridWidth));
+			//	g2.setStroke(new BasicStroke(gridWidth));
 				for (float milliVolts=-heightOfTileInMilliVolts/2; milliVolts<=heightOfTileInMilliVolts/2; milliVolts+=0.5) {
 					float y = drawingOffsetY + heightOfTileInPixels/2 + milliVolts/heightOfTileInMilliVolts*heightOfTileInPixels;
 					g2.draw(new Line2D.Float(drawingOffsetX,y,drawingOffsetX+widthOfTileInPixels,y));
@@ -140,7 +198,8 @@ public class ECGPanel extends AwtView {
 		}
 
 		g2.setColor(boxColor);
-		g2.setStroke(new BasicStroke(boxWidth));
+		 //setForeground(boxColor);
+		//g2.setStroke(new BasicStroke(boxWidth));
 
 		drawingOffsetY = 0;
 		int channel=0;
@@ -156,7 +215,7 @@ public class ECGPanel extends AwtView {
 					g2.draw(new Line2D.Float(drawingOffsetX,drawingOffsetY,drawingOffsetX,drawingOffsetY+heightOfTileInPixels));					// left
 				g2.draw(new Line2D.Float(drawingOffsetX,drawingOffsetY+heightOfTileInPixels,drawingOffsetX+widthOfTileInPixels,drawingOffsetY+heightOfTileInPixels));	// bottom
 				g2.draw(new Line2D.Float(drawingOffsetX+widthOfTileInPixels,drawingOffsetY,drawingOffsetX+widthOfTileInPixels,drawingOffsetY+heightOfTileInPixels));	// right
-				
+
 				if (channelNames != null && channel < displaySequence.length && displaySequence[channel] < channelNames.length) {
 					String channelName=channelNames[displaySequence[channel]];
 					if (channelName != null) {
@@ -165,7 +224,7 @@ public class ECGPanel extends AwtView {
 						g2.drawString(channelName,drawingOffsetX+channelNameXOffset,drawingOffsetY+channelNameYOffset);
 					}
 				}
-				
+
 				drawingOffsetX+=widthOfTileInPixels;
 				++channel;
 			}
@@ -175,7 +234,8 @@ public class ECGPanel extends AwtView {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);	// ugly without
 
 		g2.setColor(curveColor);
-		g2.setStroke(new BasicStroke(curveWidth));
+		//setForeground(curveColor);
+		//g2.setStroke(new BasicStroke(curveWidth));
 
 		float interceptY = heightOfTileInPixels/2;
 		float widthOfSampleInPixels=samplingIntervalInMilliSeconds/widthOfPixelInMilliSeconds;
@@ -191,7 +251,7 @@ public class ECGPanel extends AwtView {
 		}
 
 		drawingOffsetY = 0;
-		channel=0;
+	 channel = 0;
 		GeneralPath thePath = new GeneralPath();
 		for (int row=0;row<nTilesPerColumn && channel<numberOfChannels;++row) {
 			float drawingOffsetX = 0;
@@ -222,7 +282,7 @@ public class ECGPanel extends AwtView {
 			}
 			drawingOffsetY+=heightOfTileInPixels;
 		}
+		//System.out.println("Paint End");
 		return;
 	}
 }
-

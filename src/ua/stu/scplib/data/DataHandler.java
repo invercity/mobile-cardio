@@ -5,19 +5,21 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.StringTokenizer;
 
 import ua.stu.scplib.attribute.BinaryInputStream;
+import ua.stu.scplib.attribute.GraphicAttribute;
+import ua.stu.scplib.attribute.GraphicAttributeBase;
 import ua.stu.scplib.structure.SCPECG;
 
 public class DataHandler {
 	private BinaryInputStream i = null;
 	private SCPECG scpecg = null;
+	private GraphicAttributeBase graphic = null;
 	private PInfo pi = null;
 	private OInfo oi = null;
 
 	/**
-	 * Получить информацию о пациенте
+	 * get patient info from ECG
 	 * 
 	 * @return PInfo
 	 */
@@ -26,17 +28,18 @@ public class DataHandler {
 	}
 
 	/**
-	 * Установить информацию о пациенте
+	 * set patient info from ECG
 	 * 
 	 * @return void
-	 * @param PInfo
+	 * 
+	 * @param PInfo :object which handle patient info 
 	 */
 	public void setPInfo(PInfo pi) {
 		this.pi = pi;
 	}
 
 	/**
-	 * Получить прочую информацию
+	 * get other information from ECG
 	 * 
 	 * @return OInfo
 	 * 
@@ -46,14 +49,17 @@ public class DataHandler {
 	}
 
 	/**
-	 * Установить прочую информацию
+	 * set other information from ECG
 	 * 
 	 * @return void
-	 * @param OInfo
+	 * 
+	 * @param OInfo :object which handle other info 
 	 */
+	
 	public void setOInfo(OInfo oi) {
 		this.oi = oi;
 	}
+	
 
 	/**
 	 * <p>
@@ -68,6 +74,7 @@ public class DataHandler {
 			i = new BinaryInputStream(new BufferedInputStream(
 					new FileInputStream(new File(filename))), false);
 			scpecg = new SCPECG(i, false);
+			graphic = new GraphicAttribute(i, false);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -86,6 +93,15 @@ public class DataHandler {
 		oi = new OInfo(scpecg);
 	}
 
+	/**
+	 * Take graphic attributes of ECG
+	 * 
+	 * @return the graphic
+	 */
+	public GraphicAttributeBase getGraphic() {
+		return graphic;
+	}
+	
 	public static void main(String arg[]) {
 		System.out.println("Start");		
 		 DataHandler dh =new DataHandler("/home/ivan/11.scp");

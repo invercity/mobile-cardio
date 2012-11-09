@@ -5,3 +5,4 @@
 bin/
 gen/
 *.class
+/project.properties

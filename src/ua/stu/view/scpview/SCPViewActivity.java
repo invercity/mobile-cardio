@@ -3,6 +3,8 @@ package ua.stu.view.scpview;
 import java.util.ArrayList;
 import java.util.List;
 
+import ua.stu.view.fragments.ECGPanelFragment;
+
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;
@@ -12,6 +14,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,26 +22,29 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 //import com.viewpagerindicator.UnderlinePageIndicator;
-public class SCPViewActivity extends Activity
+public class SCPViewActivity extends FragmentActivity
 {
 	
 	private PatientInfo patientInfo;
-	private FragmentTransaction fTrans;
+	private ECGPanelFragment ecgPanel;
 	
     /** Called when the activity is first created. */
     @TargetApi(11) @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
         
         patientInfo = new PatientInfo();
+        ecgPanel = new ECGPanelFragment();
         
         LayoutInflater inflater = LayoutInflater.from(this);
         List<View> pages = new ArrayList<View>();
         
         View page = inflater.inflate(R.layout.main, null);
         LinearLayout linearLayout = (LinearLayout) page.findViewById(R.id.main_linear_layout);
+        pages.add(page);
+        
+        page = ecgPanel.onCreateView(inflater,null,savedInstanceState);
         pages.add(page);
         
         page = patientInfo.onCreateView(inflater,null,savedInstanceState);
@@ -50,7 +56,5 @@ public class SCPViewActivity extends Activity
         viewPager.setCurrentItem(0);     
         
         setContentView(viewPager);
-        
-        Log.d("Main Tag", "Oncreate");
     }
 }

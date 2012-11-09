@@ -1,16 +1,8 @@
 package ua.stu.view.scpview;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-
-import ua.stu.scplib.attribute.BinaryInputStream;
-import ua.stu.scplib.graphic.SCPSourceECG;
-import ua.stu.scplib.graphic.SourceECG;
-
-import and.awt.BasicStroke;
+import ua.stu.scplib.attribute.GraphicAttribute;
+import ua.stu.scplib.attribute.GraphicAttributeBase;
+import ua.stu.scplib.data.DataHandler;
 import and.awt.Color;
 import and.awt.geom.GeneralPath;
 import and.awt.geom.Line2D;
@@ -22,115 +14,93 @@ import net.pbdavey.awt.Font;
 import net.pbdavey.awt.Graphics2D;
 import net.pbdavey.awt.RenderingHints;
 
-
-
 public class ECGPanel extends AwtView {
-	private short[][] samples;
-	private int numberOfChannels;
-	private int nSamplesPerChannel;
+	// 72 dpi screen, 72/25.4 pixels per millimeter
+	private float basicScale = (float) (25.4/72);
+	//factor for basic scale, real scale will be basicScale*scaleFactor
+	private float scaleFactor;
+	//set of graphic attributes
+	private GraphicAttributeBase g;
+	//the number of tiles to display per column
 	private int nTilesPerColumn;
+	//the number of tiles to display per row (if 1, then nTilesPerColumn should == numberOfChannels)
 	private int nTilesPerRow;
-	private float samplingIntervalInMilliSeconds;
-	private float[] amplitudeScalingFactorInMilliVolts;
-	private String[] channelNames;
-	private float widthOfPixelInMilliSeconds;
-	private float heightOfPixelInMilliVolts;
+	//how may pixels to use to represent one millivolt
+	private int yPixelsInMillivolts;
+	//how may pixels to use to represent one millisecond
+	private int xPixelsInMilliseconds;
+	//how much of the sample data to skip, specified in milliseconds from the start of the samples
 	private float timeOffsetInMilliSeconds;
-	private int displaySequence[];
+	//Rectangle parameters
 	private int width;
 	private int height;
+	//Color map
+	Color backgroundColor;
+	Color curveColor;
+	Color boxColor;
+	Color gridColor;
+	Color channelNameColor;
+	//Basic font
+	Font font;
 	private boolean fillBackgroundFirst;
 	
 	public ECGPanel(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public ECGPanel(Context context, AttributeSet attribSet) {
 		super(context, attribSet);
 	}
 	
-	/**
-	 * <p>Construct a component containing an array of tiles of ECG waveforms.</p>
-	 *
-	 * @param	samples					the ECG data as separate channels
-	 * @param	numberOfChannels			the number of channels (leads)
-	 * @param	nSamplesPerChannel			the number of samples per channel (same for all channels)
-	 * @param	channelNames				the names of each channel with which to annotate them
-	 * @param	nTilesPerColumn				the number of tiles to display per column
-	 * @param	nTilesPerRow				the number of tiles to display per row (if 1, then nTilesPerColumn should == numberOfChannels)
-	 * @param	samplingIntervalInMilliSeconds		the sampling interval (duration of each sample) in milliseconds
-	 * @param	amplitudeScalingFactorInMilliVolts	how many millivolts per unit of sample data (may be different for each channel)
-	 * @param	horizontalPixelsPerMilliSecond		how may pixels to use to represent one millisecond 
-	 * @param	verticalPixelsPerMilliVolt		how may pixels to use to represent one millivolt
-	 * @param	timeOffsetInMilliSeconds		how much of the sample data to skip, specified in milliseconds from the start of the samples
-	 * @param	displaySequence				an array of indexes into samples (etc.) sorted into desired sequential display order
-	 * @param	width					the width of the resulting component (sample data is truncated to fit if necessary)
-	 * @param	height					the height of the resulting component (sample data is truncated to fit if necessary)
-	 */
-	public void setParameters (short[][] samples,int numberOfChannels,int nSamplesPerChannel,String[] channelNames,int nTilesPerColumn,int nTilesPerRow,
-			float samplingIntervalInMilliSeconds,float[] amplitudeScalingFactorInMilliVolts,
-			float horizontalPixelsPerMilliSecond,float verticalPixelsPerMilliVolt,
-			float timeOffsetInMilliSeconds,int[] displaySequence,
-			int width,int height,boolean fillBackgroundFirst) {
-		this.samples=samples;
-		this.numberOfChannels=numberOfChannels;
-		this.nSamplesPerChannel=nSamplesPerChannel;
-		this.channelNames=channelNames;
-		this.nTilesPerColumn=nTilesPerColumn;
-		this.nTilesPerRow=nTilesPerRow;
-		this.samplingIntervalInMilliSeconds=samplingIntervalInMilliSeconds;
-		this.amplitudeScalingFactorInMilliVolts=amplitudeScalingFactorInMilliVolts;
-		this.widthOfPixelInMilliSeconds = 1/horizontalPixelsPerMilliSecond;
-		this.heightOfPixelInMilliVolts = 1/verticalPixelsPerMilliVolt;
-		this.timeOffsetInMilliSeconds=timeOffsetInMilliSeconds;
-		this.displaySequence=displaySequence;
-		this.width=width;
-		this.height=height;
-		this.fillBackgroundFirst = fillBackgroundFirst;
+	void setGraphicParameters(GraphicAttribute g) {
+		this.g = g;
 	}
 	
-	public void init() {
-		int nTilesPerColumn = 12;
-		int nTilesPerRow = 1;
-		// image params
-		float horizontalPixelsPerMilliSecond = 0;
-		float milliMetresPerPixel = 0;
-		// i don't know, what does it mean
-		boolean truederiveAdditionalLeads = false;
-		
-		SourceECG sourceECG = null;
-		BinaryInputStream i = null;
-		try {
-			i = new BinaryInputStream(new BufferedInputStream(new FileInputStream("/mnt/sdcard/Example.scp")),false);
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}		// little endian
-		
-		try {
-			sourceECG = new SCPSourceECG(i,truederiveAdditionalLeads);
-		} catch (IOException e) {e.printStackTrace();}
-		
-		// assume screen is 72 dpi aka 72/25.4 pixels/mm
-		milliMetresPerPixel = (float)(25.4/72);
-
-		// ECG's normally printed at 25mm/sec and 10 mm/mV
-		horizontalPixelsPerMilliSecond = 25/(1000*milliMetresPerPixel);
-		
-		float verticalPixelsPerMilliVolt = 10/(milliMetresPerPixel);
-		setParameters(sourceECG.getSamples(),
-				sourceECG.getNumberOfChannels(),
-				sourceECG.getNumberOfSamplesPerChannel(),
-				sourceECG.getChannelNames(),
-				nTilesPerColumn,nTilesPerRow,
-				sourceECG.getSamplingIntervalInMilliSeconds(),
-				sourceECG.getAmplitudeScalingFactorInMilliVolts(),
-				horizontalPixelsPerMilliSecond,verticalPixelsPerMilliVolt,
-				timeOffsetInMilliSeconds,
-				sourceECG.getDisplaySequence(),
-				400,400,fillBackgroundFirst);
-		
+	//default = 25
+	public void setXScale(int millimetersPerSecond) {
+		this.xPixelsInMilliseconds = 
+				(int) (millimetersPerSecond/(1000*basicScale*scaleFactor));
+	}
+	
+	//default = 10
+	public void setYScale(int millimetersPerMillivolt) {
+		this.yPixelsInMillivolts = 
+				(int) (millimetersPerMillivolt/(basicScale*scaleFactor));
+	}
+	
+	public int getXSCale() {
+		return 0;
+	}
+	
+	public int getYScale() {
+		return 0;
+	}
+	
+	public void setRectangle(int w, int h) {
+		this.width = w;
+		this.height = h;
+	}
+	
+	public void initDefault() {
+		backgroundColor = Color.white;
+		curveColor = Color.blue;
+		boxColor = Color.black;
+		gridColor = Color.red;
+		channelNameColor = Color.black;
+		font = new Font("SansSerif",0,14);
+	}
+	
+	public boolean initIt() {
+		DataHandler handler = new DataHandler("/mnt/sdcard/Example.scp");
+		if (handler.ifError()) return false;
+		g = handler.getGraphicAttribute();
+		setnTilesPerColumn(12);
+		setnTilesPerRow(1);
+		setRectangle(400, 400);
+		setXScale(25);
+		setYScale(10);
+		initDefault();
+		return true;
 	}
 
 	/**
@@ -140,21 +110,7 @@ public class ECGPanel extends AwtView {
 	 */
 	@Override
 	public void paint(Graphics2D g2) {
-		//System.out.println("Paint init");
-		init();
-		//System.out.println("Paint start");
-		Color backgroundColor = Color.white;
-		Color curveColor = Color.blue;
-		Color boxColor = Color.black;
-		Color gridColor = Color.red;
-		Color channelNameColor = Color.black;
-		
-		//float curveWidth = 0.8f;
-		//float boxWidth = 0.5f;
-		//float gridWidth = 0.3f;
-		
-		Font channelNameFont = new Font("SansSerif",0,14);
-		
+		if (!initIt()) return;
 		int channelNameXOffset = 10;
 		int channelNameYOffset = 20;
 		
@@ -169,8 +125,8 @@ public class ECGPanel extends AwtView {
 		float widthOfTileInPixels = (float)width/nTilesPerRow;
 		float heightOfTileInPixels = (float)height/nTilesPerColumn;
 		
-		float widthOfTileInMilliSeconds = widthOfPixelInMilliSeconds*widthOfTileInPixels;
-		float  heightOfTileInMilliVolts =  heightOfPixelInMilliVolts*heightOfTileInPixels;
+		float widthOfTileInMilliSeconds = widthOfTileInPixels/xPixelsInMilliseconds;
+		float heightOfTileInMilliVolts =  heightOfTileInPixels/yPixelsInMillivolts;
 
 		// first draw boxes around each tile, with anti-aliasing turned on (only way to get consistent thickness)
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
@@ -185,7 +141,7 @@ public class ECGPanel extends AwtView {
 				//g2.setStroke(new BasicStroke(gridWidth));
 				//System.out.println(widthOfTileInMilliSeconds);				
 				for (float time=0; time<widthOfTileInMilliSeconds; time+=200) {
-					float x = drawingOffsetX+time/widthOfPixelInMilliSeconds;
+					float x = drawingOffsetX+time*xPixelsInMilliseconds;
 					g2.draw(new Line2D.Float(x,drawingOffsetY,x,drawingOffsetY+heightOfTileInPixels));
 				}
 
@@ -219,11 +175,12 @@ public class ECGPanel extends AwtView {
 				g2.draw(new Line2D.Float(drawingOffsetX,drawingOffsetY+heightOfTileInPixels,drawingOffsetX+widthOfTileInPixels,drawingOffsetY+heightOfTileInPixels));	// bottom
 				g2.draw(new Line2D.Float(drawingOffsetX+widthOfTileInPixels,drawingOffsetY,drawingOffsetX+widthOfTileInPixels,drawingOffsetY+heightOfTileInPixels));	// right
 				
-				if (channelNames != null && channel < displaySequence.length && displaySequence[channel] < channelNames.length) {
-					String channelName=channelNames[displaySequence[channel]];
+				if (g.getChannelNames() != null && channel < g.getDisplaySequence().length && 
+						g.getDisplaySequence()[channel] < g.getChannelNames().length) {
+					String channelName=g.getChannelNames()[g.getDisplaySequence()[channel]];
 					if (channelName != null) {
 						g2.setColor(channelNameColor);
-						g2.setFont(channelNameFont);
+						g2.setFont(font);
 						g2.drawString(channelName,drawingOffsetX+channelNameXOffset,drawingOffsetY+channelNameYOffset);
 					}
 				}
@@ -241,10 +198,10 @@ public class ECGPanel extends AwtView {
 		//g2.setStroke(new BasicStroke(curveWidth));
 
 		float interceptY = heightOfTileInPixels/2;
-		float widthOfSampleInPixels=samplingIntervalInMilliSeconds/widthOfPixelInMilliSeconds;
-		int timeOffsetInSamples = (int)(timeOffsetInMilliSeconds/samplingIntervalInMilliSeconds);
-		int widthOfTileInSamples = (int)(widthOfTileInMilliSeconds/samplingIntervalInMilliSeconds);
-		int usableSamples = nSamplesPerChannel-timeOffsetInSamples;
+		float widthOfSampleInPixels=g.getSamplingIntervalInMilliSeconds()*xPixelsInMilliseconds;
+		int timeOffsetInSamples = (int)(timeOffsetInMilliSeconds/g.getSamplingIntervalInMilliSeconds());
+		int widthOfTileInSamples = (int)(widthOfTileInMilliSeconds/g.getSamplingIntervalInMilliSeconds());
+		int usableSamples = g.getNumberOfSamplesPerChannel()-timeOffsetInSamples;
 		if (usableSamples <= 0) {
 			//usableSamples=0;
 			return;
@@ -256,13 +213,13 @@ public class ECGPanel extends AwtView {
 		drawingOffsetY = 0;
 	 channel = 0;
 		GeneralPath thePath = new GeneralPath();
-		for (int row=0;row<nTilesPerColumn && channel<numberOfChannels;++row) {
+		for (int row=0;row<nTilesPerColumn && channel<g.getNumberOfChannels();++row) {
 			float drawingOffsetX = 0;
-			for (int col=0;col<nTilesPerRow && channel<numberOfChannels;++col) {
+			for (int col=0;col<nTilesPerRow && channel<g.getNumberOfChannels();++col) {
 				float yOffset = drawingOffsetY + interceptY;
-				short[] samplesForThisChannel = samples[displaySequence[channel]];
+				short[] samplesForThisChannel = g.getSamples()[g.getDisplaySequence()[channel]];
 				int i = timeOffsetInSamples;
-				float rescaleY =  amplitudeScalingFactorInMilliVolts[displaySequence[channel]]/heightOfPixelInMilliVolts;
+				float rescaleY = g.getAmplitudeScalingFactorInMilliVolts()[g.getDisplaySequence()[channel]]*yPixelsInMillivolts;
 
 				float fromXValue = drawingOffsetX;
 				float fromYValue = yOffset - samplesForThisChannel[i]*rescaleY;
@@ -288,5 +245,87 @@ public class ECGPanel extends AwtView {
 		//System.out.println("Paint End");
 		return;
 	}
+
+	// basic getters & setters
+	public float getScaleFactor() {
+		return scaleFactor;
+	}
+
+	public void setScaleFactor(float scaleFactor) {
+		this.scaleFactor = scaleFactor;
+	}
+
+	public GraphicAttributeBase getG() {
+		return g;
+	}
+
+	public void setG(GraphicAttributeBase g) {
+		this.g = g;
+	}
+
+	public int getnTilesPerColumn() {
+		return nTilesPerColumn;
+	}
+
+	public void setnTilesPerColumn(int nTilesPerColumn) {
+		this.nTilesPerColumn = nTilesPerColumn;
+	}
+
+	public int getnTilesPerRow() {
+		return nTilesPerRow;
+	}
+
+	public void setnTilesPerRow(int nTilesPerRow) {
+		this.nTilesPerRow = nTilesPerRow;
+	}
+
+	public int getyPixelsInMillivolts() {
+		return yPixelsInMillivolts;
+	}
+
+	public void setyPixelsInMillivolts(int yPixelsInMillivolts) {
+		this.yPixelsInMillivolts = yPixelsInMillivolts;
+	}
+
+	public int getxPixelsInMilliseconds() {
+		return xPixelsInMilliseconds;
+	}
+
+	public void setxPixelsInMilliseconds(int xPixelsInMilliseconds) {
+		this.xPixelsInMilliseconds = xPixelsInMilliseconds;
+	}
+
+	public float getTimeOffsetInMilliSeconds() {
+		return timeOffsetInMilliSeconds;
+	}
+
+	public void setTimeOffsetInMilliSeconds(float timeOffsetInMilliSeconds) {
+		this.timeOffsetInMilliSeconds = timeOffsetInMilliSeconds;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public boolean isFillBackgroundFirst() {
+		return fillBackgroundFirst;
+	}
+
+	public void setFillBackgroundFirst(boolean fillBackgroundFirst) {
+		this.fillBackgroundFirst = fillBackgroundFirst;
+	}
+	
+	public void setFont(Font font) {
+		this.font = font;
+	}
+	
+	public void setFont(String fontName) {
+		this.font = new Font(fontName,0,14);
+	}
+	
 }
 

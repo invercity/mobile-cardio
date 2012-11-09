@@ -7,8 +7,8 @@ import java.io.IOException;
 
 
 import ua.stu.scplib.attribute.BinaryInputStream;
-import ua.stu.scplib.graphic.SCPSourceECG;
-import ua.stu.scplib.graphic.SourceECG;
+import ua.stu.scplib.attribute.GraphicAttribute;
+import ua.stu.scplib.attribute.GraphicAttributeBase;
 
 import and.awt.BasicStroke;
 import and.awt.Color;
@@ -98,7 +98,7 @@ public class MyDemo extends AwtView {
 		// i don't know, what does it mean
 		boolean truederiveAdditionalLeads = false;
 		
-		SourceECG sourceECG = null;
+		GraphicAttributeBase sourceECG = null;
 		BinaryInputStream i = null;
 		try {
 			i = new BinaryInputStream(new BufferedInputStream(new FileInputStream("/mnt/sdcard/Example.scp")),false);
@@ -108,7 +108,7 @@ public class MyDemo extends AwtView {
 		}		// little endian
 		
 		try {
-			sourceECG = new SCPSourceECG(i,truederiveAdditionalLeads);
+			sourceECG = new GraphicAttribute(i,truederiveAdditionalLeads);
 		} catch (IOException e) {e.printStackTrace();}
 		
 		// assume screen is 72 dpi aka 72/25.4 pixels/mm

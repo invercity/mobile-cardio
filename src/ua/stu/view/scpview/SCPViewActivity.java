@@ -20,9 +20,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 
 //import com.viewpagerindicator.UnderlinePageIndicator;
-public class SCPViewActivity extends FragmentActivity
+public class SCPViewActivity extends Activity
 {
 	
 	private PatientInfo patientInfo;
@@ -32,6 +35,7 @@ public class SCPViewActivity extends FragmentActivity
     @TargetApi(11) @Override
     public void onCreate(Bundle savedInstanceState)
     {
+    	setTheme(R.style.Theme_Sherlock);
         super.onCreate(savedInstanceState);
         
         patientInfo = new PatientInfo();

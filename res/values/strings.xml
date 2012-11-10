@@ -26,11 +26,8 @@
     <string name="time_life_patient">Время проживания(лет):</string>
     <string name="diagnos_patient">Диагноз или направления:</string>
     <string name="medical_history_patient">История болезни:</string>
-    <string-array name="patientInfos">
-		<item>Пациент</item>
-		<item>Кровяное давления</item>
-		<item>Адрес</item>
-		<item>Диагноз или направления</item>
-		<item>История болезни</item>
-	</string-array>
+    <string name="speed">Скорость:</string>
+    <string name="power">Усиление:</string>
+    <string name="revert_ecg">Инвертировать ЕКГ</string>
+    <string name="none"></string>
 </resources>

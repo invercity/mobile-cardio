@@ -40,7 +40,7 @@
 		android:text="@string/none" />
     <CheckBox
 		android:id="@+id/check_revert_ecg"
-		style="@style/CheckStyle"
+		style="@style/CheckStyleTrue"
 		android:layout_below="@+id/power_text"
 		android:text="@string/revert_ecg" />
 	<ua.stu.view.scpview.ECGPanel

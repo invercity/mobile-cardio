@@ -242,4 +242,104 @@ public class OInfo {
 	public boolean getReceive() {
 		return capabilitiesOfDevice[0] != 0;
 	}
+
+	/**
+	 * Учреждение, записывавшее ЭКГ
+	 * 
+	 * @return String
+	 */
+	public String getAcquiringInstitutionDescription() {
+		return scpecg.getNamedField("AcquiringInstitutionDescription");
+
+	}
+
+	/**
+	 * Учреждение, анализируещее ЭКГ
+	 * 
+	 * @return String
+	 */
+	public String getAnalyzingInstitutionDescription() {
+		return scpecg.getNamedField("AnalyzingInstitutionDescription");
+
+	}
+
+	/**
+	 * Отдел, принимавший ЭКГ
+	 * 
+	 * @return String
+	 */
+	public String getAcquiringDepartmentDescription() {
+		return scpecg.getNamedField("AcquiringDepartmentDescription");
+
+	}
+
+	/**
+	 * Отдел, анализировавший ЭКГ
+	 * 
+	 * @return String
+	 */
+	public String getAnalyzingDepartmentDescription() {
+		return scpecg.getNamedField("AnalyzingDepartmentDescription");
+
+	}
+
+	/**
+	 * Направляющие врачи
+	 * 
+	 * @return String
+	 */
+	public String getReferringPhysician() {
+		return scpecg.getNamedField("ReferringPhysician");
+
+	}
+
+	/**
+	 * Подтверждающие врачи
+	 * 
+	 * @return String
+	 */
+	public String getLatestConfirmingPhysician() {
+		return scpecg.getNamedField("LatestConfirmingPhysician");
+
+	}
+
+	/**
+	 * Медсестры
+	 * 
+	 * @return String
+	 */
+	public String getTechnicianDescription() {
+		return scpecg.getNamedField("TechnicianDescription");
+
+	}
+
+	/**
+	 * Комментарий
+	 * 
+	 * @return String
+	 */
+	public String getFreeTextField() {
+		return scpecg.getNamedField("FreeTextField");
+
+	}
+
+	/**
+	 * Дата получения ЭКГ
+	 * 
+	 * @return String
+	 */
+	public String getDateOfAcquisition() {
+		return scpecg.getNamedField("DateOfAcquisition");
+
+	}
+
+	/**
+	 * Время получения ЭКГ
+	 * 
+	 * @return String
+	 */
+	public String getTimeOfAcquisition() {
+		return scpecg.getNamedField("TimeOfAcquisition");
+
+	}
 }

@@ -32,7 +32,8 @@ public class DataHandler {
 	 * 
 	 * @return void
 	 * 
-	 * @param PInfo :object which handle patient info 
+	 * @param PInfo
+	 *            :object which handle patient info
 	 */
 	public void setPInfo(PInfo pi) {
 		this.pi = pi;
@@ -53,13 +54,13 @@ public class DataHandler {
 	 * 
 	 * @return void
 	 * 
-	 * @param OInfo :object which handle other info 
+	 * @param OInfo
+	 *            :object which handle other info
 	 */
-	
+
 	public void setOInfo(OInfo oi) {
 		this.oi = oi;
 	}
-	
 
 	/**
 	 * <p>
@@ -101,43 +102,29 @@ public class DataHandler {
 	public GraphicAttributeBase getGraphic() {
 		return graphic;
 	}
-	
+
 	public static void main(String arg[]) {
-		System.out.println("Start");		
-		 DataHandler dh =new DataHandler("/home/ivan/22.scp");
-		 System.out.println(dh.getOInfo().getManufacturer());
-		 System.out.println(dh.getOInfo().getPOSCP());
-		 System.out.println(dh.getOInfo().getSerialNumber());
-		 System.out.println(dh.getOInfo().getVersionPO());
-		 System.out.println(dh.getOInfo().getPrint());
-		 System.out.println(dh.getOInfo().getAnalysis());
-		 System.out.println(dh.getOInfo().getReceive());
-		 System.out.println(dh.getOInfo().getStorage());
-		// System.out.println(dh.getOInfo().getInstitutionNumber());
-		 //System.out.println(scpecg.getNamedField("AcquiringDeviceIdentificationNumber"));
-		 //System.out.println(dh.getOInfo().getDepartmentNumber());
-		// System.out.println(dh.getOInfo().getDeviceID());
-		 //System.out.println(dh.getOInfo().getDeviceType());		 
-		 //System.out.println(dh.getOInfo().getModel());
-		 //System.out.println(dh.getOInfo().getFrequency());
-		 /* System.out.println(dh.getOInfo().getAnalyzingDepartmentDescription());
-		  System.out.println(dh.getOInfo().getAnalyzingDeviceIdentificationNumber());
-		 System.out.println(dh.getOInfo().getAnalyzingInstitutionDescription());
-		 System.out.println(dh.getOInfo().getAcquiringInstitutionDescription());
-		  System.out.println(dh.getOInfo().getBaselineFilter());
-		  System.out.println(dh.getOInfo().getDateOfAcquisition());
-		  System.out.println(dh.getOInfo().getDateTimeZone());
-		  System.out.println(dh.getOInfo().geteCGSequenceNumber());
-		  System.out.println(dh.getOInfo().getElectrodeConfigurationCode());
-		  System.out.println(dh.getOInfo().getFilterBitmap());
-		  System.out.println(dh.getOInfo().getFreeTextField());
-		  System.out.println(dh.getOInfo().getLatestConfirmingPhysician());
-		  System.out.println(dh.getOInfo().getLowPassFilter());
-		  System.out.println(dh.getOInfo().getMedicalHistoryCodes());
-		  System.out.println(dh.getOInfo().getReferringPhysician());
-		  System.out.println(dh.getOInfo().getStatCode());
-		  System.out.println(dh.getOInfo().getTimeOfAcquisition());
-		 */
+		System.out.println("Start");
+		DataHandler dh = new DataHandler("/home/ivan/11.scp");
+		System.out.println(dh.getOInfo().getManufacturer());
+		System.out.println(dh.getOInfo().getPOSCP());
+		System.out.println(dh.getOInfo().getSerialNumber());
+		System.out.println(dh.getOInfo().getVersionPO());
+		System.out.println(dh.getOInfo().getPrint());
+		System.out.println(dh.getOInfo().getAnalysis());
+		System.out.println(dh.getOInfo().getReceive());
+		System.out.println(dh.getOInfo().getStorage());
+		System.out.println(dh.getOInfo().getAcquiringInstitutionDescription());
+		System.out.println(dh.getOInfo().getAnalyzingInstitutionDescription());
+		System.out.println(dh.getOInfo().getAcquiringDepartmentDescription());
+		System.out.println(dh.getOInfo().getAnalyzingDepartmentDescription());
+		System.out.println(dh.getOInfo().getLatestConfirmingPhysician());
+		System.out.println(dh.getOInfo().getReferringPhysician());
+		System.out.println(dh.getOInfo().getTechnicianDescription());
+		System.out.println(dh.getOInfo().getFreeTextField());
+		System.out.println(dh.getOInfo().getTimeOfAcquisition());
+		System.out.println(dh.getOInfo().getDateOfAcquisition());
+
 		System.out.println("End");
 	}
 }

@@ -1,5 +1,7 @@
 package ua.stu.view.scpview;
 
+import com.actionbarsherlock.app.SherlockFragment;
+
 import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -11,12 +13,12 @@ import android.widget.ListView;
 
 
 @TargetApi(11) 
-public class PatientInfo extends Fragment {
+public class PatientInfo extends SherlockFragment {
 	
 	private static String[] infoTypes = { "Пациент", "Кровяное давления",
 									  "Адрес","Диагноз или направления",
 									  "История болезни"};
-	
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		      Bundle savedInstanceState) 
 	{

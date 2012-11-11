@@ -3,6 +3,8 @@ package ua.stu.view.scpview;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.actionbarsherlock.app.SherlockActivity;
+
 import ua.stu.view.fragments.ECGPanelFragment;
 
 
@@ -25,7 +27,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 //import com.viewpagerindicator.UnderlinePageIndicator;
-public class SCPViewActivity extends Activity
+public class SCPViewActivity extends SherlockActivity
 {
 	
 	private PatientInfo patientInfo;
@@ -57,7 +59,7 @@ public class SCPViewActivity extends Activity
         SamplePagerAdapter pagerAdapter = new SamplePagerAdapter(pages);
         ViewPager viewPager = new ViewPager(this);
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setCurrentItem(0);     
+        viewPager.setCurrentItem(1);     
         
         setContentView(viewPager);
     }

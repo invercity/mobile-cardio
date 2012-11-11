@@ -9,39 +9,33 @@
 		android:text="@string/speed" />
     <SeekBar
         android:id="@+id/speed"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_toRightOf="@+id/speed_text"
-		android:progressDrawable="@drawable/progress_drawable"
- 		android:thumb="@drawable/thumb_drawable"/>
+        style="@style/ECGSeekStyle"
+		android:layout_toRightOf="@+id/speed_text"/>
     <TextView
 		android:id="@+id/speed_value"
-		style="@style/EditStyleValue"
+		style="@style/ECGValueStyle"
 		android:layout_toRightOf="@+id/speed"
 		android:text="@string/none" />
     <TextView
 		android:id="@+id/power_text"
 		style="@style/ECGViewStyle"
 		android:text="@string/power"
-		android:layout_below="@+id/speed_text" />
+		android:layout_below="@+id/speed" />
     <SeekBar
         android:id="@+id/power"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+		style="@style/ECGSeekStyle"
 		android:layout_toRightOf="@+id/power_text"
-		android:progressDrawable="@drawable/progress_drawable"
-		android:layout_below="@+id/speed"
- 		android:thumb="@drawable/thumb_drawable"/>
+		android:layout_below="@+id/speed"/>
     <TextView
 		android:id="@+id/power_value"
-		style="@style/EditStyleValue"
+		style="@style/ECGValueStyle"
 		android:layout_toRightOf="@+id/power"
-		android:layout_below="@+id/speed_value"
+		android:layout_below="@+id/speed"
 		android:text="@string/none" />
     <CheckBox
 		android:id="@+id/check_revert_ecg"
 		style="@style/CheckStyleTrue"
-		android:layout_below="@+id/power_text"
+		android:layout_below="@+id/power"
 		android:text="@string/revert_ecg" />
 	<ua.stu.view.scpview.ECGPanel
 		android:id="@+id/ecgpanel"

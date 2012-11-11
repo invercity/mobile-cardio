@@ -1166,6 +1166,8 @@ containing a value of this type.
         public static final int CheckStyleTrue=0x7f0a005f;
         public static final int DialogWindowTitle_Sherlock=0x7f0a0036;
         public static final int DialogWindowTitle_Sherlock_Light=0x7f0a0037;
+        public static final int ECGSeekStyle=0x7f0a0062;
+        public static final int ECGValueStyle=0x7f0a0061;
         public static final int ECGViewStyle=0x7f0a0060;
         public static final int Edit2StyleValue=0x7f0a005b;
         public static final int EditStyleValue=0x7f0a005a;

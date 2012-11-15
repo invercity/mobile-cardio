@@ -6,8 +6,6 @@ import java.util.List;
 import com.actionbarsherlock.app.SherlockActivity;
 
 import ua.stu.view.fragments.ECGPanelFragment;
-import ua.stu.view.fragments.Fragment1;
-
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;

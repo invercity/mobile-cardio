@@ -6,6 +6,7 @@ import java.util.List;
 import com.actionbarsherlock.app.SherlockActivity;
 
 import ua.stu.view.fragments.ECGPanelFragment;
+import ua.stu.view.fragments.Fragment1;
 
 
 import android.annotation.TargetApi;
@@ -21,6 +22,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;

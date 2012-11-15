@@ -48,6 +48,5 @@
     </style>
     <style name="ECGSeekStyle" parent="@style/ECGViewStyle">
         <item name="android:paddingTop">0dp</item>
-        <item name = "android:progressDrawable">@drawable/progress_drawable</item>
     </style>
 </resources>

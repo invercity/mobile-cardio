@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@android:color/white">
     <TextView
 		android:id="@+id/speed_text"
 		style="@style/ECGViewStyle"
@@ -36,7 +37,8 @@
 		android:id="@+id/check_revert_ecg"
 		style="@style/CheckStyleTrue"
 		android:layout_below="@+id/power"
-		android:text="@string/revert_ecg" />
+		android:text="@string/revert_ecg" 
+		android:textColor="@android:color/darker_gray"/>
 	<ua.stu.view.scpview.ECGPanel
 		android:id="@+id/ecgpanel"
 		android:layout_width="fill_parent"

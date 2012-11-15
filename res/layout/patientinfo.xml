@@ -1,19 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
- xmlns:android="http://schemas.android.com/apk/res/android"
- android:layout_width="fill_parent"
- android:id="@+id/patieninfo_linear_layout"
- android:layout_height="fill_parent"
- android:orientation="vertical">
-	<Button
-	 android:id="@+id/add"
-	 android:layout_width="wrap_content"
-	 android:layout_height="wrap_content"
-	 android:text="add">
-	</Button>
-	<FrameLayout
-	 android:id="@+id/frgmCont"
-	 android:layout_width="match_parent"
-	 android:layout_height="match_parent">
-	</FrameLayout>
+	 xmlns:android="http://schemas.android.com/apk/res/android"
+	 android:layout_width="fill_parent"
+	 android:id="@+id/patieninfo"
+	 android:layout_height="fill_parent"
+	 android:orientation="vertical">
+	 <CheckBox
+		android:id="@+id/check_private_patient_info"
+		style="@style/CheckStyleSelected"
+		android:text="@string/patient" />
+	 <FrameLayout
+		android:id="@+id/frame_private_patient_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+	 </FrameLayout>
+	 <CheckBox
+		android:id="@+id/check_blood_press"
+		style="@style/CheckStyleSelected"
+		android:text="@string/blood_press_patient" />
+	 <FrameLayout
+		android:id="@+id/frame_blood_press"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+	 </FrameLayout>
+	 <CheckBox
+		android:id="@+id/check_addr_patient"
+		style="@style/CheckStyleSelected"
+		android:text="@string/addr_patient" />
+	 <FrameLayout
+		android:id="@+id/frame_addr_patient"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+	 </FrameLayout>
+	 <CheckBox
+		android:id="@+id/check_diagnos_patient"
+		style="@style/CheckStyleSelected"
+		android:text="@string/diagnos_patient" />
+	 <FrameLayout
+		android:id="@+id/frame_diagnos_patient"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+	 </FrameLayout>
+	 <CheckBox
+		android:id="@+id/check_medical_history"
+		style="@style/CheckStyleSelected"
+		android:text="@string/medical_history_patient" />
+	 <FrameLayout
+		android:id="@+id/frame_medical_history"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+	 </FrameLayout>
 </LinearLayout>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SCPViewActivity</string>
+    <string name="patient">Информация о пациенте</string> 
     <string name="patient_info">PatientInfo</string>
     <string name="id_patient">ID Пациента:</string>
     <string name="surname_patient">Фамилия:</string>
@@ -12,6 +13,7 @@
     <string name="weight_patient">Вес:</string>
     <string name="sex_patient">Пол:</string>
     <string name="race_patient">Раса:</string>
+    <string name="stature_patient">Рост:</string>
     <string name="none_patient">неуказано</string>
     <string name="blood_press_patient">Кровяное давления:</string>
     <string name="sys_press_patient">Систолическое:</string>
@@ -29,5 +31,30 @@
     <string name="speed">Скорость:</string>
     <string name="power">Усиление:</string>
     <string name="revert_ecg">Инвертировать ЕКГ</string>
+    <string name="title_device_get_ecg">Устройства для получения ЭКГ</string>
+	<string name="maker">Производитель:</string>
+	<string name="org_num">Номер организации:</string>
+	<string name="dep_num">Номер отдела:</string>
+	<string name="dev_id">ID устройства:</string>
+	<string name="dev_type">Тип устройства:</string>
+	<string name="model">Модель:</string>
+	<string name="hz">Частота сети(Гц):</string>
+	<string name="title_dev_do">Возможности устройства</string>
+	<string name="soft_version">Версия анализирующего ПО:</string>
+	<string name="serial_num">Серийный номер:</string>
+	<string name="sys_soft">Системное ПО:</string>
+	<string name="soft_scp">ПО, реализующее протокол SCP:</string>
+	<string name="check_print">Печать</string>
+	<string name="check_analys">Анализ</string>
+	<string name="check_save">Хранения</string>
+	<string name="check_take">Прием</string>
+	<string name="org_write_ecg">Учреждения, записывавшее ЭКГ:</string>
+	<string name="org_analys_ecg">Учреждения, анализировавшее ЭКГ:</string>
+	<string name="dep_get_ecg">Отдел, принимавший ЭКГ:</string>
+	<string name="dep_analys_ecg">Отдел, анализировавший ЭКГ:</string>
+	<string name="go_doctor">Направляющие врачи:</string>
+	<string name="ok_doctor">Подтверждающие врачи:</string>
+	<string name="date_get_ecg">Дата получения ЭКГ:</string>
+	<string name="time_get_ecg">Время получения ЭКГ:</string>
     <string name="none"></string>
 </resources>

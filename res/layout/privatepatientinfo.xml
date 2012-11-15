@@ -85,9 +85,37 @@
 					    android:text="@string/birthday_patient" />
 				</RelativeLayout>
 				<RelativeLayout
-    	            android:id="@+id/weight_patient_layout"
+    	            android:id="@+id/age_patient_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/birthday_patient_layout">
+					<TextView
+					    android:id="@+id/age_patient"
+					    style="@style/ViewStyleKey"
+					    android:text="@string/age_patient" />
+					<TextView
+					    android:id="@+id/age_patient_value"
+					    style="@style/EditStyleValue"
+					    android:layout_toRightOf="@+id/age_patient"
+					    android:text="@string/none_patient" />
+				</RelativeLayout>
+				<RelativeLayout
+    	            android:id="@+id/stature_patient_layout"
+    	        	style="@style/RelativeStyle"
+    	        	android:layout_below="@id/age_patient_layout">
+					<TextView
+					    android:id="@+id/stature_patient"
+					    style="@style/ViewStyleKey"
+					    android:text="@string/stature_patient" />
+					<TextView
+					    android:id="@+id/stature_patient_value"
+					    style="@style/EditStyleValue"
+					    android:layout_toRightOf="@+id/stature_patient"
+					    android:text="@string/none_patient" />
+				</RelativeLayout>
+				<RelativeLayout
+    	            android:id="@+id/weight_patient_layout"
+    	        	style="@style/RelativeStyle"
+    	        	android:layout_below="@id/stature_patient_layout">
 					<TextView
 					    android:id="@+id/weight_patient"
 					    style="@style/ViewStyleKey"
@@ -124,178 +152,6 @@
 					    android:id="@+id/race_patient_value"
 					    style="@style/EditStyleValue"
 					    android:layout_toRightOf="@+id/race_patient"
-					    android:text="@string/none_patient" />
-				</RelativeLayout>
-				<RelativeLayout
-    	            android:id="@+id/blood_patient_layout"
-    	        	style="@style/RelativeStyle"
-    	        	android:layout_below="@id/race_patient_layout">
-					<TextView
-					    android:id="@+id/blood_press_patient"
-					    style="@style/HeadRealativeStyle"
-					    android:text="@string/blood_press_patient" />
-				</RelativeLayout>
-				<RelativeLayout
-    	            android:id="@+id/blood2_patient_layout"
-    	        	style="@style/RelativeStyle"
-    	        	android:layout_below="@id/blood_patient_layout">
-					<TextView
-					    android:id="@+id/sys_press_patient"
-					    style="@style/ViewStyleKey"
-					    android:text="@string/sys_press_patient" />
-					<TextView
-					    android:id="@+id/sys_press_patient_value"
-					    style="@style/EditStyleValue"
-					    android:layout_toRightOf="@+id/sys_press_patient"
-					    android:text="@string/none_patient" />
-				</RelativeLayout>
-				<RelativeLayout
-    	            android:id="@+id/blood3_patient_layout"
-    	        	style="@style/RelativeStyle"
-    	        	android:layout_below="@id/blood2_patient_layout">
-					<TextView
-					    android:id="@+id/dya_press_patient"
-					    style="@style/ViewStyleKey"
-					    android:text="@string/dya_press_patient" />
-					<TextView
-					    android:id="@+id/dya_press_patient_value"
-					    style="@style/EditStyleValue"
-					    android:layout_toRightOf="@+id/dya_press_patient"
-					    android:text="@string/none_patient" />
-				</RelativeLayout>
-				<RelativeLayout
-    	            android:id="@+id/addr_patient_layout"
-    	        	style="@style/RelativeStyle"
-    	        	android:layout_below="@id/blood3_patient_layout">
-					<TextView
-					    android:id="@+id/addr_patient"
-					    style="@style/HeadRealativeStyle"
-					    android:text="@string/addr_patient" />
-				</RelativeLayout>
-				<RelativeLayout
-    	            android:id="@+id/posta_code_patient_layout"
-    	        	style="@style/RelativeStyle"
-    	        	android:layout_below="@id/addr_patient_layout">
-					<TextView
-					    android:id="@+id/posta_code_patient"
-					    style="@style/ViewStyleKey"
-					    android:text="@string/posta_code_patient" />
-					<TextView
-					    android:id="@+id/posta_code_patient_value"
-					    style="@style/EditStyleValue"
-					    android:layout_toRightOf="@+id/posta_code_patient"
-					    android:text="@string/none_patient" />
-				</RelativeLayout>
-				<RelativeLayout
-    	            android:id="@+id/area_patient_layout"
-    	        	style="@style/RelativeStyle"
-    	        	android:layout_below="@id/posta_code_patient_layout">
-					<TextView
-					    android:id="@+id/area_patient"
-					    style="@style/ViewStyleKey"
-					    android:text="@string/area_patient" />
-					<TextView
-					    android:id="@+id/area_patient_value"
-					    style="@style/EditStyleValue"
-					    android:layout_toRightOf="@+id/area_patient"
-					    android:text="@string/none_patient" />
-				</RelativeLayout>
-				<RelativeLayout
-    	            android:id="@+id/zone_patient_layout"
-    	        	style="@style/RelativeStyle"
-    	        	android:layout_below="@id/area_patient_layout">
-					<TextView
-					    android:id="@+id/zone_patient"
-					    style="@style/ViewStyleKey"
-					    android:text="@string/zone_patient" />
-					<TextView
-					    android:id="@+id/zone_patient_value"
-					    style="@style/EditStyleValue"
-					    android:layout_toRightOf="@+id/zone_patient"
-					    android:text="@string/none_patient" />
-				</RelativeLayout>
-				<RelativeLayout
-    	            android:id="@+id/nas_patient_layout"
-    	        	style="@style/RelativeStyle"
-    	        	android:layout_below="@id/zone_patient_layout">
-					<TextView
-					    android:id="@+id/nas_patient"
-					    style="@style/ViewStyleKey"
-					    android:text="@string/nas_punkt_patient" />
-					<TextView
-					    android:id="@+id/nas_patient_value"
-					    style="@style/EditStyleValue"
-					    android:layout_toRightOf="@+id/nas_patient"
-					    android:text="@string/none_patient" />
-				</RelativeLayout>
-				<RelativeLayout
-    	            android:id="@+id/street_patient_layout"
-    	        	style="@style/RelativeStyle"
-    	        	android:layout_below="@id/nas_patient_layout">
-					<TextView
-					    android:id="@+id/street_patient"
-					    style="@style/ViewStyleKey"
-					    android:text="@string/street_patient" />
-					<TextView
-					    android:id="@+id/street_patient_value"
-					    style="@style/EditStyleValue"
-					    android:layout_toRightOf="@+id/street_patient"
-					    android:text="@string/none_patient" />
-				</RelativeLayout>
-				<RelativeLayout
-    	            android:id="@+id/house_patient_layout"
-    	        	style="@style/RelativeStyle"
-    	        	android:layout_below="@id/street_patient_layout">
-					<TextView
-					    android:id="@+id/house_patient"
-					    style="@style/ViewStyleKey"
-					    android:text="@string/house_patient" />
-					<TextView
-					    android:id="@+id/house_patient_value"
-					    style="@style/EditStyleValue"
-					    android:layout_toRightOf="@+id/house_patient"
-					    android:text="@string/none_patient" />
-				</RelativeLayout>
-				<RelativeLayout
-    	            android:id="@+id/life_patient_layout"
-    	        	style="@style/RelativeStyle"
-    	        	android:layout_below="@id/house_patient_layout">
-					<TextView
-					    android:id="@+id/life_patient"
-					    style="@style/ViewStyleKey"
-					    android:text="@string/time_life_patient" />
-					<TextView
-					    android:id="@+id/life_patient_value"
-					    style="@style/EditStyleValue"
-					    android:layout_toRightOf="@+id/life_patient"
-					    android:text="@string/none_patient" />
-				</RelativeLayout>
-				<RelativeLayout
-    	            android:id="@+id/diagnose_patient_layout"
-    	        	style="@style/RelativeStyle"
-    	        	android:layout_below="@id/life_patient_layout">
-					<TextView
-					    android:id="@+id/diagnose_patient"
-					    style="@style/HeadRealativeStyle"
-					    android:text="@string/diagnos_patient" />
-					<TextView
-					    android:id="@+id/diagnose_patient_value"
-					    style="@style/Edit2StyleValue"
-					    android:layout_below="@+id/diagnose_patient"
-					    android:text="@string/none_patient" />
-				</RelativeLayout>
-				<RelativeLayout
-    	            android:id="@+id/history_patient_layout"
-    	        	style="@style/RelativeStyle"
-    	        	android:layout_below="@id/diagnose_patient_layout">
-					<TextView
-					    android:id="@+id/history_patient"
-					    style="@style/HeadRealativeStyle"
-					    android:text="@string/medical_history_patient" />
-					<TextView
-					    android:id="@+id/history_patient_value"
-					    style="@style/Edit2StyleValue"
-					    android:layout_below="@+id/history_patient"
 					    android:text="@string/none_patient" />
 				</RelativeLayout>
 			</RelativeLayout>

@@ -6,6 +6,8 @@ import java.util.List;
 import com.actionbarsherlock.app.SherlockActivity;
 
 import ua.stu.view.fragments.ECGPanelFragment;
+import ua.stu.view.fragments.OtherInfo;
+import ua.stu.view.fragments.PatientInfo;
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;
@@ -32,6 +34,7 @@ public class SCPViewActivity extends SherlockActivity
 	
 	private PatientInfo patientInfo;
 	private ECGPanelFragment ecgPanel;
+	private OtherInfo otherInfo;
 	
     /** Called when the activity is first created. */
     @TargetApi(11) @Override
@@ -42,6 +45,7 @@ public class SCPViewActivity extends SherlockActivity
         
         patientInfo = new PatientInfo();
         ecgPanel = new ECGPanelFragment();
+        otherInfo = new OtherInfo();
         
         LayoutInflater inflater = LayoutInflater.from(this);
         List<View> pages = new ArrayList<View>();
@@ -54,6 +58,9 @@ public class SCPViewActivity extends SherlockActivity
         pages.add(page);
         
         page = patientInfo.onCreateView(inflater,null,savedInstanceState);
+        pages.add(page);
+        
+        page = otherInfo.onCreateView(inflater, null, savedInstanceState);
         pages.add(page);
         
         SamplePagerAdapter pagerAdapter = new SamplePagerAdapter(pages);

@@ -14,11 +14,11 @@ import net.pbdavey.awt.Font;
 import net.pbdavey.awt.Graphics2D;
 import net.pbdavey.awt.RenderingHints;
 
-public class ECGPanel extends AwtView {
-	// 72 dpi screen, 72/25.4 pixels per millimeter
-	private float basicScale = (float) (25.4/72);
-	//factor for basic scale, real scale will be basicScale*scaleFactor
-	private float scaleFactor;
+public class GraphicView extends AwtView {
+	//duim constant
+	private float duim = (float) 25.4;
+	// screen size in dpi
+	private int sizeScreen = 72;
 	//set of graphic attributes
 	private GraphicAttributeBase g;
 	//the number of tiles to display per column
@@ -26,9 +26,9 @@ public class ECGPanel extends AwtView {
 	//the number of tiles to display per row (if 1, then nTilesPerColumn should == numberOfChannels)
 	private int nTilesPerRow;
 	//how may pixels to use to represent one millivolt
-	private int yPixelsInMillivolts;
+	private float yPixelsInMillivolts;
 	//how may pixels to use to represent one millisecond
-	private int xPixelsInMilliseconds;
+	private float xPixelsInMilliseconds;
 	//how much of the sample data to skip, specified in milliseconds from the start of the samples
 	private float timeOffsetInMilliSeconds;
 	//Rectangle parameters
@@ -44,11 +44,11 @@ public class ECGPanel extends AwtView {
 	Font font;
 	private boolean fillBackgroundFirst;
 	
-	public ECGPanel(Context context) {
+	public GraphicView(Context context) {
 		super(context);
 	}
 	
-	public ECGPanel(Context context, AttributeSet attribSet) {
+	public GraphicView(Context context, AttributeSet attribSet) {
 		super(context, attribSet);
 	}
 	
@@ -58,14 +58,12 @@ public class ECGPanel extends AwtView {
 	
 	//default = 25
 	public void setXScale(int millimetersPerSecond) {
-		this.xPixelsInMilliseconds = 
-				(int) (millimetersPerSecond/(1000*basicScale*scaleFactor));
+		this.xPixelsInMilliseconds = millimetersPerSecond/(1000*duim/sizeScreen);
 	}
 	
 	//default = 10
 	public void setYScale(int millimetersPerMillivolt) {
-		this.yPixelsInMillivolts = 
-				(int) (millimetersPerMillivolt/(basicScale*scaleFactor));
+		this.yPixelsInMillivolts = millimetersPerMillivolt/(duim/sizeScreen);
 	}
 	
 	public int getXSCale() {
@@ -81,26 +79,20 @@ public class ECGPanel extends AwtView {
 		this.height = h;
 	}
 	
-	public void initDefault() {
+	public void init() {
+		DataHandler h = new DataHandler("/mnt/sdcard/Example.scp");
+		g = h.getGraphic();
+		setnTilesPerColumn(12);
+		setnTilesPerRow(1);
+		setRectangle(400, 400);
+		setXScale(25);
+		setYScale(10);
 		backgroundColor = Color.white;
 		curveColor = Color.blue;
 		boxColor = Color.black;
 		gridColor = Color.red;
 		channelNameColor = Color.black;
 		font = new Font("SansSerif",0,14);
-	}
-	
-	public boolean initIt() {
-		DataHandler handler = new DataHandler("/mnt/sdcard/Example.scp");
-		if (handler.ifError()) return false;
-		g = handler.getGraphicAttribute();
-		setnTilesPerColumn(12);
-		setnTilesPerRow(1);
-		setRectangle(400, 400);
-		setXScale(25);
-		setYScale(10);
-		initDefault();
-		return true;
 	}
 
 	/**
@@ -110,7 +102,7 @@ public class ECGPanel extends AwtView {
 	 */
 	@Override
 	public void paint(Graphics2D g2) {
-		if (!initIt()) return;
+		init();
 		int channelNameXOffset = 10;
 		int channelNameYOffset = 20;
 		
@@ -133,13 +125,11 @@ public class ECGPanel extends AwtView {
 
 		g2.setColor(gridColor);
 		// setForeground(gridColor);
-			//System.out.println(gridWidth);
 		float drawingOffsetY = 0;
 		for (int row=0;row<nTilesPerColumn;++row) {
 			float drawingOffsetX = 0;
 			for (int col=0;col<nTilesPerRow;++col) {
-				//g2.setStroke(new BasicStroke(gridWidth));
-				//System.out.println(widthOfTileInMilliSeconds);				
+				//g2.setStroke(new BasicStroke(gridWidth));				
 				for (float time=0; time<widthOfTileInMilliSeconds; time+=200) {
 					float x = drawingOffsetX+time*xPixelsInMilliseconds;
 					g2.draw(new Line2D.Float(x,drawingOffsetY,x,drawingOffsetY+heightOfTileInPixels));
@@ -149,7 +139,6 @@ public class ECGPanel extends AwtView {
 				for (float milliVolts=-heightOfTileInMilliVolts/2; milliVolts<=heightOfTileInMilliVolts/2; milliVolts+=0.5) {
 					float y = drawingOffsetY + heightOfTileInPixels/2 + milliVolts/heightOfTileInMilliVolts*heightOfTileInPixels;
 					g2.draw(new Line2D.Float(drawingOffsetX,y,drawingOffsetX+widthOfTileInPixels,y));
-
 				}
 				drawingOffsetX+=widthOfTileInPixels;
 			}
@@ -196,7 +185,6 @@ public class ECGPanel extends AwtView {
 		g2.setColor(curveColor);
 		//setForeground(curveColor);
 		//g2.setStroke(new BasicStroke(curveWidth));
-
 		float interceptY = heightOfTileInPixels/2;
 		float widthOfSampleInPixels=g.getSamplingIntervalInMilliSeconds()*xPixelsInMilliseconds;
 		int timeOffsetInSamples = (int)(timeOffsetInMilliSeconds/g.getSamplingIntervalInMilliSeconds());
@@ -242,17 +230,8 @@ public class ECGPanel extends AwtView {
 			}
 			drawingOffsetY+=heightOfTileInPixels;
 		}
-		//System.out.println("Paint End");
+		
 		return;
-	}
-
-	// basic getters & setters
-	public float getScaleFactor() {
-		return scaleFactor;
-	}
-
-	public void setScaleFactor(float scaleFactor) {
-		this.scaleFactor = scaleFactor;
 	}
 
 	public GraphicAttributeBase getG() {
@@ -279,7 +258,7 @@ public class ECGPanel extends AwtView {
 		this.nTilesPerRow = nTilesPerRow;
 	}
 
-	public int getyPixelsInMillivolts() {
+	public float getyPixelsInMillivolts() {
 		return yPixelsInMillivolts;
 	}
 
@@ -287,7 +266,7 @@ public class ECGPanel extends AwtView {
 		this.yPixelsInMillivolts = yPixelsInMillivolts;
 	}
 
-	public int getxPixelsInMilliseconds() {
+	public float getxPixelsInMilliseconds() {
 		return xPixelsInMilliseconds;
 	}
 
@@ -328,4 +307,3 @@ public class ECGPanel extends AwtView {
 	}
 	
 }
-

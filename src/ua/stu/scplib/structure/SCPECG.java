@@ -498,7 +498,7 @@ public class SCPECG {
 	 *
 	 * @return		the values as a <code>String</code>
 	 */
-	public void getIsoCode(){
+	public  void getIsoCode(){
 		//get encoding
 				String nameOfCode="";
 				int namberInInt=0;

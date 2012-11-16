@@ -1,9 +1,9 @@
 package ua.stu.view.fragments;
 
-import com.actionbarsherlock.app.SherlockFragment;
 
 import ua.stu.view.scpview.R;
 import android.annotation.TargetApi;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -14,7 +14,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 @TargetApi(11)
-public class ECGPanelFragment extends SherlockFragment implements OnSeekBarChangeListener {
+public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListener {
 	/**
 	 * Длина экрана
 	 */

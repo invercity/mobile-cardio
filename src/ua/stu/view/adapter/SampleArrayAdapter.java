@@ -42,8 +42,8 @@ public class SampleArrayAdapter extends ArrayAdapter<String> {
             LayoutInflater inflater = context.getLayoutInflater();
             rowView = inflater.inflate(R.layout.main, null, true);
             holder = new ViewHolder();
-            holder.textView = (TextView) rowView.findViewById(R.id.label);
-            holder.imageView = (ImageView) rowView.findViewById(R.id.icon);
+            //holder.textView = (TextView) rowView.findViewById(R.id.label);
+            //holder.imageView = (ImageView) rowView.findViewById(R.id.icon);
             rowView.setTag(holder);
         } else {
             holder = (ViewHolder) rowView.getTag();

@@ -5,4 +5,16 @@
 	 android:id="@+id/patieninfo"
 	 android:layout_height="fill_parent"
 	 android:orientation="vertical">
+	 <RelativeLayout
+    	        android:id="@+id/other_info"
+    	        style="@style/RelativeStyle">
+	        	<RelativeLayout
+    	            android:id="@+id/dev_get_ecg"
+    	        	style="@style/RelativeStyle">
+					<TextView
+					    android:id="@+id/dev_get_ecg_txt"
+					    style="@style/HeadRealativeStyle"
+					    android:text="@string/title_device_get_ecg" />
+				</RelativeLayout>
+	</RelativeLayout>
 </LinearLayout>

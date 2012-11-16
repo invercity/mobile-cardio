@@ -1,15 +1,14 @@
 package ua.stu.view.fragments;
 
-import ua.stu.view.adapter.SampleArrayAdapter;
+import ua.stu.view.scpview.PatientInfo;
 import ua.stu.view.scpview.R;
-import ua.stu.view.scpview.SCPViewActivity;
+import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
+import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,22 +18,28 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
+@TargetApi(11)
 public class InfoFragment extends Fragment implements OnItemClickListener  {
 	
-	private static String TAG = "PatientInfo";
+	private static String TAG = "InfoFragment";
 	
 	private ListView lvMain;
 	
-	private String[] values = new String[] {"Linux","BSD" };
+	private String[] values = new String[] {"Пациент","Прочее"};
+	
+	public interface OnEventItemClickListener 
+	{
+	    public void itemClickEvent(int position);
+	}
+	
+	OnEventItemClickListener onEventItemClick;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		      Bundle savedInstanceState) 
 	{
-		View v = inflater.inflate(R.layout.info, null);
+		View view = inflater.inflate(R.layout.info, null);
 		
-		init(v);
-		
-	    lvMain = (ListView) v.findViewById(R.id.lvMain);
+	    lvMain = (ListView) view.findViewById(R.id.lvMain);
 	    lvMain.setOnItemClickListener(this);
 
 	    //create adapter
@@ -44,18 +49,26 @@ public class InfoFragment extends Fragment implements OnItemClickListener  {
 	    //add adapter list
 	    lvMain.setAdapter(adapter);
 		
-		return v;
+		return view;
 	}
 	
-	private final void init (View v)
-	{
-
-	}
-
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View v, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-		Intent intent = new Intent(v.getContext(),SCPViewActivity.class);
-		startActivity(intent);
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+        	onEventItemClick = (OnEventItemClickListener) activity;
+        } catch (ClassCastException e) {
+        	throw new ClassCastException(activity.toString() + " must implement onSomeEventListener");
+        }
+    }
+	
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		try {
+        	onEventItemClick = (OnEventItemClickListener) view.getContext();
+        } catch (ClassCastException e) {
+        	throw new ClassCastException(view.getContext().toString() + " must implement onSomeEventListener");
+        }
+		onEventItemClick.itemClickEvent(position);
 	}
 }

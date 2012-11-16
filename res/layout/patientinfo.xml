@@ -5,16 +5,49 @@
 	 android:id="@+id/patieninfo"
 	 android:layout_height="fill_parent"
 	 android:orientation="vertical">
-	 <RelativeLayout
-    	        android:id="@+id/other_info"
-    	        style="@style/RelativeStyle">
-	        	<RelativeLayout
-    	            android:id="@+id/dev_get_ecg"
-    	        	style="@style/RelativeStyle">
-					<TextView
-					    android:id="@+id/dev_get_ecg_txt"
-					    style="@style/HeadRealativeStyle"
-					    android:text="@string/title_device_get_ecg" />
-				</RelativeLayout>
-	</RelativeLayout>
+	 <CheckBox
+		android:id="@+id/check_private_patient_info"
+		style="@style/CheckStyleSelected"
+		android:text="@string/patient" />
+	 <FrameLayout
+		android:id="@+id/frame_private_patient_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+	 </FrameLayout>
+	 <CheckBox
+		android:id="@+id/check_blood_press"
+		style="@style/CheckStyleSelected"
+		android:text="@string/blood_press_patient" />
+	 <FrameLayout
+		android:id="@+id/frame_blood_press"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+	 </FrameLayout>
+	 <CheckBox
+		android:id="@+id/check_addr_patient"
+		style="@style/CheckStyleSelected"
+		android:text="@string/addr_patient" />
+	 <FrameLayout
+		android:id="@+id/frame_addr_patient"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+	 </FrameLayout>
+	 <CheckBox
+		android:id="@+id/check_diagnos_patient"
+		style="@style/CheckStyleSelected"
+		android:text="@string/diagnos_patient" />
+	 <FrameLayout
+		android:id="@+id/frame_diagnos_patient"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+	 </FrameLayout>
+	 <CheckBox
+		android:id="@+id/check_medical_history"
+		style="@style/CheckStyleSelected"
+		android:text="@string/medical_history_patient" />
+	 <FrameLayout
+		android:id="@+id/frame_medical_history"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+	 </FrameLayout>
 </LinearLayout>

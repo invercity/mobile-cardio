@@ -15,10 +15,10 @@
     <string name="race_patient">Раса:</string>
     <string name="stature_patient">Рост:</string>
     <string name="none_patient">неуказано</string>
-    <string name="blood_press_patient">Кровяное давления:</string>
+    <string name="blood_press_patient">Кровяное давления</string>
     <string name="sys_press_patient">Систолическое:</string>
     <string name="dya_press_patient">Дистолическое:</string>
-    <string name="addr_patient">Адрес:</string>
+    <string name="addr_patient">Адрес</string>
     <string name="posta_code_patient">Почтовый код:</string>
     <string name="area_patient">Область:</string>
     <string name="zone_patient">Район:</string>
@@ -26,8 +26,8 @@
     <string name="street_patient">Улица:</string>
     <string name="house_patient">Дом:</string>
     <string name="time_life_patient">Время проживания(лет):</string>
-    <string name="diagnos_patient">Диагноз или направления:</string>
-    <string name="medical_history_patient">История болезни:</string>
+    <string name="diagnos_patient">Диагноз или направления</string>
+    <string name="medical_history_patient">История болезни</string>
     <string name="speed">Скорость:</string>
     <string name="power">Усиление:</string>
     <string name="revert_ecg">Инвертировать ЕКГ</string>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+ 	xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory
+	 android:title="@string/category1">
+		<CheckBoxPreference
+			 android:key="chb2"
+			 android:summary="@string/checkbox2_summary"
+			 android:title="@string/checkbox2_title">
+		</CheckBoxPreference>
+		<EditTextPreference
+			 android:key="address2"
+			 android:summary="@string/edittext2_summary"
+			 android:title="@string/edittext2_title">
+		</EditTextPreference>
+		<ListPreference
+			 android:entries="@array/entries"
+			 android:entryValues="@array/entry_values"
+			 android:key="list2"
+			 android:summary="@string/list2_summary"
+			 android:title="@string/list2_title">
+		</ListPreference>
+	</PreferenceCategory>
+	<PreferenceCategory
+	 	android:title="@string/category2">
+		<PreferenceScreen
+			 android:fragment="ua.stu.view.fragments.TestFragment"
+			 android:summary="@string/screen1_summary"
+			 android:title="@string/screen1_title">
+		</PreferenceScreen>
+		<PreferenceScreen
+			 android:summary="@string/screen2_summary"
+			 android:title="@string/screen2_title">
+		<intent
+			 android:action="android.intent.action.VIEW"
+			 android:data="http://www.developer.android.com">
+		</intent>
+		</PreferenceScreen>
+	</PreferenceCategory>
+</PreferenceScreen>

@@ -21,6 +21,10 @@ public class PrivatePatientInfo extends Fragment {
 	 */
 	private TextView lastName;
 	/**
+	 * Возраст пациента
+	 */
+	private TextView age;
+	/**
 	 * Имя пациента
 	 */
 	private TextView firstName;
@@ -67,7 +71,8 @@ public class PrivatePatientInfo extends Fragment {
 		this.setBithDate((TextView)v.findViewById(R.id.birthday_patient_value));
 		this.setWeight((TextView)v.findViewById(R.id.weight_patient_value));
 		this.setSex((TextView)v.findViewById(R.id.sex_patient_value));
-		this.setStature((TextView)v.findViewById(R.id.));
+		this.setAge((TextView)v.findViewById(R.id.age_patient_value));
+		this.setStature((TextView)v.findViewById(R.id.stature_patient_value));
 		this.setRace((TextView)v.findViewById(R.id.race_patient_value));
 	}
 	
@@ -177,6 +182,14 @@ public class PrivatePatientInfo extends Fragment {
 
 	public void setRace(CharSequence race) {
 		this.race.setText(race);
+	}
+
+	public TextView getAge() {
+		return age;
+	}
+
+	private final void setAge(TextView age) {
+		this.age = age;
 	}
 
 }

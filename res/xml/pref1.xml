@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+ 	xmlns:android="http://schemas.android.com/apk/res/android">
+	<CheckBoxPreference
+		 android:key="chb1"
+		 android:summary="@string/patient"
+		 android:title="@string/patient_info">
+	</CheckBoxPreference>
+	<EditTextPreference
+		 android:key="address1"
+		 android:summary="@string/stature_patient"
+		 android:title="@string/weight_patient">
+	</EditTextPreference>
+</PreferenceScreen>

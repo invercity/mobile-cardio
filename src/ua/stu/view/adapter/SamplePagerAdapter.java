@@ -1,4 +1,4 @@
-package ua.stu.view.scpview;
+package ua.stu.view.adapter;
 
 import java.util.List;
 

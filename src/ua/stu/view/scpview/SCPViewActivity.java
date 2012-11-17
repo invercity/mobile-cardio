@@ -7,7 +7,6 @@ import ua.stu.view.adapter.SamplePagerAdapter;
 import ua.stu.view.fragments.ECGPanelFragment;
 import ua.stu.view.fragments.InfoFragment;
 import ua.stu.view.fragments.InfoFragment.OnEventItemClickListener;
-import ua.stu.view.fragments.OtherInfo;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

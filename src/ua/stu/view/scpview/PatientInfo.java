@@ -1,13 +1,15 @@
 package ua.stu.view.scpview;
 
+import ua.stu.view.fragments.AddrPatientFragment;
 import ua.stu.view.fragments.BloodPressFragment;
+import ua.stu.view.fragments.DiagnoseFragment;
+import ua.stu.view.fragments.MedicalHistory;
 import ua.stu.view.fragments.PrivatePatientInfoFragment;
 import ua.stu.view.scpview.R;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
@@ -19,6 +21,10 @@ public class PatientInfo extends Activity implements android.widget.CompoundButt
 	
 	private PrivatePatientInfoFragment privatePatientInfo;
 	private BloodPressFragment bloodPress;
+	private AddrPatientFragment addrPatient;
+	private DiagnoseFragment diagnose;
+	private MedicalHistory medicalHistory;
+	
 	private FragmentTransaction fTrans;
 	
 	private CheckBox chPrivatePatientInfo;
@@ -33,7 +39,6 @@ public class PatientInfo extends Activity implements android.widget.CompoundButt
 		setTheme(R.style.Theme_Sherlock);
 		
         super.onCreate(savedInstanceState);
-        
         setContentView(R.layout.patientinfo);
         
         init();
@@ -55,6 +60,9 @@ public class PatientInfo extends Activity implements android.widget.CompoundButt
 		
 		privatePatientInfo = new PrivatePatientInfoFragment();
 		bloodPress = new BloodPressFragment();
+		addrPatient = new AddrPatientFragment();
+		diagnose = new DiagnoseFragment();
+		medicalHistory = new MedicalHistory();
 	}
 
 	@Override
@@ -67,44 +75,40 @@ public class PatientInfo extends Activity implements android.widget.CompoundButt
             if (checked)
             {
             	fTrans.add(R.id.frame_private_patient_info, privatePatientInfo);
-                Log.d(TAG, "private_patient_info");
             } else {
             	fTrans.remove(privatePatientInfo);
-            	Log.d(TAG, "private_patient_info");
             }
             break;
 		case R.id.check_blood_press:
 	        if (checked)
 	        {
 	        	fTrans.add(R.id.frame_blood_press, bloodPress);
-	            Log.d(TAG, "blood_press");
 	        } else {
 	        	fTrans.remove(bloodPress);
-	        	Log.d(TAG, "blood_press");
 	        }
 	        break;
 		case R.id.check_addr_patient:
 	        if (checked)
 	        {
-	            Log.d(TAG, "addr_patient");
+	        	fTrans.add(R.id.frame_addr_patient, addrPatient);
 	        } else {
-	        	Log.d(TAG, "addr_patient");
+	        	fTrans.remove(addrPatient);
 	        }
 	        break;
 		case R.id.check_diagnos_patient:
 	        if (checked)
 	        {
-	            Log.d(TAG, "diagnos_patient");
+	        	fTrans.add(R.id.frame_diagnos_patient, diagnose);
 	        } else {
-	        	Log.d(TAG, "diagnos_patient");
+	        	fTrans.remove(diagnose);
 	        }
 	        break;
 		case R.id.check_medical_history:
 	        if (checked)
 	        {
-	            Log.d(TAG, "medical_history");
+	        	fTrans.add(R.id.frame_medical_history, medicalHistory);
 	        } else {
-	        	Log.d(TAG, "medical_history");
+	        	fTrans.remove(medicalHistory);
 	        }
 	        break;
 		}

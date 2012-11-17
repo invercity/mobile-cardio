@@ -45,7 +45,7 @@ public class AddrPatientFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		      Bundle savedInstanceState) 
 	{
-		View v = inflater.inflate(R.layout.blood_press, null);
+		View v = inflater.inflate(R.layout.addr_patient, null);
 	    init(v);
 		return v;
 	}

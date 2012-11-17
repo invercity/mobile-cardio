@@ -79,12 +79,12 @@
 					 <CheckBox
 						android:id="@+id/check_medical_history"
 						style="@style/CheckStyleSelected"
-						android:text="@string/medical_history_patient"
-						android:layout_below="@+id/check_medical_history"/>
+						android:text="@string/medical_history_patient"/>
 					 <FrameLayout
 						android:id="@+id/frame_medical_history"
 						android:layout_width="wrap_content"
-						android:layout_height="wrap_content">
+						android:layout_height="wrap_content"
+						android:layout_below="@+id/check_medical_history">
 					 </FrameLayout>
 				</RelativeLayout>	 
 			 </RelativeLayout>

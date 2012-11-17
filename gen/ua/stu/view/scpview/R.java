@@ -970,7 +970,6 @@ containing a value of this type.
         public static final int abs__titleDivider=0x7f05001c;
         public static final int abs__up=0x7f05000b;
         public static final int addr_patient=0x7f050034;
-        public static final int addr_patient_layout=0x7f0500de;
         public static final int addr_patient_scroll_view=0x7f050033;
         public static final int age_patient=0x7f0500cc;
         public static final int age_patient_layout=0x7f0500cb;
@@ -981,11 +980,7 @@ containing a value of this type.
         public static final int birthday_patient=0x7f0500ca;
         public static final int birthday_patient_layout=0x7f0500c8;
         public static final int birthday_patient_value=0x7f0500c9;
-        public static final int blood2_patient_layout=0x7f0500dc;
-        public static final int blood3_patient_layout=0x7f0500dd;
-        public static final int blood_patient_layout=0x7f0500da;
         public static final int blood_press=0x7f05004b;
-        public static final int blood_press_patient=0x7f0500db;
         public static final int blood_press_scroll_view=0x7f05004a;
         public static final int check_addr_patient=0x7f0500b2;
         public static final int check_addr_patient_layout=0x7f0500b1;
@@ -1026,7 +1021,6 @@ containing a value of this type.
         public static final int dev_type_layout=0x7f050074;
         public static final int dev_type_value=0x7f050076;
         public static final int diagnose=0x7f050053;
-        public static final int diagnose_patient=0x7f0500df;
         public static final int diagnose_patient_layout=0x7f050054;
         public static final int diagnose_patient_scroll_view=0x7f050052;
         public static final int diagnose_patient_value=0x7f050055;
@@ -1047,9 +1041,6 @@ containing a value of this type.
         public static final int go_doctor=0x7f05009d;
         public static final int go_doctor_layout=0x7f05009c;
         public static final int go_doctor_value=0x7f05009e;
-        public static final int history_patient=0x7f0500e1;
-        public static final int history_patient_layout=0x7f0500e0;
-        public static final int history_patient_value=0x7f0500e2;
         public static final int homeAsUp=0x7f050006;
         public static final int house_patient=0x7f050045;
         public static final int house_patient_layout=0x7f050044;
@@ -1194,9 +1185,8 @@ containing a value of this type.
         public static final int otherinfo=0x7f03001e;
         public static final int patientinfo=0x7f03001f;
         public static final int privatepatientinfo=0x7f030020;
-        public static final int privatepatientinfo2=0x7f030021;
-        public static final int sherlock_spinner_dropdown_item=0x7f030022;
-        public static final int sherlock_spinner_item=0x7f030023;
+        public static final int sherlock_spinner_dropdown_item=0x7f030021;
+        public static final int sherlock_spinner_item=0x7f030022;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 

@@ -53,4 +53,9 @@
     <style name="ECGSeekStyle" parent="@style/ECGViewStyle">
         <item name="android:paddingTop">0dp</item>
     </style>
+    <style name="FrameStyle" parent="@android:style/TextAppearance.Small">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">10dp</item>
+    </style>
 </resources>

@@ -56,7 +56,6 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 
 	@Override
 	public void itemClickEvent(int position) {
-		// TODO Auto-generated method stub
 		switch (position)
 		{
 		case 0:

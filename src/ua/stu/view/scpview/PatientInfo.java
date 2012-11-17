@@ -3,19 +3,19 @@ package ua.stu.view.scpview;
 import ua.stu.view.fragments.AddrPatientFragment;
 import ua.stu.view.fragments.BloodPressFragment;
 import ua.stu.view.fragments.DiagnoseFragment;
-import ua.stu.view.fragments.MedicalHistory;
+import ua.stu.view.fragments.MedicalHistoryFragment;
 import ua.stu.view.fragments.PrivatePatientInfoFragment;
 import ua.stu.view.scpview.R;
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 
 @TargetApi(11) 
-public class PatientInfo extends Activity implements android.widget.CompoundButton.OnCheckedChangeListener
+public class PatientInfo extends FragmentActivity implements android.widget.CompoundButton.OnCheckedChangeListener
 {
 	private static String TAG = "PatientInfo";
 	
@@ -23,7 +23,7 @@ public class PatientInfo extends Activity implements android.widget.CompoundButt
 	private BloodPressFragment bloodPress;
 	private AddrPatientFragment addrPatient;
 	private DiagnoseFragment diagnose;
-	private MedicalHistory medicalHistory;
+	private MedicalHistoryFragment medicalHistory;
 	
 	private FragmentTransaction fTrans;
 	
@@ -62,13 +62,13 @@ public class PatientInfo extends Activity implements android.widget.CompoundButt
 		bloodPress = new BloodPressFragment();
 		addrPatient = new AddrPatientFragment();
 		diagnose = new DiagnoseFragment();
-		medicalHistory = new MedicalHistory();
+		medicalHistory = new MedicalHistoryFragment();
 	}
 
 	@Override
 	public void onCheckedChanged(CompoundButton view, boolean checked) 
 	{
-		fTrans = getFragmentManager().beginTransaction();
+		fTrans = getSupportFragmentManager().beginTransaction();
 		
 		switch(view.getId()) {
         case R.id.check_private_patient_info:

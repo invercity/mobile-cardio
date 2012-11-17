@@ -1,15 +1,13 @@
 package ua.stu.view.fragments;
 
 import ua.stu.view.scpview.R;
-import android.annotation.TargetApi;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-@TargetApi(11)
 public class PrivatePatientInfoFragment extends Fragment {
 	
 	/**

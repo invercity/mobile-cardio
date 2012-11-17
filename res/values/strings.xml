@@ -56,5 +56,6 @@
 	<string name="ok_doctor">Подтверждающие врачи:</string>
 	<string name="date_get_ecg">Дата получения ЭКГ:</string>
 	<string name="time_get_ecg">Время получения ЭКГ:</string>
+	<string name="ecg_info">Информация о ЕКГ</string>
     <string name="none"></string>
 </resources>

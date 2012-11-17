@@ -50,7 +50,7 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
         SamplePagerAdapter pagerAdapter = new SamplePagerAdapter(pages);
         ViewPager viewPager = new ViewPager(this);
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setCurrentItem(0);     
+        viewPager.setCurrentItem(2);     
         
         setContentView(viewPager);
     }

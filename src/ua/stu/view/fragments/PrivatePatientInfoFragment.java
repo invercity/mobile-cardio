@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 @TargetApi(11)
-public class PrivatePatientInfo extends Fragment {
+public class PrivatePatientInfoFragment extends Fragment {
 	
 	/**
 	 * ID пациента

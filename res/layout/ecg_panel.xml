@@ -39,7 +39,7 @@
 		android:layout_below="@+id/power"
 		android:text="@string/revert_ecg" 
 		android:textColor="@android:color/darker_gray"/>
-	<ua.stu.view.scpview.ECGPanel
+	<ua.stu.view.scpview.GraphicView
 		android:id="@+id/ecgpanel"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"

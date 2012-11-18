@@ -18,7 +18,7 @@ public class GraphicView extends AwtView {
 	//duim constant
 	private float duim = (float) 25.4;
 	// screen size in dpi
-	private int sizeScreen = 72;
+	private int sizeScreen = 240;
 	//set of graphic attributes
 	private GraphicAttributeBase g;
 	//the number of tiles to display per column
@@ -31,10 +31,8 @@ public class GraphicView extends AwtView {
 	private float xPixelsInMilliseconds;
 	//how much of the sample data to skip, specified in milliseconds from the start of the samples
 	private float timeOffsetInMilliSeconds;
-	//Rectangle parameters
-	private int width;
-	private int height;
-	//Color map
+	//offset for graphic
+	private int xTitlesOffset;
 	Color backgroundColor;
 	Color curveColor;
 	Color boxColor;
@@ -59,6 +57,7 @@ public class GraphicView extends AwtView {
 	//default = 25
 	public void setXScale(int millimetersPerSecond) {
 		this.xPixelsInMilliseconds = millimetersPerSecond/(1000*duim/sizeScreen);
+		this.xTitlesOffset = millimetersPerSecond*3;
 	}
 	
 	//default = 10
@@ -74,25 +73,19 @@ public class GraphicView extends AwtView {
 		return 0;
 	}
 	
-	public void setRectangle(int w, int h) {
-		this.width = w;
-		this.height = h;
-	}
-	
 	public void init() {
 		DataHandler h = new DataHandler("/mnt/sdcard/Example.scp");
 		g = h.getGraphic();
 		setnTilesPerColumn(12);
 		setnTilesPerRow(1);
-		setRectangle(400, 400);
-		setXScale(25);
-		setYScale(10);
+		setXScale(12);
+		setYScale(5);
 		backgroundColor = Color.white;
 		curveColor = Color.blue;
 		boxColor = Color.black;
-		gridColor = Color.red;
+		gridColor = Color.black;
 		channelNameColor = Color.black;
-		font = new Font("SansSerif",0,14);
+		font = new Font("Ubuntu",0,14);
 	}
 
 	/**
@@ -108,14 +101,14 @@ public class GraphicView extends AwtView {
 		
 		g2.setBackground(backgroundColor);
 		g2.setColor(backgroundColor);
-		  setBackground(backgroundColor);
-	     // setForeground(backgroundColor);
+		setBackground(backgroundColor);
+		
 		if (fillBackgroundFirst) {
-			g2.fill(new Rectangle2D.Float(0,0,width,height));
+			g2.fill(new Rectangle2D.Float(0,0,getWidth(),getHeight()));
 		}
 		
-		float widthOfTileInPixels = (float)width/nTilesPerRow;
-		float heightOfTileInPixels = (float)height/nTilesPerColumn;
+		float widthOfTileInPixels = getWidth()/nTilesPerRow;
+		float heightOfTileInPixels = getHeight()/nTilesPerColumn;
 		
 		float widthOfTileInMilliSeconds = widthOfTileInPixels/xPixelsInMilliseconds;
 		float heightOfTileInMilliVolts =  heightOfTileInPixels/yPixelsInMillivolts;
@@ -124,10 +117,9 @@ public class GraphicView extends AwtView {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 
 		g2.setColor(gridColor);
-		// setForeground(gridColor);
 		float drawingOffsetY = 0;
 		for (int row=0;row<nTilesPerColumn;++row) {
-			float drawingOffsetX = 0;
+			float drawingOffsetX = xTitlesOffset;
 			for (int col=0;col<nTilesPerRow;++col) {
 				//g2.setStroke(new BasicStroke(gridWidth));				
 				for (float time=0; time<widthOfTileInMilliSeconds; time+=200) {
@@ -135,10 +127,10 @@ public class GraphicView extends AwtView {
 					g2.draw(new Line2D.Float(x,drawingOffsetY,x,drawingOffsetY+heightOfTileInPixels));
 				}
 
-			//	g2.setStroke(new BasicStroke(gridWidth));
+				//g2.setStroke(new BasicStroke(gridWidth));
 				for (float milliVolts=-heightOfTileInMilliVolts/2; milliVolts<=heightOfTileInMilliVolts/2; milliVolts+=0.5) {
 					float y = drawingOffsetY + heightOfTileInPixels/2 + milliVolts/heightOfTileInMilliVolts*heightOfTileInPixels;
-					g2.draw(new Line2D.Float(drawingOffsetX,y,drawingOffsetX+widthOfTileInPixels,y));
+					//g2.draw(new Line2D.Float(drawingOffsetX,y,drawingOffsetX+widthOfTileInPixels,y));
 				}
 				drawingOffsetX+=widthOfTileInPixels;
 			}
@@ -202,7 +194,7 @@ public class GraphicView extends AwtView {
 	 channel = 0;
 		GeneralPath thePath = new GeneralPath();
 		for (int row=0;row<nTilesPerColumn && channel<g.getNumberOfChannels();++row) {
-			float drawingOffsetX = 0;
+			float drawingOffsetX = xTitlesOffset;
 			for (int col=0;col<nTilesPerRow && channel<g.getNumberOfChannels();++col) {
 				float yOffset = drawingOffsetY + interceptY;
 				short[] samplesForThisChannel = g.getSamples()[g.getDisplaySequence()[channel]];
@@ -282,13 +274,13 @@ public class GraphicView extends AwtView {
 		this.timeOffsetInMilliSeconds = timeOffsetInMilliSeconds;
 	}
 
-	public void setWidth(int width) {
+	/*public void setWidth(int width) {
 		this.width = width;
 	}
 
 	public void setHeight(int height) {
 		this.height = height;
-	}
+	}*/
 
 	public boolean isFillBackgroundFirst() {
 		return fillBackgroundFirst;

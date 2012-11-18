@@ -22,9 +22,9 @@ public class GraphicView extends AwtView {
 	//set of graphic attributes
 	private GraphicAttributeBase g;
 	//the number of tiles to display per column
-	private int nTilesPerColumn;
+	private int nTilesPerColumn = 12;
 	//the number of tiles to display per row (if 1, then nTilesPerColumn should == numberOfChannels)
-	private int nTilesPerRow;
+	private int nTilesPerRow = 1;
 	//how may pixels to use to represent one millivolt
 	private float yPixelsInMillivolts;
 	//how may pixels to use to represent one millisecond
@@ -33,13 +33,13 @@ public class GraphicView extends AwtView {
 	private float timeOffsetInMilliSeconds;
 	//offset for graphic
 	private int xTitlesOffset;
-	Color backgroundColor;
-	Color curveColor;
-	Color boxColor;
-	Color gridColor;
-	Color channelNameColor;
+	Color backgroundColor = Color.white;
+	Color curveColor = Color.blue;
+	Color boxColor = Color.black;
+	Color gridColor = Color.black;
+	Color channelNameColor = Color.black;
 	//Basic font
-	Font font;
+	Font font = new Font("Ubuntu",0,14);
 	private boolean fillBackgroundFirst;
 	
 	public GraphicView(Context context) {
@@ -76,16 +76,8 @@ public class GraphicView extends AwtView {
 	public void init() {
 		DataHandler h = new DataHandler("/mnt/sdcard/Example.scp");
 		g = h.getGraphic();
-		setnTilesPerColumn(12);
-		setnTilesPerRow(1);
 		setXScale(12);
 		setYScale(5);
-		backgroundColor = Color.white;
-		curveColor = Color.blue;
-		boxColor = Color.black;
-		gridColor = Color.black;
-		channelNameColor = Color.black;
-		font = new Font("Ubuntu",0,14);
 	}
 
 	/**

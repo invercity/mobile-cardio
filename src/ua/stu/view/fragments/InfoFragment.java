@@ -1,5 +1,6 @@
 package ua.stu.view.fragments;
 
+import ua.stu.scplib.data.DataHandler;
 import ua.stu.view.scpview.R;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -29,7 +30,7 @@ public class InfoFragment extends Fragment implements OnItemClickListener  {
 	}
 	
 	OnEventItemClickListener onEventItemClick;
-	
+
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		      Bundle savedInstanceState) 
 	{
@@ -37,7 +38,7 @@ public class InfoFragment extends Fragment implements OnItemClickListener  {
 		
 	    lvMain = (ListView) view.findViewById(R.id.lvMain);
 	    lvMain.setOnItemClickListener(this);
-
+	    
 	    //create adapter
 	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(inflater.getContext(),
         android.R.layout.simple_list_item_1, values);
@@ -61,7 +62,7 @@ public class InfoFragment extends Fragment implements OnItemClickListener  {
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		try {
-        	onEventItemClick = (OnEventItemClickListener) view.getContext();
+        	onEventItemClick = (OnEventItemClickListener) view.getContext();        	
         } catch (ClassCastException e) {
         	throw new ClassCastException(view.getContext().toString() + " must implement onSomeEventListener");
         }

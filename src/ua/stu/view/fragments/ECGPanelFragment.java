@@ -1,6 +1,8 @@
 package ua.stu.view.fragments;
 
 
+import ua.stu.scplib.data.DataHandler;
+import ua.stu.view.scpview.GraphicView;
 import ua.stu.view.scpview.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +15,9 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListener {
+	
+	private DataHandler h;	
+	
 	/**
 	 * Длина экрана
 	 */
@@ -42,6 +47,12 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	
 	private TextView speedValue;
 	private TextView powerValue;
+
+	private GraphicView graphicView;
+	
+	public ECGPanelFragment(DataHandler dh){
+		this.h=dh;
+	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
@@ -53,9 +64,11 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		setDisplayHeight(metrics.heightPixels);
 		
 		View view = inflater.inflate(R.layout.ecg_panel, null);
-		
+	
 		speedValue = (TextView)view.findViewById(R.id.speed_value);
 		powerValue = (TextView)view.findViewById(R.id.power_value);
+		graphicView=(GraphicView)view.findViewById(R.id.ecgpanel);
+		graphicView.setH(h);
 		
 		//temporary
 		speedValue.setText(getSpeed()+" mm/c");
@@ -73,7 +86,9 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		sliderSpeed.incrementProgressBy(1);
 		sliderPower.setOnSeekBarChangeListener(this);
 		
+	
 	    return view;
+	    
 	}
 
 	public void tempInit()

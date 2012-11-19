@@ -3,18 +3,59 @@ package ua.stu.view.scpview;
 import ua.stu.scplib.attribute.GraphicAttribute;
 import ua.stu.scplib.attribute.GraphicAttributeBase;
 import ua.stu.scplib.data.DataHandler;
+import ua.stu.view.fragments.ECGPanelFragment;
 import and.awt.Color;
 import and.awt.geom.GeneralPath;
 import and.awt.geom.Line2D;
 import and.awt.geom.Rectangle2D;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.widget.Scroller;
 import net.pbdavey.awt.AwtView;
 import net.pbdavey.awt.Font;
 import net.pbdavey.awt.Graphics2D;
 import net.pbdavey.awt.RenderingHints;
 
 public class GraphicView extends AwtView {
+	private DataHandler h=null;
+	public void setH(DataHandler h) {
+		this.h = h;
+	}
+
+	private final GestureDetector gestureDetector;	
+	private final Scroller scroller;
+	private int W;
+	private int H;
+	private int SW;
+	public void setSW(int sW) {
+		SW = sW;
+	}
+
+	public void setSH(int sH) {
+		SH = sH;
+	}
+
+	private int SH;
+	public int getW() {
+		return W;
+	}
+
+	public void setW(int w) {
+		W = w;
+	}
+
+	public int getH() {
+		return H;
+	}
+
+	public void setH(int h) {
+		H = h;
+	}
+
 	//duim constant
 	private float duim = (float) 25.4;
 	// screen size in dpi
@@ -41,15 +82,115 @@ public class GraphicView extends AwtView {
 	//Basic font
 	Font font = new Font("Ubuntu",0,14);
 	private boolean fillBackgroundFirst;
-	
+	////////////////////
+	////scroll
+	//////////////////////////////////////////////////
 	public GraphicView(Context context) {
 		super(context);
+		// TODO Auto-generated constructor stub
+				gestureDetector = new GestureDetector(context, new MyGestureListener());
+				 scroller = new Scroller(context);
+				// init scrollbars
+		        setHorizontalScrollBarEnabled(true);
+		        setVerticalScrollBarEnabled(true);
+
+		        TypedArray a = context.obtainStyledAttributes(R.styleable.View);
+		        initializeScrollbars(a);
+		        a.recycle();
 	}
 	
 	public GraphicView(Context context, AttributeSet attribSet) {
 		super(context, attribSet);
+		// TODO Auto-generated constructor stub
+				gestureDetector = new GestureDetector(context, new MyGestureListener());
+				 scroller = new Scroller(context);
+				// init scrollbars
+		        setHorizontalScrollBarEnabled(true);
+		        setVerticalScrollBarEnabled(true);
+
+		        TypedArray a = context.obtainStyledAttributes(R.styleable.View);
+		        initializeScrollbars(a);
+		        a.recycle();
 	}
+	@Override
+    public boolean onTouchEvent(MotionEvent event)
+    {
 	
+		  // check for tap and cancel fling
+	    if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN)
+	    {
+	        if (!scroller.isFinished()) scroller.abortAnimation();
+	    }
+
+	    if (gestureDetector.onTouchEvent(event)) return true;
+
+	    // check for pointer release 
+	    if ((event.getPointerCount() == 1) && ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP))
+	    {
+	        int newScrollX = getScrollX();
+	        if (getScrollX() < 0) newScrollX = 0;
+	        else if (getScrollX() > SW - getWidth()) newScrollX = SW - getWidth();
+
+	        int newScrollY = getScrollY();
+	        if (getScrollY() < 0) newScrollY = 0;
+	        else if (getScrollY() > SH - getHeight()) newScrollY = SH - getHeight();
+
+	        if ((newScrollX != getScrollX()) || (newScrollY != getScrollY()))
+	        {
+	            scroller.startScroll(getScrollX(), getScrollY(), newScrollX - getScrollX(), newScrollY - getScrollY());
+	            awakenScrollBars(scroller.getDuration());
+	        }
+	    }
+
+	    return true;
+    }
+	 @Override
+	    protected int computeHorizontalScrollRange()
+	    {
+	        return SW;
+	    }
+
+	    @Override
+	    protected int computeVerticalScrollRange()
+	    {
+	        return SH;
+	    }
+	    @Override
+	    public void computeScroll()
+	    {
+	        if (scroller.computeScrollOffset())
+	        {
+	            int oldX = getScrollX();
+	            int oldY = getScrollY();
+	            int x = scroller.getCurrX();
+	            int y = scroller.getCurrY();
+	            scrollTo(x, y);
+	            if (oldX != getScrollX() || oldY != getScrollY())
+	            {
+	                onScrollChanged(getScrollX(), getScrollY(), oldX, oldY);
+	            }
+
+	            postInvalidate();
+	        }
+	    }
+
+	    private class MyGestureListener extends SimpleOnGestureListener
+	    {
+	        @Override
+	        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
+	        {
+	        	 boolean scrollBeyondImage = ((getScrollX() < 0) || (getScrollX() > SW) || (getScrollY() < 0) || (getScrollY() > SH));
+	        	    if (scrollBeyondImage) return false;
+
+	        	    scroller.fling(getScrollX(), getScrollY(), -(int)velocityX, -(int)velocityY, 0, SW - getWidth(), 0, SH - getHeight());
+	        	    awakenScrollBars(scroller.getDuration());
+
+	        	    return true;
+	        }
+	    }
+	////////
+	//end scroll
+	///////////////////////////////////////////////////
 	void setGraphicParameters(GraphicAttribute g) {
 		this.g = g;
 	}
@@ -74,8 +215,11 @@ public class GraphicView extends AwtView {
 	}
 	
 	public void init() {
-		DataHandler h = new DataHandler("/mnt/sdcard/Example.scp");
-		g = h.getGraphic();
+		
+		//DataHandler h = new DataHandler("/mnt/sdcard/Example.scp");
+		//g = h.getGraphic();
+		if (h!=null)
+		g=h.getGraphic();
 		setXScale(12);
 		setYScale(5);
 	}
@@ -94,13 +238,18 @@ public class GraphicView extends AwtView {
 		g2.setBackground(backgroundColor);
 		g2.setColor(backgroundColor);
 		setBackground(backgroundColor);
-		
+		//setW(getWidth());
+		//setH(getHeight());
+		setW(600);
+		setH(600);
+		setSH(getH());
+		setSW(getW());
 		if (fillBackgroundFirst) {
-			g2.fill(new Rectangle2D.Float(0,0,getWidth(),getHeight()));
+			g2.fill(new Rectangle2D.Float(0,0,getW(),getH()));
 		}
 		
-		float widthOfTileInPixels = getWidth()/nTilesPerRow;
-		float heightOfTileInPixels = getHeight()/nTilesPerColumn;
+		float widthOfTileInPixels = getW()/nTilesPerRow;
+		float heightOfTileInPixels = getH()/nTilesPerColumn;
 		
 		float widthOfTileInMilliSeconds = widthOfTileInPixels/xPixelsInMilliseconds;
 		float heightOfTileInMilliVolts =  heightOfTileInPixels/yPixelsInMillivolts;

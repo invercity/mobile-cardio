@@ -3,6 +3,7 @@ package ua.stu.view.scpview;
 import java.util.ArrayList;
 import java.util.List;
 
+import ua.stu.scplib.data.DataHandler;
 import ua.stu.view.adapter.SamplePagerAdapter;
 import ua.stu.view.fragments.ECGPanelFragment;
 import ua.stu.view.fragments.InfoFragment;
@@ -21,7 +22,7 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 {
 	private ECGPanelFragment ecgPanel;
 	private InfoFragment info;
-	
+	private DataHandler h;	
 	private static String TAG = "SCPViewActivity";
 	
     /** Called when the activity is first created. */
@@ -30,8 +31,8 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
     {
     	setTheme(R.style.Theme_Sherlock);
         super.onCreate(savedInstanceState);
-        
-        ecgPanel = new ECGPanelFragment();
+        h = new DataHandler("/mnt/sdcard/Example.scp");
+        ecgPanel = new ECGPanelFragment(h);
         info = new InfoFragment();
         
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -39,7 +40,7 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
         
         View page = inflater.inflate(R.layout.main, null);
         pages.add(page);
-        
+      
         page = ecgPanel.onCreateView(inflater,null,savedInstanceState);
         pages.add(page);
         
@@ -52,6 +53,12 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
         viewPager.setCurrentItem(2);     
         
         setContentView(viewPager);
+       ///
+        
+       
+       // GraphicView gv =(GraphicView)findViewById(R.id.ecgpanel);
+       // gv.setH(h);
+        ///
     }
 
 	@Override

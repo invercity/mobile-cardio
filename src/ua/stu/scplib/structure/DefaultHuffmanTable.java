@@ -1,5 +1,7 @@
 package ua.stu.scplib.structure;
 
+import java.io.Serializable;
+
 /**
  * <p>A class for constructing the default Huffman Table specified in the SCP-ECG standard.</p>
  *
@@ -8,7 +10,7 @@ package ua.stu.scplib.structure;
  *
  * @author	stu
  */
-public class DefaultHuffmanTable extends HuffmanTable {
+public class DefaultHuffmanTable extends HuffmanTable implements Serializable {
 	private static final String identString = "@(#) $Header: /userland/cvs/pixelmed/imgbook/com/pixelmed/scpecg/DefaultHuffmanTable.java,v 1.3 2004/01/25 03:47:19 dclunie Exp $";
 
 	// From prEN 1064:2002 C.2.7.4 ...

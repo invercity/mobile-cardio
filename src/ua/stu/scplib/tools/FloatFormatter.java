@@ -1,5 +1,6 @@
 package ua.stu.scplib.tools;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -7,7 +8,7 @@ import java.util.ArrayList;
  *
  * @author	dclunie
  */
-public class FloatFormatter {
+public class FloatFormatter implements Serializable {
 
     private static final int precisionToDisplayDouble = 4;
     private static final int maximumIntegerDigits = 8;

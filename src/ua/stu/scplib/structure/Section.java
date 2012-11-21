@@ -1,6 +1,7 @@
 package ua.stu.scplib.structure;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.TreeMap;
 
@@ -20,7 +21,7 @@ import ua.stu.scplib.attribute.BinaryInputStream;
  *
  * @author	dclunie
  */
-public class Section {
+public class Section implements Serializable {
 
 	protected SectionHeader header;
 	protected long bytesRead;

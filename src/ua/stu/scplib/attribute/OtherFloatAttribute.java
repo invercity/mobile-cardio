@@ -15,7 +15,7 @@ import java.io.*;
  *
  * @author	dclunie
  */
-public class OtherFloatAttribute extends Attribute {
+public class OtherFloatAttribute extends Attribute implements Serializable {
 
 	private float[] values;
 

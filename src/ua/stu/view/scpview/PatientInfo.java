@@ -1,5 +1,9 @@
 package ua.stu.view.scpview;
 
+import java.util.HashMap;
+
+import ua.stu.scplib.data.DataHandler;
+import ua.stu.scplib.data.PInfo;
 import ua.stu.view.fragments.AddrPatientFragment;
 import ua.stu.view.fragments.BloodPressFragment;
 import ua.stu.view.fragments.DiagnoseFragment;
@@ -10,6 +14,7 @@ import android.annotation.TargetApi;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
@@ -33,10 +38,18 @@ public class PatientInfo extends FragmentActivity implements android.widget.Comp
 	private CheckBox chDiagnosPatient;
 	private CheckBox chMedicalHistory;
 	
+	private PInfo pInfo;
+	private DataHandler data;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
     {
 		setTheme(R.style.Theme_Sherlock);
+		
+		HashMap table = (HashMap) getIntent().getSerializableExtra("table");  
+		  
+		//get the values  
+		Log.d(TAG, table.get("DataHandler").toString());
 		
         super.onCreate(savedInstanceState);
         setContentView(R.layout.patientinfo);

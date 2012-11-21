@@ -20,7 +20,7 @@ import java.io.*;
  *
  * @author	dclunie
  */
-public class EncapsulatedInputStream extends InputStream {
+public class EncapsulatedInputStream extends InputStream implements Serializable {
 
 	/***/
 	private BinaryInputStream i;

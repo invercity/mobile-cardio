@@ -1,9 +1,11 @@
 package ua.stu.scplib.attribute;
 
+import java.io.Serializable;
+
 /**
  * @author	dclunie
  */
-public class DicomException extends Exception {
+public class DicomException extends Exception implements Serializable {
 
 	/**
 	 * 

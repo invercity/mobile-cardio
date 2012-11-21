@@ -15,7 +15,7 @@ import java.io.*;
  *
  * @author	dclunie
  */
-public class AgeStringAttribute extends StringAttribute {
+public class AgeStringAttribute extends StringAttribute implements Serializable {
 
 	/**
 	 * <p>Construct an (empty) attribute.</p>

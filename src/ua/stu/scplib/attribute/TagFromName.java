@@ -1,6 +1,8 @@
 package ua.stu.scplib.attribute;
 
-public class TagFromName {
+import java.io.Serializable;
+
+public class TagFromName implements Serializable {
 
 	static public AttributeTag GroupLength = new AttributeTag(0x0000,0x0000);
 	static public AttributeTag CommandLengthToEnd = new AttributeTag(0x0000,0x0001);

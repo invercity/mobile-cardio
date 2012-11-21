@@ -1,6 +1,7 @@
 package ua.stu.scplib.structure;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
@@ -11,7 +12,7 @@ import ua.stu.scplib.attribute.BinaryInputStream;
  *
  * @author	stu
  */
-public class Section2 extends Section {
+public class Section2 extends Section implements Serializable {
 
 	/**
 	 * <p>Get a string name for this section.</p>

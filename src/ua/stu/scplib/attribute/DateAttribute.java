@@ -15,7 +15,7 @@ import java.io.*;
  *
  * @author	dclunie
  */
-public class DateAttribute extends StringAttribute {
+public class DateAttribute extends StringAttribute implements Serializable {
 
 	/**
 	 * <p>Construct an (empty) attribute.</p>

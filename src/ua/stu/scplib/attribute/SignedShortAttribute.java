@@ -16,7 +16,7 @@ import java.text.NumberFormat;
  *
  * @author	dclunie
  */
-public class SignedShortAttribute extends Attribute {
+public class SignedShortAttribute extends Attribute implements Serializable {
 
 	short[] values;
 	int[] cachedIntegerCopy;

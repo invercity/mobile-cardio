@@ -15,7 +15,7 @@ import java.io.*;
  *
  * @author	dclunie
  */
-public class OtherWordAttributeOnDisk extends Attribute {
+public class OtherWordAttributeOnDisk extends Attribute implements Serializable{
 
 	protected long byteOffset;
 	protected File file;

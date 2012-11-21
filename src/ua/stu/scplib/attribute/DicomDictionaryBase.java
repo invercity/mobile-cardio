@@ -1,5 +1,6 @@
 package ua.stu.scplib.attribute;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.TreeSet;
 import java.util.Iterator;
@@ -15,7 +16,7 @@ import java.util.Iterator;
  *
  * @author	dclunie
  */
-public abstract class DicomDictionaryBase {
+public abstract class DicomDictionaryBase implements Serializable {
 
 	protected TreeSet tagList;
 	protected HashMap valueRepresentationsByTag;

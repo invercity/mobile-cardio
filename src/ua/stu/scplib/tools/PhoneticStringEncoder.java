@@ -1,9 +1,11 @@
 package ua.stu.scplib.tools;
 
+import java.io.Serializable;
+
 /**
  * @author	dclunie
  */
-public class PhoneticStringEncoder {
+public class PhoneticStringEncoder implements Serializable {
 	protected Class encoderClass;
 	protected Object encoder;
 	

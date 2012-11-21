@@ -1,6 +1,7 @@
 package ua.stu.scplib.attribute;
 
 import java.io.IOException; 
+import java.io.Serializable;
 
 import ua.stu.scplib.structure.SCPECG;
 import ua.stu.scplib.structure.Section3;
@@ -12,7 +13,7 @@ import ua.stu.scplib.structure.Section3;
  *
  * @author	dclunie
  */
-public class GraphicAttribute extends GraphicAttributeBase {
+public class GraphicAttribute extends GraphicAttributeBase implements Serializable {
 
 	/***/
 	//private static final String identString = "@(#) $Header: /userland/cvs/pixelmed/imgbook/com/pixelmed/displaywave/SCPSourceECG.java,v 1.7 2004/01/25 03:47:19 dclunie Exp $";

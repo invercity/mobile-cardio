@@ -1,5 +1,7 @@
 package ua.stu.scplib.structure;
 
+import java.io.Serializable;
+
 /**
  * <p>A class to store Huffman Tables, either as read from an SCP-ECG file or the default as specified in the SCP-ECG standard.</p>
  *
@@ -8,7 +10,7 @@ package ua.stu.scplib.structure;
  *
  * @author	stu
  */
-public class HuffmanTable {
+public class HuffmanTable implements Serializable {
 	
 	protected int numberOfCodeStructuresInTable;
 	protected int[] numberOfBitsInPrefix;

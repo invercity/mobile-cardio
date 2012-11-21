@@ -1,5 +1,6 @@
 package ua.stu.scplib.tools;
 
+import java.io.Serializable;
 import java.text.Collator;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -9,7 +10,7 @@ import java.util.Vector;
  *
  * @author	dclunie
  */
-public class StringUtilities {
+public class StringUtilities implements Serializable {
 	private static Collator ourCollator = Collator.getInstance();
 	static { ourCollator.setStrength(Collator.IDENTICAL); ourCollator.setDecomposition(Collator.FULL_DECOMPOSITION); }
 	

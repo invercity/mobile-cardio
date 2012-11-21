@@ -1,12 +1,14 @@
 package ua.stu.scplib.attribute;
 
+import java.io.Serializable;
+
 /**
  * <p>An abstract class that encapsulates the features and values from an ECG source,
  * usually for the purpose of displaying it.</p>
  *
  * @author	dclunie
  */
-public abstract class GraphicAttributeBase {
+public abstract class GraphicAttributeBase implements Serializable  {
 
 	protected short[][] samples;	// numberOfChannels arrays of nSamplesPerChannel shorts
 	protected int numberOfChannels;

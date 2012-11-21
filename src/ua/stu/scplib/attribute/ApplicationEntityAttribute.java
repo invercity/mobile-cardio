@@ -15,7 +15,7 @@ import java.io.*;
  *
  * @author	dclunie
  */
-public class ApplicationEntityAttribute extends StringAttribute {
+public class ApplicationEntityAttribute extends StringAttribute implements Serializable {
 
 	/**
 	 * <p>Construct an (empty) attribute.</p>

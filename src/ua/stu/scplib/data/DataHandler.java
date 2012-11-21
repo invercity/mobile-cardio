@@ -5,18 +5,24 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import ua.stu.scplib.attribute.BinaryInputStream;
 import ua.stu.scplib.attribute.GraphicAttribute;
 import ua.stu.scplib.attribute.GraphicAttributeBase;
 import ua.stu.scplib.structure.SCPECG;
 
-public class DataHandler {
-	private SCPECG scpecg = null;
-	private BinaryInputStream i = null;
-	private GraphicAttributeBase graphic = null;
-	private PInfo pi = null;
-	private OInfo oi = null;
+public class DataHandler implements Serializable {
+
+	
+	public SCPECG scpecg = null;
+	public BinaryInputStream i = null;
+	public GraphicAttributeBase graphic = null;
+	public PInfo pi = null;
+	public OInfo oi = null;
 
 	/**
 	 * get patient info from ECG

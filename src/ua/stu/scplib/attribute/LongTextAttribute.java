@@ -15,7 +15,7 @@ import java.io.*;
  *
  * @author	dclunie
  */
-public class LongTextAttribute extends TextAttribute {
+public class LongTextAttribute extends TextAttribute implements Serializable {
 
 	/**
 	 * <p>Construct an (empty) attribute.</p>

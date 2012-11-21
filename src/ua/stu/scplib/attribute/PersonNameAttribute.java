@@ -21,7 +21,7 @@ import ua.stu.scplib.tools.StringUtilities;
  *
  * @author	dclunie
  */
-public class PersonNameAttribute extends StringAttributeAffectedBySpecificCharacterSet {
+public class PersonNameAttribute extends StringAttributeAffectedBySpecificCharacterSet implements Serializable {
 
 	/**
 	 * <p>Construct an (empty) attribute.</p>

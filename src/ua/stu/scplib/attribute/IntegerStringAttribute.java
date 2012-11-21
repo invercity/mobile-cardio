@@ -17,7 +17,7 @@ import java.text.NumberFormat;
  *
  * @author	dclunie
  */
-public class IntegerStringAttribute extends StringAttribute {
+public class IntegerStringAttribute extends StringAttribute implements Serializable {
 
 	/**
 	 * <p>Construct an (empty) attribute.</p>

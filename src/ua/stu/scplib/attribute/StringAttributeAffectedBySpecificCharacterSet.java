@@ -8,7 +8,7 @@ import java.io.*;
  *
  * @author	dclunie
  */
-abstract public class StringAttributeAffectedBySpecificCharacterSet extends StringAttribute {
+abstract public class StringAttributeAffectedBySpecificCharacterSet extends StringAttribute implements Serializable {
 
 	/**
 	 * @param	t

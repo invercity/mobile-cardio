@@ -1,6 +1,10 @@
 package ua.stu.scplib.data;
 
+import java.io.Serializable;
 import java.util.StringTokenizer;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import ua.stu.scplib.structure.SCPECG;
 /**
@@ -8,8 +12,9 @@ import ua.stu.scplib.structure.SCPECG;
  * @author ivan
  *
  */
-public class PInfo  {
-	private SCPECG scpecg =null;
+public class PInfo implements Serializable  {
+	
+	public SCPECG scpecg =null;
 	
 	PInfo(SCPECG sc ) {		
 		scpecg=sc;

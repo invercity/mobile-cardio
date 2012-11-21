@@ -2,6 +2,7 @@ package ua.stu.scplib.attribute;
 
 import java.util.*;
 import java.io.*;
+
 import javax.imageio.*;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.spi.*;
@@ -141,7 +142,7 @@ import java.util.zip.*;
  *
  * @author	dclunie
  */
-public class AttributeList extends TreeMap {
+public class AttributeList extends TreeMap implements Serializable {
 
 	/***/
 	private static final String identString = "@(#) $Header: /userland/cvs/pixelmed/imgbook/com/pixelmed/dicom/AttributeList.java,v 1.73 2007/08/01 11:41:24 dclunie Exp $";
@@ -175,7 +176,7 @@ public class AttributeList extends TreeMap {
 	}
 
 
-	private class OurIIOReadProgressListener implements IIOReadProgressListener {
+	private class OurIIOReadProgressListener implements IIOReadProgressListener, Serializable {
 		public void imageComplete(ImageReader source) {
 //System.out.println("OurIIOReadProgressListener:imageComplete()");
 		}

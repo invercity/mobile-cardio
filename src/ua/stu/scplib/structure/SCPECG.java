@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.io.IOException;
-import java.io.Serializable;
 
 import ua.stu.scplib.attribute.BinaryInputStream;
 
@@ -53,7 +52,7 @@ af.show();
  * </pre>
  *
  */
-public class SCPECG implements Serializable {
+public class SCPECG {
 
 	private static String nameOfCodeFild="";
 	
@@ -65,7 +64,7 @@ public class SCPECG implements Serializable {
 		this.nameOfCodeFild = nameOfCodeFild;
 	}
 
-	private class ReferenceBeatSubtractionZone implements Serializable {
+	private class ReferenceBeatSubtractionZone {
 		private int numberOfReferenceBeatSubtractionZones;
 		long fcm;		// sample number of the fiducial relative to the beginning of reference beat 0
 		private long[] start;
@@ -104,7 +103,7 @@ public class SCPECG implements Serializable {
 		}
 	}
 
-	private class ProtectedArea implements Serializable {
+	private class ProtectedArea {
 		private int numberOfProtectedAreas;
 		private long[] start;
 		private long[] end;

@@ -1,6 +1,5 @@
 package ua.stu.scplib.structure;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -11,7 +10,7 @@ import java.util.ArrayList;
  *
  * @author	stu
  */
-public class HuffmanDecoder implements Serializable {
+public class HuffmanDecoder {
 //	private static final String identString = "@(#) $Header: /userland/cvs/pixelmed/imgbook/com/pixelmed/scpecg/HuffmanDecoder.java,v 1.9 2004/02/22 19:54:34 dclunie Exp $";
 
 	private int[] extractBitMask = { 0x80,0x40,0x20,0x10,0x08,0x04,0x02,0x01 };

@@ -1,6 +1,5 @@
 package ua.stu.scplib.data;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -13,9 +12,9 @@ import ua.stu.scplib.structure.SCPECG;
  * @author ivan
  * 
  */
-public class OInfo implements Serializable {
+public class OInfo {
 
-	public SCPECG scpecg = null;
+	private SCPECG scpecg = null;
 	private Map<String, String> mpADIN = null;
 	int[] capabilitiesOfDevice = new int[8];
 

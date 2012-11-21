@@ -17,7 +17,7 @@ import java.text.NumberFormat;
  *
  * @author	dclunie
  */
-public class AttributeTagAttribute extends Attribute implements Serializable {
+public class AttributeTagAttribute extends Attribute {
 
 	int[] groups;
 	int[] elements;

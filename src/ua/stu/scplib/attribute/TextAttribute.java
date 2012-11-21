@@ -10,7 +10,7 @@ import java.text.NumberFormat;
  *
  * @author	dclunie
  */
-abstract public class TextAttribute extends Attribute implements Serializable {
+abstract public class TextAttribute extends Attribute {
 
 	/***/
 	protected SpecificCharacterSet specificCharacterSet;

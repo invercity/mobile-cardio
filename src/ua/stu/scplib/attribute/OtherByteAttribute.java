@@ -15,7 +15,7 @@ import java.io.*;
  *
  * @author	dclunie
  */
-public class OtherByteAttribute extends Attribute implements Serializable{
+public class OtherByteAttribute extends Attribute {
 
 	private byte[] values;
 

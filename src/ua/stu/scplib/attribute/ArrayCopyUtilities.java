@@ -1,14 +1,12 @@
 package ua.stu.scplib.attribute;
 
-import java.io.Serializable;
-
 /**
  * <p>A class of static methods for copying data between arrays of different types,
  * expanding arrays, and comparing them, and removing padding from strings.</p>
  *
  * @author	dclunie
  */
-abstract public class ArrayCopyUtilities implements Serializable {
+abstract public class ArrayCopyUtilities {
 
 	/**
 	 * <p>Copy an array of unsigned values in short, into an array of int.</p>

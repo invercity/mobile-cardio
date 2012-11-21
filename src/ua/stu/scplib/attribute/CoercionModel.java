@@ -2,7 +2,6 @@ package ua.stu.scplib.attribute;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
-import java.io.Serializable;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,7 +13,7 @@ import java.util.Vector;
  *
  * @author	dclunie
  */
-public class CoercionModel implements Serializable {
+public class CoercionModel {
 
 	private class Patient {
 		String patientName;
@@ -45,7 +44,7 @@ public class CoercionModel implements Serializable {
 		}
 	}
 	
-	private class PatientConvertor implements Serializable {
+	private class PatientConvertor {
 		Patient oldPatientIdentifiers;
 		Patient newPatientIdentifiers;
 	}

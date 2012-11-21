@@ -1,7 +1,5 @@
 package ua.stu.scplib.attribute;
 
-import java.io.Serializable;
-
 /**
  * <p>A class to represent the characteristics of a DICOM Transfer Syntax, which may
  * be instantiated from a UID or from basic characteristics, as well as static
@@ -10,7 +8,7 @@ import java.io.Serializable;
  *
  * @author	dclunie
  */
-public class TransferSyntax  implements Serializable{
+public class TransferSyntax {
 
 	/***/
 	public static final String ImplicitVRLittleEndian              = "1.2.840.10008.1.2";

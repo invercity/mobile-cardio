@@ -15,7 +15,7 @@ import java.io.*;
  *
  * @author	dclunie
  */
-public class CodeStringAttribute extends StringAttribute implements Serializable {
+public class CodeStringAttribute extends StringAttribute {
 
 	/**
 	 * <p>Construct an (empty) attribute.</p>

@@ -15,7 +15,7 @@ import java.io.*;
  *
  * @author	dclunie
  */
-public class UnlimitedTextAttribute extends TextAttribute implements Serializable {
+public class UnlimitedTextAttribute extends TextAttribute {
 
 	/**
 	 * <p>Construct an (empty) attribute.</p>

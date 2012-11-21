@@ -1,7 +1,6 @@
 package ua.stu.scplib.structure;
 
 import java.io.IOException;
-import java.io.Serializable;
 
 import ua.stu.scplib.attribute.BinaryInputStream;
 
@@ -11,7 +10,7 @@ import ua.stu.scplib.attribute.BinaryInputStream;
  *
  * @author	stu
  */
-public class RecordHeader implements Serializable {
+public class RecordHeader {
 //	private static final String identString = "@(#) $Header: /userland/cvs/pixelmed/imgbook/com/pixelmed/scpecg/RecordHeader.java,v 1.3 2004/01/25 03:47:20 dclunie Exp $";
 
 	private int crc;

@@ -1,7 +1,5 @@
 package ua.stu.scplib.attribute;
 
-import java.io.Serializable;
-
 /**
  * <p>Utilities to support the concept of the DICOM Value Representation (VR), including
  * two byte arrays for each VR, and tester methods that determine whether or not a
@@ -9,7 +7,7 @@ import java.io.Serializable;
  *
  * @author	dclunie
  */
-public class ValueRepresentation implements Serializable {
+public class ValueRepresentation {
 
 	public static byte[] AE = { 'A', 'E' };
 	/***/

@@ -1,6 +1,5 @@
 package ua.stu.scplib.attribute;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -17,7 +16,7 @@ import java.util.*;
  *
  * @author	dclunie
  */
-public class SequenceAttribute extends Attribute implements Serializable {
+public class SequenceAttribute extends Attribute {
 
 	private LinkedList itemList;		// each member is a SequenceItem
 

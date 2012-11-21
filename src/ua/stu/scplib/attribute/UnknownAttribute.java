@@ -15,7 +15,7 @@ import java.io.*;
  *
  * @author	dclunie
  */
-public class UnknownAttribute extends Attribute implements Serializable {
+public class UnknownAttribute extends Attribute {
 
 	/**
 	 * <p>Construct an (empty) attribute.</p>

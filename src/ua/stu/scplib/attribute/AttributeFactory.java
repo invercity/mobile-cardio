@@ -1,7 +1,5 @@
 package ua.stu.scplib.attribute;
 
-import java.io.Serializable;
-
 /**
  * <p>The {@link com.pixelmed.dicom.AttributeFactory AttributeFactory} class is a factory class of static methods for creating
  * concrete instances of the abstract class {@link com.pixelmed.dicom.Attribute Attribute} based on their
@@ -16,7 +14,7 @@ import java.io.Serializable;
  *
  * @author	dclunie
  */
-public class AttributeFactory implements Serializable {
+public class AttributeFactory {
 
 	private static final long maximumInMemoryPixelDataValueLength = 4096*4096*2;
 

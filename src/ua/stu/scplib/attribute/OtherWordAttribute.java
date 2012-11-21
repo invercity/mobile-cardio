@@ -15,7 +15,7 @@ import java.io.*;
  *
  * @author	dclunie
  */
-public class OtherWordAttribute extends Attribute implements Serializable{
+public class OtherWordAttribute extends Attribute {
 
 	private short[] values;
 

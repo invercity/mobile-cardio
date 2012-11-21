@@ -1,7 +1,6 @@
 package ua.stu.scplib.structure;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.util.ArrayDeque;
@@ -22,7 +21,7 @@ import ua.stu.scplib.attribute.BinaryInputStream;
  * 
  * @author stu
  */
-public class Section1 extends Section implements Serializable {
+public class Section1 extends Section {
 
 	/**
 	 * <p>
@@ -35,7 +34,7 @@ public class Section1 extends Section implements Serializable {
 		return "Patient and ECG Acquisition Data";
 	}
 
-	public BinaryInputStream i;
+	private BinaryInputStream i;
 	private String manufucture;
 	private String verPO;
 	private String serialnumber;
@@ -73,7 +72,7 @@ public class Section1 extends Section implements Serializable {
 		POSCP = pOSCP;
 	}
 
-	public class FieldDictionaryEntry implements Serializable {
+	public class FieldDictionaryEntry {
 		String name;
 
 		public String getName() {
@@ -228,7 +227,7 @@ public class Section1 extends Section implements Serializable {
 		return strbuf.toString();
 	}
 
-	private class Field implements Serializable {
+	private class Field {
 		int tag;
 		int length;
 		byte[] value;
@@ -320,7 +319,7 @@ public class Section1 extends Section implements Serializable {
 		}
 	}
 
-	private class TextField extends Field implements Serializable {
+	private class TextField extends Field {
 		TextField(int tag, int length) {
 			this.tag = tag;
 			this.length = length;
@@ -351,7 +350,7 @@ public class Section1 extends Section implements Serializable {
 		}
 	}
 
-	private class TimeZoneField extends Field implements Serializable {
+	private class TimeZoneField extends Field {
 		int offset;
 		int index;
 
@@ -444,7 +443,7 @@ public class Section1 extends Section implements Serializable {
 		}
 	}
 
-	private class TimeOfres extends Field implements Serializable {
+	private class TimeOfres extends Field {
 		int time;
 
 		TimeOfres(int tag, int length) {
@@ -489,7 +488,7 @@ public class Section1 extends Section implements Serializable {
 	private static String[] weightUnitsDescription = { "Unspecified",
 			"Kilogram", "Gram", "Pound", "Ounce" };
 
-	private class ValueWithUnitsField extends Field implements Serializable {
+	private class ValueWithUnitsField extends Field {
 		int bvalue;
 		int units;
 		String unitDescriptors[];
@@ -568,7 +567,7 @@ public class Section1 extends Section implements Serializable {
 			"Emergency 6", "Emergency 7", "Emergency 8", "Emergency 9",
 			"Emergency 10" };
 
-	private class SingleCodedValueField extends Field implements Serializable {
+	private class SingleCodedValueField extends Field {
 		int code;
 		String descriptors[];
 
@@ -636,7 +635,7 @@ public class Section1 extends Section implements Serializable {
 			"Bipolar uncorrected", "Pseudo-orthogonal",
 			"Derived from Standard 12-Lead" };
 
-	private class TwinCodedValueField extends Field implements Serializable {
+	private class TwinCodedValueField extends Field {
 		int code1;
 		int code2;
 		String descriptors1[];
@@ -717,7 +716,7 @@ public class Section1 extends Section implements Serializable {
 	private static String[] filterDescriptors = { "60 Hz Notch", "50 Hz Notch",
 			"Artifact", "Baseline" };
 
-	private class BitmapField extends Field implements Serializable {
+	private class BitmapField extends Field {
 		int code;
 		String descriptors[];
 
@@ -781,7 +780,7 @@ public class Section1 extends Section implements Serializable {
 		}
 	}
 
-	private class DateField extends Field implements Serializable {
+	private class DateField extends Field {
 		int yyyy;
 		int mm;
 		int dd;
@@ -862,7 +861,7 @@ public class Section1 extends Section implements Serializable {
 		}
 	}
 
-	private class TimeField extends Field implements Serializable {
+	private class TimeField extends Field {
 		int hh;
 		int mm;
 		int ss;
@@ -952,7 +951,7 @@ public class Section1 extends Section implements Serializable {
 		}
 	}
 
-	private class BinaryField extends Field implements Serializable {
+	private class BinaryField extends Field {
 		int bvalue;
 
 		BinaryField(int tag, int length) {
@@ -999,7 +998,7 @@ public class Section1 extends Section implements Serializable {
 		}
 	}
 
-	private class DrugField extends Field implements Serializable {
+	private class DrugField extends Field {
 		int drugClass;
 		int drugCode;
 		int textLength;
@@ -1074,7 +1073,7 @@ public class Section1 extends Section implements Serializable {
 		}
 	}
 
-	private class MedicalHistoryField extends Field implements Serializable {
+	private class MedicalHistoryField extends Field {
 		int codeTable;
 
 		// / value from super() is used for the 1-n codes themselves
@@ -1149,7 +1148,7 @@ public class Section1 extends Section implements Serializable {
 	private static String[] mainsFrequencyDescriptors = { "Unspecified",
 			"50 Hz", "60 Hz" };
 
-	private class MachineIDField extends Field implements Serializable {
+	private class MachineIDField extends Field {
 		int institutionNumber;
 		int departmentNumber;
 		int deviceID;

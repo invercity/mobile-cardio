@@ -1,13 +1,11 @@
 package ua.stu.scplib.tools;
 
-import java.io.Serializable;
-
 /**
  * <p>Various static methods helpful for dumping decimal and hexadecimal values.</p>
  *
  * @author	dclunie
  */
-public class HexDump implements Serializable {
+public class HexDump {
 
 	private HexDump() {}
 

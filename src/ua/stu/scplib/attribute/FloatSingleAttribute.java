@@ -19,7 +19,7 @@ import ua.stu.scplib.tools.FloatFormatter;
  *
  * @author	dclunie
  */
-public class FloatSingleAttribute extends Attribute implements Serializable {
+public class FloatSingleAttribute extends Attribute {
 
 	float[] values;
 

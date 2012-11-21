@@ -15,7 +15,7 @@ import ua.stu.scplib.tools.HexDump;
  *
  * @author	dclunie
  */
-public class SpecificCharacterSet implements Serializable {
+public class SpecificCharacterSet {
 	private static final String identString = "@(#) $Header: /userland/cvs/pixelmed/imgbook/com/pixelmed/dicom/SpecificCharacterSet.java,v 1.24 2007/07/10 16:35:32 dclunie Exp $";
 
 	/***/

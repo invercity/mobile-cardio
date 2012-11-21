@@ -1,7 +1,5 @@
 package ua.stu.scplib.attribute;
 
-import java.io.Serializable;
-
 /**
  * <p>A class to provide support for the contents of an individual item of a DICOM Sequence (SQ)
  * attribute, each of which consists of an entire dataset (list of attributes).</p>
@@ -10,7 +8,7 @@ import java.io.Serializable;
  *
  * @author	dclunie
  */
-public class SequenceItem implements Serializable {
+public class SequenceItem {
 
 	private AttributeList list;
 	private long byteOffset;		// value of 0 is flag that it is not set

@@ -1,6 +1,5 @@
 package ua.stu.scplib.attribute;
 
-import java.io.Serializable;
 import java.text.NumberFormat;
 
 /**
@@ -15,7 +14,7 @@ import java.text.NumberFormat;
  *
  * @author	dclunie
  */
-abstract public class Attribute implements Serializable {
+abstract public class Attribute {
 
 	private AttributeTag tag;
 

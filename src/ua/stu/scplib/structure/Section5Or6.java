@@ -2,7 +2,6 @@
 package ua.stu.scplib.structure;
 
 import java.io.IOException;
-import java.io.Serializable;
 
 import ua.stu.scplib.attribute.BinaryInputStream;
 
@@ -11,7 +10,7 @@ import ua.stu.scplib.attribute.BinaryInputStream;
  *
  * @author	stu
  */
-public class Section5Or6 extends Section implements Serializable {
+public class Section5Or6 extends Section {
 
 	/**
 	 * <p>Get a string name for this section.</p>

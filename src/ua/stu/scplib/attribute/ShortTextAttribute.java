@@ -15,7 +15,7 @@ import java.io.*;
  *
  * @author	dclunie
  */
-public class ShortTextAttribute extends TextAttribute implements Serializable {
+public class ShortTextAttribute extends TextAttribute {
 
 	/**
 	 * <p>Construct an (empty) attribute.</p>

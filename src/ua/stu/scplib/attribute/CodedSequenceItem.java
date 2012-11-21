@@ -1,6 +1,5 @@
 package ua.stu.scplib.attribute;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -9,7 +8,7 @@ import java.util.*;
  *
  * @author	dclunie
  */
-public class CodedSequenceItem implements Serializable {
+public class CodedSequenceItem {
 
 	private AttributeList list;
 

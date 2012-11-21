@@ -16,7 +16,7 @@ import java.io.*;
  *
  * @author	dclunie
  */
-public class DicomInputStream extends BinaryInputStream implements Serializable {
+public class DicomInputStream extends BinaryInputStream {
 
 	/***/
 	private TransferSyntax TransferSyntaxToReadDataSet;

@@ -11,7 +11,7 @@ import java.io.*;
  *
  * @author	dclunie
  */
-public class BinaryInputStream extends FilterInputStream implements Serializable {
+public class BinaryInputStream extends FilterInputStream {
 
 	/***/
 	boolean bigEndian;

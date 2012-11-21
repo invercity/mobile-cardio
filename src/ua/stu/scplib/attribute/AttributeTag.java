@@ -1,7 +1,5 @@
 package ua.stu.scplib.attribute;
 
-import java.io.Serializable;
-
 /**
  * <p>An individual DICOM data element (attribute) tag that
  * includes a group and element (each a 16 bit unsigned binary).</p>
@@ -14,7 +12,7 @@ import java.io.Serializable;
  * 
  * @author	dclunie
  */
-public class AttributeTag implements Comparable,Serializable {
+public class AttributeTag implements Comparable {
 
 	/***/
 	private int group;

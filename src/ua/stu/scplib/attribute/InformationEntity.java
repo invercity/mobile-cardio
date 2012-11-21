@@ -1,7 +1,5 @@
 package ua.stu.scplib.attribute;
 
-import java.io.Serializable;
-
 /**
  * <p>A class to provide enumerated constants for the entities of the DICOM Information Model.</p>
  *
@@ -10,7 +8,7 @@ import java.io.Serializable;
  *
  * @author	dclunie
  */
-public class InformationEntity implements Comparable,Serializable {
+public class InformationEntity implements Comparable {
 
 	/***/
 	private int value;

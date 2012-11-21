@@ -1,6 +1,5 @@
 package ua.stu.view.scpview;
 
-import ua.stu.scplib.data.OInfo;
 import ua.stu.view.fragments.DeviceForECGFragment;
 import ua.stu.view.fragments.ECGInfoFragment;
 import ua.stu.view.scpview.R;
@@ -21,8 +20,6 @@ public class OtherInfo extends FragmentActivity implements android.widget.Compou
 	
 	private CheckBox chDeviceForECG;
 	private CheckBox chECGInfo;
-	
-	private OInfo oInfo;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)

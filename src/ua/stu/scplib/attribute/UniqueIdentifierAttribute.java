@@ -15,7 +15,7 @@ import java.io.*;
  *
  * @author	dclunie
  */
-public class UniqueIdentifierAttribute extends StringAttribute implements Serializable {
+public class UniqueIdentifierAttribute extends StringAttribute {
 
 	/**
 	 * <p>Construct an (empty) attribute.</p>

@@ -19,7 +19,7 @@ import ua.stu.scplib.tools.FloatFormatter;
  *
  * @author	dclunie
  */
-public class FloatDoubleAttribute extends Attribute implements Serializable {
+public class FloatDoubleAttribute extends Attribute {
 
 	double[] values;
 

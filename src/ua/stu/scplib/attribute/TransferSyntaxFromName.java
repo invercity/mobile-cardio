@@ -1,6 +1,5 @@
 package ua.stu.scplib.attribute;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +8,7 @@ import java.util.Map;
  *
  * @author	dclunie
  */
-public class TransferSyntaxFromName implements Serializable {
+public class TransferSyntaxFromName {
 
 	static protected Map map = new HashMap();
 

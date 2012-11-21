@@ -15,7 +15,7 @@ import java.io.*;
  *
  * @author	dclunie
  */
-public class ShortStringAttribute extends StringAttributeAffectedBySpecificCharacterSet implements Serializable {
+public class ShortStringAttribute extends StringAttributeAffectedBySpecificCharacterSet {
 
 	/**
 	 * <p>Construct an (empty) attribute.</p>

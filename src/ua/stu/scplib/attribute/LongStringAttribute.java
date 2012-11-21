@@ -15,7 +15,7 @@ import java.io.*;
  *
  * @author	dclunie
  */
-public class LongStringAttribute extends StringAttributeAffectedBySpecificCharacterSet implements Serializable {
+public class LongStringAttribute extends StringAttributeAffectedBySpecificCharacterSet {
 
 	/**
 	 * <p>Construct an (empty) attribute.</p>

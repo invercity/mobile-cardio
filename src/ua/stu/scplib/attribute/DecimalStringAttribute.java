@@ -17,7 +17,7 @@ import java.text.NumberFormat;
  *
  * @author	dclunie
  */
-public class DecimalStringAttribute extends StringAttribute implements Serializable {
+public class DecimalStringAttribute extends StringAttribute {
 
 	/**
 	 * <p>Construct an (empty) attribute.</p>

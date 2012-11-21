@@ -72,6 +72,7 @@ public class PrivatePatientInfoFragment extends Fragment {
 		this.setAge((TextView)v.findViewById(R.id.age_patient_value));
 		this.setStature((TextView)v.findViewById(R.id.stature_patient_value));
 		this.setRace((TextView)v.findViewById(R.id.race_patient_value));
+		
 	}
 	
 	public TextView getIdPatient() {

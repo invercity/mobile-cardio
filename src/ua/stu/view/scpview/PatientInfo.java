@@ -6,7 +6,6 @@ import ua.stu.view.fragments.DiagnoseFragment;
 import ua.stu.view.fragments.MedicalHistoryFragment;
 import ua.stu.view.fragments.PrivatePatientInfoFragment;
 import ua.stu.view.scpview.R;
-import android.annotation.TargetApi;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -14,7 +13,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 
-@TargetApi(11) 
 public class PatientInfo extends FragmentActivity implements android.widget.CompoundButton.OnCheckedChangeListener
 {
 	private static String TAG = "PatientInfo";
@@ -33,10 +31,13 @@ public class PatientInfo extends FragmentActivity implements android.widget.Comp
 	private CheckBox chDiagnosPatient;
 	private CheckBox chMedicalHistory;
 	
+	private String patientKey;//maybe, out of constant class
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
     {
 		setTheme(R.style.Theme_Sherlock);
+		patientKey = getResources().getString(R.string.app_patient);
 		
         super.onCreate(savedInstanceState);
         setContentView(R.layout.patientinfo);

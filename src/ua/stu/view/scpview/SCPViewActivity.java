@@ -1,9 +1,12 @@
 package ua.stu.view.scpview;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 import ua.stu.scplib.data.DataHandler;
+import ua.stu.scplib.data.OInfo;
+import ua.stu.scplib.data.PInfo;
 import ua.stu.view.adapter.SamplePagerAdapter;
 import ua.stu.view.fragments.ECGPanelFragment;
 import ua.stu.view.fragments.InfoFragment;
@@ -13,6 +16,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -20,7 +24,11 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 {
 	private ECGPanelFragment ecgPanel;
 	private InfoFragment info;
-	private DataHandler h;	
+	private DataHandler h;
+	
+	private String patientKey;//maybe, out of constant class
+	private String otherKey;//maybe, out of constant class
+
 	private static String TAG = "SCPViewActivity";
 	
     /** Called when the activity is first created. */
@@ -29,6 +37,10 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
     {
     	setTheme(R.style.Theme_Sherlock);
         super.onCreate(savedInstanceState);
+
+        patientKey = getResources().getString(R.string.app_patient);
+        otherKey = getResources().getString(R.string.app_other);
+        
         h = new DataHandler("/mnt/sdcard/Example.scp");
         ecgPanel = new ECGPanelFragment(h);
         info = new InfoFragment();
@@ -64,12 +76,24 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 		switch (position)
 		{
 		case 0:
-			Intent intent = new Intent(this,PatientInfo.class);
-			startActivity(intent);
+			Hashtable<String, PInfo> patientTable = new Hashtable<String,PInfo>();
+			patientTable.put(patientKey,h.getPInfo());
+			try {
+				Intent intent = new Intent(this,PatientInfo.class);
+				startActivity(intent);
+			}catch(Exception e){
+				Log.i("Error in A " , e.toString());
+			} 
 			break;
 		case 1:
-			intent = new Intent(this,OtherInfo.class);
-			startActivity(intent);
+			Hashtable<String, OInfo> otherTable = new Hashtable<String,OInfo>();
+			otherTable.put(otherKey, h.getOInfo());
+			try {
+				Intent intent = new Intent(this,OtherInfo.class);
+				startActivity(intent);
+			}catch(Exception e){
+				Log.i("Error in A " , e.toString());
+			}
 			break;
 		}
 	}

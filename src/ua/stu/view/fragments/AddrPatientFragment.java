@@ -1,6 +1,7 @@
 package ua.stu.view.fragments;
 
 import ua.stu.view.scpview.R;
+import ua.stu.view.temporary.InfoP;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,11 +14,11 @@ public class AddrPatientFragment extends Fragment {
 	/**
 	 * Почтовый код
 	 */
-	private TextView postaNumber;
+	private TextView postCode;
 	/**
 	 * Область
 	 */
-	private TextView province;
+	private TextView region;
 	/**
 	 * Улица
 	 */
@@ -29,15 +30,23 @@ public class AddrPatientFragment extends Fragment {
 	/**
 	 * Номер дома
 	 */
-	private TextView numHouse;
+	private TextView house;
 	/**
 	 * Насеоенный пункт
 	 */
-	private TextView locality;
+	private TextView town;
 	/**
 	 * Время жизни
 	 */
-	private TextView timeLife;
+	private TextView TimeOfResidence;
+	
+	private InfoP infoP;
+	
+	public AddrPatientFragment(InfoP info){
+		super();
+		
+		this.infoP = info;
+	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,68 +59,83 @@ public class AddrPatientFragment extends Fragment {
 	
 	private final void init(View v)
 	{
-		this.setPostaNumber((TextView)v.findViewById(R.id.posta_code_patient_value));
-		this.setProvince((TextView)v.findViewById(R.id.area_patient_value));
+		this.setPostCode((TextView)v.findViewById(R.id.posta_code_patient_value));
+		this.setRegion((TextView)v.findViewById(R.id.area_patient_value));
 		this.setStreet((TextView)v.findViewById(R.id.street_patient_value));
 		this.setDistrict((TextView)v.findViewById(R.id.zone_patient_value));
-		this.setNumHouse((TextView)v.findViewById(R.id.house_patient_value));
-		this.setLocality((TextView)v.findViewById(R.id.nas_patient_value));
-		this.setTimeLife((TextView)v.findViewById(R.id.life_patient_value));
+		this.setHouse((TextView)v.findViewById(R.id.house_patient_value));
+		this.setTown((TextView)v.findViewById(R.id.nas_patient_value));
+		this.setTimeOfResidence((TextView)v.findViewById(R.id.life_patient_value));
+		
+		this.setPostCode(infoP.getPostCode());
+		this.setRegion(infoP.getRegion());
+		this.setStreet(infoP.getStreet());
+		this.setDistrict(infoP.getDistrict());
+		this.setHouse(infoP.getHouse());
+		this.setTown(infoP.getTown());
+		this.setTimeOfResidence(infoP.getTimeOfresidence());
 	}
 
-	public TextView getPostaNumber() {
-		return postaNumber;
+	private final void setPostCode(TextView postCode) {
+		this.postCode = postCode;
 	}
 
-	private final void setPostaNumber(TextView postaNumber) {
-		this.postaNumber = postaNumber;
+	public void setPostCode(CharSequence postCode) {
+		if (!postCode.equals(""))
+			this.postCode.setText(postCode);
 	}
-
-	public TextView getProvince() {
-		return province;
-	}
-
-	private final void setProvince(TextView province) {
-		this.province = province;
-	}
-
-	public TextView getStreet() {
-		return street;
-	}
-
+	
 	private final void setStreet(TextView street) {
 		this.street = street;
 	}
 
-	public TextView getDistrict() {
-		return district;
+	public void setStreet(CharSequence street) {
+		if (!street.equals(""))
+			this.street.setText(street);
 	}
-
+	
 	private final void setDistrict(TextView district) {
 		this.district = district;
 	}
 
-	public TextView getNumHouse() {
-		return numHouse;
+	public void setDistrict(CharSequence district) {
+		if (!district.equals(""))
+			this.district.setText(district);
 	}
 
-	private final void setNumHouse(TextView numHouse) {
-		this.numHouse = numHouse;
+	private final void setHouse(TextView house) {
+		this.house = house;
 	}
 
-	public TextView getLocality() {
-		return locality;
+	public void setHouse(CharSequence house) {
+		if (!house.equals(""))
+		this.house.setText(house);
+	}
+	
+	private final void setTown(TextView town) {
+		this.town = town;
 	}
 
-	private final void setLocality(TextView locality) {
-		this.locality = locality;
+	public void setTown(CharSequence town) {
+		if (!town.equals(""))
+			this.town.setText(town);
 	}
 
-	public TextView getTimeLife() {
-		return timeLife;
+	private final void setRegion(TextView region) {
+		this.region = region;
+	}
+	
+	public void setRegion(CharSequence region) {
+		if (!region.equals(""))
+			this.region.setText(region);
 	}
 
-	private final void setTimeLife(TextView timeLife) {
-		this.timeLife = timeLife;
+	private final void setTimeOfResidence(TextView timeOfResidence) {
+		TimeOfResidence = timeOfResidence;
+	}
+	
+	public void setTimeOfResidence(CharSequence timeOfResidence) {
+		if (!timeOfResidence.equals(""))
+			TimeOfResidence.setText(timeOfResidence);
 	}
 }

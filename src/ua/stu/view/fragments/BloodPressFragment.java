@@ -1,6 +1,7 @@
 package ua.stu.view.fragments;
 
 import ua.stu.view.scpview.R;
+import ua.stu.view.temporary.InfoP;
 import android.annotation.TargetApi;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,11 +14,20 @@ public class BloodPressFragment extends Fragment {
 	/**
 	 * Систолическое давление
 	 */
-	private TextView sysPress;
+	private TextView systolicBloodPressure;
 	/**
 	 * Диастолическое давление
 	 */
-	private TextView dyaPress;
+	private TextView diastolicBloodPressure;
+	
+	private InfoP infoP;
+	
+	public BloodPressFragment(InfoP info)
+	{
+		super();
+		
+		this.infoP = info;
+	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,22 +40,28 @@ public class BloodPressFragment extends Fragment {
 	
 	private final void init(View v)
 	{
-		this.setSysPress((TextView)v.findViewById(R.id.sys_press_patient_value));
+		this.setSystolicBloodPressure((TextView)v.findViewById(R.id.sys_press_patient_value));
 		this.setDyaPress((TextView)v.findViewById(R.id.dya_press_patient_value));
-	}
-	
-	public TextView getSysPress() {
-		return sysPress;
-	}
-	private final void setSysPress(TextView sysPress) {
-		this.sysPress = sysPress;
+		
+		this.setSysPress(infoP.getSystolicBloodPressure());
+		this.setDiastolicBloodPressure(infoP.getDiastolicBloodPressure());
 	}
 
-	public TextView getDyaPress() {
-		return dyaPress;
+	private final void setSystolicBloodPressure(TextView sysPress) {
+		this.systolicBloodPressure = sysPress;
+	}
+
+	public void setSysPress(CharSequence sysPress) {
+		if (!sysPress.equals(""))
+			this.systolicBloodPressure.setText(sysPress);
 	}
 
 	private final void setDyaPress(TextView dyaPress) {
-		this.dyaPress = dyaPress;
+		this.diastolicBloodPressure = dyaPress;
+	}
+	
+	public void setDiastolicBloodPressure(CharSequence dyaPress) {
+		if (!dyaPress.equals(""))
+			this.diastolicBloodPressure.setText(dyaPress);
 	}
 }

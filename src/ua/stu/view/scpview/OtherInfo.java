@@ -43,9 +43,8 @@ public class OtherInfo extends FragmentActivity implements android.widget.Compou
 		device = new DeviceForECGFragment();
 		ecgInfo = new ECGInfoFragment();
 	}
-
-	@Override
-	public void onCheckedChanged(CompoundButton view, boolean checked) 
+	
+	public void onCheckedChanged(CompoundButton view, boolean checked)
 	{
 		fTrans = getSupportFragmentManager().beginTransaction();
 		

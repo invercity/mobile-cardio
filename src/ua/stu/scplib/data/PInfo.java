@@ -34,6 +34,66 @@ public class PInfo  {
 	}
 
 	/**
+	 * 
+	 * @return String[]
+	 * <p>0 - ID пациента </p>
+	 * <p>1 - Имя пациента </p>
+	 * <p>2 - Фамилия пациента </p>
+	 * <p>3 - Отчество пациента </p>
+	 * <p>4 - Возраст пациента </p>
+	 * <p>5 - Дата рождения пациента </p>
+	 * <p>6 - Рост пациента </p>
+	 * <p>7 - Вес пациента </p>
+	 * <p>8 - Пол пациента </p>
+	 * <p>9 - Раса пациента </p>
+	 * <p>10 - Лекарства пациента </p>
+	 * <p>11 - Систолическое давления пациента </p>
+	 * <p>12 - Диастолическое давления пациента </p>
+	 * <p>13 - Диагноз или направления </p>
+	 * <p>14 - История болезни пациента </p>
+	 * <p>15 - Почтовый код </p>
+	 * <p>16 - Район </p>
+	 * <p>17 - Область </p>
+	 * <p>18 - Населенный пункт </p>
+	 * <p>19 - Улица </p>
+	 * <p>20 - Дом </p>
+	 * <p>21 - Время проживания </p>
+	 */
+	public String[] getAllPInfo()
+	{
+		String[] allPInfo = null;
+		if (scpecg != null)
+		{
+			allPInfo = new String[]{
+				getPatientId(),
+				getFirstName(),
+				getLastName(),
+				getSecondLastName(),
+				getAge(),
+				getDataOfBirth(),
+				getHeight(),
+				getWeight(),
+				getSex(),
+				getRace(),
+				getDrugs(),
+				getSystolicBloodPressure(),
+				getDiastolicBloodPressure(),
+				getDiagnosisOrReferralIndication(),
+				getFreeTextMedicalHistory(),
+				getPostCode(),
+				getRegion(),
+				getDistrict(),
+				getTown(),
+				getStreet(),
+				getHouse(),
+				getTimeOfresidence()
+			};
+		}
+		
+		return allPInfo;
+	}
+	
+	/**
 	 * ID пациента
 	 * 
 	 * @return String

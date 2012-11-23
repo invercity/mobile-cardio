@@ -36,7 +36,7 @@ public class OInfo {
 				mpADIN.put(token.nextToken(), token.nextToken());
 		}
 	}
-
+	
 	/**
 	 * Производитель
 	 * 

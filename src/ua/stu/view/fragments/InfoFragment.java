@@ -59,7 +59,6 @@ public class InfoFragment extends Fragment implements OnItemClickListener  {
         }
     }
 	
-	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		try {
         	onEventItemClick = (OnEventItemClickListener) view.getContext();        	

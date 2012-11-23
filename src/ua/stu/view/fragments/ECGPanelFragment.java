@@ -113,7 +113,6 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		this.displayHeight = displayHeight;
 	}
 
-	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 		// TODO Auto-generated method stub
 		float step = progress;
@@ -131,13 +130,11 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		}
 	}
 
-	@Override
 	public void onStartTrackingTouch(SeekBar arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void onStopTrackingTouch(SeekBar arg0) {
 		// TODO Auto-generated method stub
 		

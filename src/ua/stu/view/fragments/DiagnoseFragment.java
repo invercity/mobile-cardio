@@ -1,6 +1,7 @@
 package ua.stu.view.fragments;
 
 import ua.stu.view.scpview.R;
+import ua.stu.view.temporary.InfoP;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +15,15 @@ public class DiagnoseFragment extends Fragment {
 	 */
 	private TextView diagnose;
 	
+	private InfoP infoP;
+	
+	public DiagnoseFragment(InfoP info)
+	{
+		super();
+		
+		this.infoP = info;
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		      Bundle savedInstanceState) 
@@ -26,13 +36,16 @@ public class DiagnoseFragment extends Fragment {
 	private final void init(View v)
 	{
 		this.setDiagnose((TextView)v.findViewById(R.id.diagnose_patient_value));
-	}
-
-	public TextView getDiagnose() {
-		return diagnose;
+		
+		this.setDiagnose(infoP.getDiagnosisOrReferralIndication());
 	}
 
 	private final void setDiagnose(TextView diagnose) {
 		this.diagnose = diagnose;
+	}
+	
+	public void setDiagnose(CharSequence diagnose) {
+		if (!diagnose.equals(""))
+			this.diagnose.setText(diagnose);
 	}
 }

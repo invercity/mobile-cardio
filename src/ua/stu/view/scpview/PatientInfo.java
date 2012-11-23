@@ -1,14 +1,18 @@
 package ua.stu.view.scpview;
 
+import java.util.HashMap;
+
 import ua.stu.view.fragments.AddrPatientFragment;
 import ua.stu.view.fragments.BloodPressFragment;
 import ua.stu.view.fragments.DiagnoseFragment;
 import ua.stu.view.fragments.MedicalHistoryFragment;
 import ua.stu.view.fragments.PrivatePatientInfoFragment;
 import ua.stu.view.scpview.R;
+import ua.stu.view.temporary.InfoP;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
@@ -42,10 +46,12 @@ public class PatientInfo extends FragmentActivity implements android.widget.Comp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.patientinfo);
         
-        init();
+        HashMap table = (HashMap) getIntent().getSerializableExtra(patientKey);
+        InfoP infoP = (InfoP)table.get(patientKey);
+        init(infoP);
     }
 
-	private final void init()
+	private final void init(InfoP infoP)
 	{
 		chPrivatePatientInfo = (CheckBox)findViewById(R.id.check_private_patient_info);
 		chBloodPress = (CheckBox)findViewById(R.id.check_blood_press);
@@ -59,14 +65,13 @@ public class PatientInfo extends FragmentActivity implements android.widget.Comp
 		chDiagnosPatient.setOnCheckedChangeListener(this);
 		chMedicalHistory.setOnCheckedChangeListener(this);
 		
-		privatePatientInfo = new PrivatePatientInfoFragment();
-		bloodPress = new BloodPressFragment();
-		addrPatient = new AddrPatientFragment();
-		diagnose = new DiagnoseFragment();
-		medicalHistory = new MedicalHistoryFragment();
+		privatePatientInfo = new PrivatePatientInfoFragment(infoP);
+		bloodPress = new BloodPressFragment(infoP);
+		addrPatient = new AddrPatientFragment(infoP);
+		diagnose = new DiagnoseFragment(infoP);
+		medicalHistory = new MedicalHistoryFragment(infoP);
 	}
 
-	@Override
 	public void onCheckedChanged(CompoundButton view, boolean checked) 
 	{
 		fTrans = getSupportFragmentManager().beginTransaction();
@@ -75,45 +80,56 @@ public class PatientInfo extends FragmentActivity implements android.widget.Comp
         case R.id.check_private_patient_info:
             if (checked)
             {
-            	fTrans.add(R.id.frame_private_patient_info, privatePatientInfo);
+            	if (!isFragmentInStack(R.id.frame_private_patient_info)){fTrans.add(R.id.frame_private_patient_info, privatePatientInfo);}
+            	fTrans.show(privatePatientInfo);
             } else {
-            	fTrans.remove(privatePatientInfo);
+            	fTrans.hide(privatePatientInfo);
             }
             break;
 		case R.id.check_blood_press:
 	        if (checked)
 	        {
-	        	fTrans.add(R.id.frame_blood_press, bloodPress);
+	        	if (!isFragmentInStack(R.id.frame_blood_press)){fTrans.add(R.id.frame_blood_press, bloodPress);}
+            	fTrans.show(bloodPress);
 	        } else {
-	        	fTrans.remove(bloodPress);
+	        	fTrans.hide(bloodPress);
 	        }
 	        break;
 		case R.id.check_addr_patient:
 	        if (checked)
 	        {
-	        	fTrans.add(R.id.frame_addr_patient, addrPatient);
+	        	if (!isFragmentInStack(R.id.frame_addr_patient)){fTrans.add(R.id.frame_addr_patient, addrPatient);}
+            	fTrans.show(addrPatient);
 	        } else {
-	        	fTrans.remove(addrPatient);
+	        	fTrans.hide(addrPatient);
 	        }
 	        break;
 		case R.id.check_diagnos_patient:
 	        if (checked)
 	        {
-	        	fTrans.add(R.id.frame_diagnos_patient, diagnose);
+	        	if (!isFragmentInStack(R.id.frame_diagnos_patient)){fTrans.add(R.id.frame_diagnos_patient, diagnose);}
+            	fTrans.show(diagnose);
 	        } else {
-	        	fTrans.remove(diagnose);
+	        	fTrans.hide(diagnose);
 	        }
 	        break;
 		case R.id.check_medical_history:
 	        if (checked)
 	        {
-	        	fTrans.add(R.id.frame_medical_history, medicalHistory);
+	        	if (!isFragmentInStack(R.id.frame_medical_history)){fTrans.add(R.id.frame_medical_history, medicalHistory);}
+            	fTrans.show(medicalHistory);
 	        } else {
-	        	fTrans.remove(medicalHistory);
+	        	fTrans.hide(medicalHistory);
 	        }
 	        break;
 		}
 		
 		fTrans.commit();
+	}
+	
+	private final boolean isFragmentInStack(int id)
+	{
+		if (this.getSupportFragmentManager().findFragmentById(id) == null)return false;
+		else return true;
 	}
 }

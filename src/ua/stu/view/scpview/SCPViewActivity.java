@@ -11,6 +11,7 @@ import ua.stu.view.adapter.SamplePagerAdapter;
 import ua.stu.view.fragments.ECGPanelFragment;
 import ua.stu.view.fragments.InfoFragment;
 import ua.stu.view.fragments.InfoFragment.OnEventItemClickListener;
+import ua.stu.view.temporary.InfoP;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -71,15 +72,16 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
         ///
     }
 
-	@Override
 	public void itemClickEvent(int position) {
 		switch (position)
 		{
 		case 0:
-			Hashtable<String, PInfo> patientTable = new Hashtable<String,PInfo>();
-			patientTable.put(patientKey,h.getPInfo());
+			Hashtable<String, InfoP> patientTable = new Hashtable<String,InfoP>();
+			InfoP infoP = new InfoP(h.getPInfo().getAllPInfo()); 
+			patientTable.put(patientKey,infoP);
 			try {
 				Intent intent = new Intent(this,PatientInfo.class);
+				intent.putExtra(patientKey,patientTable);
 				startActivity(intent);
 			}catch(Exception e){
 				Log.i("Error in A " , e.toString());
@@ -90,6 +92,7 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 			otherTable.put(otherKey, h.getOInfo());
 			try {
 				Intent intent = new Intent(this,OtherInfo.class);
+				intent.putExtra(otherKey,otherTable);
 				startActivity(intent);
 			}catch(Exception e){
 				Log.i("Error in A " , e.toString());

@@ -9,7 +9,6 @@ import ua.stu.view.fragments.ECGPanelFragment;
 import ua.stu.view.fragments.InfoFragment;
 import ua.stu.view.fragments.InfoFragment.OnEventItemClickListener;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 
-@TargetApi(11)
 public class SCPViewActivity extends Activity implements OnEventItemClickListener
 {
 	private ECGPanelFragment ecgPanel;

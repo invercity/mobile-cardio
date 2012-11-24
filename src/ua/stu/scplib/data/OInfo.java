@@ -36,6 +36,69 @@ public class OInfo {
 				mpADIN.put(token.nextToken(), token.nextToken());
 		}
 	}
+	/**
+	 * 
+	 * @return Object[]
+	 * <p>0 - Производитель </p>
+	 * <p>1 - Номер организации </p>
+	 * <p>2 - Номер отдела </p>
+	 * <p>3 - ID устройства </p>
+	 * <p>4 - Тип устройства </p>
+	 * <p>5 - Частота </p>
+	 * <p>6 - Модель </p>
+	 * <p>7 - Версии анализирующего и системного ПО </p>
+	 * <p>8 - Серийный номер </p>
+	 * <p>9 - ПО реализующее SCP протолок </p>
+	 * <p>10 - Возможность печати </p>
+	 * <p>11 - Возможность анализа </p>
+	 * <p>12 - Возможность хранения </p>
+	 * <p>13 - Возможность приема </p>
+	 * <p>14 - Учреждения записывающее ЕКГ </p>
+	 * <p>15 - Учереждения анализирующее ЕКГ </p>
+	 * <p>16 - Отдел принимавший ЕКГ </p>
+	 * <p>17 - Отдел анализировавший ЕКГ </p>
+	 * <p>18 - Направляющие врачи </p>
+	 * <p>19 - Подтверждающие врачи </p>
+	 * <p>20 - Медсестры </p>
+	 * <p>21 - Коментарии </p>
+	 * <p>22 - Дата получения ЕКГ </p>
+	 * <p>23 - Время получения ЕКГ </p>
+	 */
+	public Object[] getAllOInfo()
+	{
+		Object[] allOInfo = null;
+		if (scpecg != null)
+		{
+			allOInfo = new Object[]{
+					getManufacturer(),
+					getInstitutionNumber(),
+					getDepartmentNumber(),
+					getDeviceID(),
+					getDeviceType(),
+					getFrequency(),
+					getModel(),
+					getVersionPO(),
+					getSerialNumber(),
+					getPOSCP(),
+					getPrint(),
+					getAnalysis(),
+					getStorage(),
+					getReceive(),
+					getAcquiringInstitutionDescription(),
+					getAnalyzingInstitutionDescription(),
+					getAcquiringDepartmentDescription(),
+					getAnalyzingDepartmentDescription(),
+					getReferringPhysician(),
+					getLatestConfirmingPhysician(),
+					getTechnicianDescription(),
+					getFreeTextField(),
+					getDateOfAcquisition(),
+					getTimeOfAcquisition()
+			};
+		}
+		
+		return allOInfo;
+	}
 	
 	/**
 	 * Производитель

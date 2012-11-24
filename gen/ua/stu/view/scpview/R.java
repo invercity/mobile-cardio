@@ -996,7 +996,7 @@ containing a value of this type.
         public static final int check_private_patient_info=0x7f0400b3;
         public static final int check_private_patient_layout=0x7f0400b2;
         public static final int check_revert_ecg=0x7f0400a0;
-        public static final int check_save=0x7f04007a;
+        public static final int check_save_value=0x7f04007a;
         public static final int check_take_value=0x7f04007b;
         public static final int date_get=0x7f040095;
         public static final int date_get_layout=0x7f040094;

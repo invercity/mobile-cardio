@@ -1,6 +1,7 @@
 package ua.stu.view.fragments;
 
 import ua.stu.view.scpview.R;
+import ua.stu.view.temporary.InfoO;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -42,6 +43,15 @@ public class ECGInfoFragment extends Fragment {
 	 */
 	private TextView timeECG;
 	
+	private InfoO infoO;
+	
+	public ECGInfoFragment(InfoO info)
+	{
+		super();
+		
+		this.infoO = info;
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		      Bundle savedInstanceState) 
@@ -61,69 +71,86 @@ public class ECGInfoFragment extends Fragment {
 		this.setConfirmDoctors((TextView)v.findViewById(R.id.ok_doctor_value));
 		this.setDateECG((TextView)v.findViewById(R.id.date_get_value));
 		this.setTimeECG((TextView)v.findViewById(R.id.time_get_value));
-	}
-
-	public TextView getOrgWriteECG() {
-		return orgWriteECG;
+		
+		this.setOrgWriteECG(infoO.getAcquiringInstitutionDescription());
+		this.setOrgAnalysECG(infoO.getAnalyzingInstitutionDescription());
+		this.setDepTakeECG(infoO.getAcquiringDepartmentDescription());
+		this.setDepAnalysECG(infoO.getAnalyzingDepartmentDescription());
+		this.setGuideDoctors(infoO.getReferringPhysician());
+		this.setConfirmDoctors(infoO.getLatestConfirmingPhysician());
+		this.setDateECG(infoO.getDateOfAcquisition());
+		this.setTimeECG(infoO.getTimeOfAcquisition());
 	}
 
 	private final void setOrgWriteECG(TextView orgWriteECG) {
 		this.orgWriteECG = orgWriteECG;
 	}
 
-	public TextView getOrgAnalysECG() {
-		return orgAnalysECG;
+	public void setOrgWriteECG(CharSequence orgWriteECG) {
+		if (!orgWriteECG.equals(""))
+			this.orgWriteECG.setText(orgWriteECG);
 	}
-
+	
 	private final void setOrgAnalysECG(TextView orgAnalysECG) {
 		this.orgAnalysECG = orgAnalysECG;
 	}
 
-	public TextView getDepTakeECG() {
-		return depTakeECG;
+	public void setOrgAnalysECG(CharSequence orgAnalysECG) {
+		if (!orgAnalysECG.equals(""))
+			this.orgAnalysECG.setText(orgAnalysECG);
 	}
-
+	
 	private final void setDepTakeECG(TextView depTakeECG) {
-		this.depTakeECG = depTakeECG;
+		if (!depTakeECG.equals(""))
+			this.depTakeECG = depTakeECG;
 	}
 
-	public TextView getDepAnalysECG() {
-		return depAnalysECG;
+	public void setDepTakeECG(CharSequence depTakeECG) {
+		this.depTakeECG.setText(depTakeECG);
 	}
-
+	
 	private final void setDepAnalysECG(TextView depAnalysECG) {
 		this.depAnalysECG = depAnalysECG;
 	}
 
-	public TextView getGuideDoctors() {
-		return guideDoctors;
+	public void setDepAnalysECG(CharSequence depAnalysECG) {
+		if (!depAnalysECG.equals(""))
+			this.depAnalysECG.setText(depAnalysECG);
 	}
-
+	
 	private final void setGuideDoctors(TextView guideDoctors) {
 		this.guideDoctors = guideDoctors;
 	}
 
-	public TextView getConfirmDoctors() {
-		return confirmDoctors;
+	public void setGuideDoctors(CharSequence guideDoctors) {
+		if (!guideDoctors.equals(""))
+			this.guideDoctors.setText(guideDoctors);
 	}
-
+	
 	private final void setConfirmDoctors(TextView confirmDoctors) {
 		this.confirmDoctors = confirmDoctors;
 	}
 
-	public TextView getDateECG() {
-		return dateECG;
+	public void setConfirmDoctors(CharSequence confirmDoctors) {
+		if (!confirmDoctors.equals(""))
+			this.confirmDoctors.setText(confirmDoctors);
 	}
-
+	
 	private final void setDateECG(TextView dateECG) {
 		this.dateECG = dateECG;
 	}
 
-	public TextView getTimeECG() {
-		return timeECG;
+	public void setDateECG(CharSequence dateECG) {
+		if (!dateECG.equals(""))
+			this.dateECG.setText(dateECG);
 	}
-
+	
 	private final void setTimeECG(TextView timeECG) {
 		this.timeECG = timeECG;
+	}
+	
+	public void setTimeECG(CharSequence timeECG) {
+		if (!timeECG.equals(""))
+			this.timeECG.setText(timeECG);
 	}
 }

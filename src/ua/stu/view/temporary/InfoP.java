@@ -168,181 +168,315 @@ public class InfoP implements Serializable {
 		setHouse(allPInfo[20]);
 		setTimeOfresidence(allPInfo[21]);
 	}
-	
+
+	/**
+	 * @return the idPatient
+	 */
 	public String getIdPatient() {
 		return idPatient;
 	}
 
+	/**
+	 * @param idPatient the idPatient to set
+	 */
 	public void setIdPatient(String idPatient) {
 		this.idPatient = idPatient;
 	}
 
+	/**
+	 * @return the firstName
+	 */
 	public String getFirstName() {
 		return firstName;
 	}
 
+	/**
+	 * @param firstName the firstName to set
+	 */
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
+	/**
+	 * @return the lastName
+	 */
 	public String getLastName() {
 		return lastName;
 	}
 
+	/**
+	 * @param lastName the lastName to set
+	 */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
+	/**
+	 * @return the secondName
+	 */
 	public String getSecondName() {
 		return secondName;
 	}
 
+	/**
+	 * @param secondName the secondName to set
+	 */
 	public void setSecondName(String secondName) {
 		this.secondName = secondName;
 	}
 
+	/**
+	 * @return the age
+	 */
 	public String getAge() {
 		return age;
 	}
 
+	/**
+	 * @param age the age to set
+	 */
 	public void setAge(String age) {
 		this.age = age;
 	}
 
+	/**
+	 * @return the birthDate
+	 */
 	public String getBirthDate() {
 		return birthDate;
 	}
 
+	/**
+	 * @param birthDate the birthDate to set
+	 */
 	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
 	}
 
+	/**
+	 * @return the height
+	 */
 	public String getHeight() {
 		return height;
 	}
 
+	/**
+	 * @param height the height to set
+	 */
 	public void setHeight(String height) {
 		this.height = height;
 	}
 
+	/**
+	 * @return the weight
+	 */
 	public String getWeight() {
 		return weight;
 	}
 
+	/**
+	 * @param weight the weight to set
+	 */
 	public void setWeight(String weight) {
 		this.weight = weight;
 	}
 
+	/**
+	 * @return the sex
+	 */
 	public String getSex() {
 		return sex;
 	}
 
+	/**
+	 * @param sex the sex to set
+	 */
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
 
+	/**
+	 * @return the race
+	 */
 	public String getRace() {
 		return race;
 	}
 
+	/**
+	 * @param race the race to set
+	 */
 	public void setRace(String race) {
 		this.race = race;
 	}
 
+	/**
+	 * @return the drugs
+	 */
 	public String getDrugs() {
 		return drugs;
 	}
 
+	/**
+	 * @param drugs the drugs to set
+	 */
 	public void setDrugs(String drugs) {
 		this.drugs = drugs;
 	}
 
+	/**
+	 * @return the systolicBloodPressure
+	 */
 	public String getSystolicBloodPressure() {
 		return systolicBloodPressure;
 	}
 
+	/**
+	 * @param systolicBloodPressure the systolicBloodPressure to set
+	 */
 	public void setSystolicBloodPressure(String systolicBloodPressure) {
 		this.systolicBloodPressure = systolicBloodPressure;
 	}
 
+	/**
+	 * @return the diastolicBloodPressure
+	 */
 	public String getDiastolicBloodPressure() {
 		return diastolicBloodPressure;
 	}
 
+	/**
+	 * @param diastolicBloodPressure the diastolicBloodPressure to set
+	 */
 	public void setDiastolicBloodPressure(String diastolicBloodPressure) {
 		this.diastolicBloodPressure = diastolicBloodPressure;
 	}
 
+	/**
+	 * @return the diagnosisOrReferralIndication
+	 */
 	public String getDiagnosisOrReferralIndication() {
 		return diagnosisOrReferralIndication;
 	}
 
+	/**
+	 * @param diagnosisOrReferralIndication the diagnosisOrReferralIndication to set
+	 */
 	public void setDiagnosisOrReferralIndication(
 			String diagnosisOrReferralIndication) {
 		this.diagnosisOrReferralIndication = diagnosisOrReferralIndication;
 	}
 
+	/**
+	 * @return the medicalHistory
+	 */
 	public String getMedicalHistory() {
 		return medicalHistory;
 	}
 
+	/**
+	 * @param medicalHistory the medicalHistory to set
+	 */
 	public void setMedicalHistory(String medicalHistory) {
 		this.medicalHistory = medicalHistory;
 	}
 
+	/**
+	 * @return the postCode
+	 */
 	public String getPostCode() {
 		return postCode;
 	}
 
+	/**
+	 * @param postCode the postCode to set
+	 */
 	public void setPostCode(String postCode) {
 		this.postCode = postCode;
 	}
 
+	/**
+	 * @return the region
+	 */
 	public String getRegion() {
 		return region;
 	}
 
+	/**
+	 * @param region the region to set
+	 */
 	public void setRegion(String region) {
 		this.region = region;
 	}
 
+	/**
+	 * @return the district
+	 */
 	public String getDistrict() {
 		return district;
 	}
 
+	/**
+	 * @param district the district to set
+	 */
 	public void setDistrict(String district) {
 		this.district = district;
 	}
 
-	public String getTown() {
-		return town;
-	}
-
-	public void setTown(String town) {
-		this.town = town;
-	}
-
+	/**
+	 * @return the street
+	 */
 	public String getStreet() {
 		return street;
 	}
 
+	/**
+	 * @param street the street to set
+	 */
 	public void setStreet(String street) {
 		this.street = street;
 	}
 
+	/**
+	 * @return the house
+	 */
 	public String getHouse() {
 		return house;
 	}
 
+	/**
+	 * @param house the house to set
+	 */
 	public void setHouse(String house) {
 		this.house = house;
 	}
 
+	/**
+	 * @return the timeOfresidence
+	 */
 	public String getTimeOfresidence() {
 		return timeOfresidence;
 	}
 
+	/**
+	 * @param timeOfresidence the timeOfresidence to set
+	 */
 	public void setTimeOfresidence(String timeOfresidence) {
 		this.timeOfresidence = timeOfresidence;
 	}
+
+	/**
+	 * @return the town
+	 */
+	public String getTown() {
+		return town;
+	}
+
+	/**
+	 * @param town the town to set
+	 */
+	public void setTown(String town) {
+		this.town = town;
+	}
+
+	
 }

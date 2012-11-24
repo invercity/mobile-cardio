@@ -11,6 +11,7 @@ import ua.stu.view.adapter.SamplePagerAdapter;
 import ua.stu.view.fragments.ECGPanelFragment;
 import ua.stu.view.fragments.InfoFragment;
 import ua.stu.view.fragments.InfoFragment.OnEventItemClickListener;
+import ua.stu.view.temporary.InfoO;
 import ua.stu.view.temporary.InfoP;
 
 import android.app.Activity;
@@ -64,12 +65,7 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
         viewPager.setCurrentItem(2);     
         
         setContentView(viewPager);
-       ///
         
-       
-       // GraphicView gv =(GraphicView)findViewById(R.id.ecgpanel);
-       // gv.setH(h);
-        ///
     }
 
 	public void itemClickEvent(int position) {
@@ -88,8 +84,9 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 			} 
 			break;
 		case 1:
-			Hashtable<String, OInfo> otherTable = new Hashtable<String,OInfo>();
-			otherTable.put(otherKey, h.getOInfo());
+			Hashtable<String, InfoO> otherTable = new Hashtable<String,InfoO>();
+			InfoO infoO = new InfoO(h.getOInfo().getAllOInfo());
+			otherTable.put(otherKey, infoO);
 			try {
 				Intent intent = new Intent(this,OtherInfo.class);
 				intent.putExtra(otherKey,otherTable);

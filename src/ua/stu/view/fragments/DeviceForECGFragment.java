@@ -1,11 +1,15 @@
 package ua.stu.view.fragments;
 
+import org.omg.CORBA.CurrentHelper;
+
 import ua.stu.view.scpview.R;
+import ua.stu.view.temporary.InfoO;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 public class DeviceForECGFragment extends Fragment {
@@ -45,6 +49,39 @@ public class DeviceForECGFragment extends Fragment {
 	 * ПО реализующее протокол SCP
 	 */
 	private TextView softSCP;
+	/**
+	 * Модель
+	 */
+	private TextView model;
+	/**
+	 * Частота в сети
+	 */
+	private TextView frequency;
+	/**
+	 * Возможность печати
+	 */
+	private CheckBox print;
+	/**
+	 * Возможность анализировать
+	 */
+	private CheckBox analys;
+	/**
+	 * Возможность хранить
+	 */
+	private CheckBox store;
+	/**
+	 * Возможность приема
+	 */
+	private CheckBox receive;
+	
+	private InfoO infoO;
+	
+	public DeviceForECGFragment(InfoO info)
+	{
+		super();
+		
+		this.infoO = info;
+	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,10 +103,28 @@ public class DeviceForECGFragment extends Fragment {
 		this.setSerialNum((TextView)v.findViewById(R.id.serial_num_value));
 		this.setSysSoft((TextView)v.findViewById(R.id.sys_soft_value));
 		this.setSoftSCP((TextView)v.findViewById(R.id.soft_scp_value));
-	}
-	
-	public TextView getMaker() {
-		return maker;
+		this.setPrint((CheckBox)v.findViewById(R.id.check_print_value));
+		this.setAnalys((CheckBox)v.findViewById(R.id.check_analys_value));
+		this.setStore((CheckBox)v.findViewById(R.id.check_save_value));
+		this.setReceive((CheckBox)v.findViewById(R.id.check_take_value));
+		this.setModel((TextView)v.findViewById(R.id.model_value));
+		this.setFrequency((TextView)v.findViewById(R.id.hz_value));
+		
+		this.setMaker(infoO.getManufacturer());
+		this.setOrgNum(infoO.getInstitutionNumber());
+		this.setDepNum(infoO.getDepartmentNumber());
+		this.setIdDev(infoO.getDeviceID());
+		this.setTypeDev(infoO.getDeviceType());
+		this.setSoftVersion(infoO.getVersionPO());
+		this.setSerialNum(infoO.getSerialNumber());
+		this.setSysSoft(infoO.getVersionPO());
+		this.setSoftSCP(infoO.getPOSCP());
+		this.setPrint(infoO.isPrint());
+		this.setAnalys(infoO.isAnalysis());
+		this.setReceive(infoO.isReceive());
+		this.setStore(infoO.isStorage());
+		this.setModel(infoO.getModel());
+		this.setFrequency(infoO.getFrequency());
 	}
 
 	private final void setMaker(TextView maker) {
@@ -77,11 +132,8 @@ public class DeviceForECGFragment extends Fragment {
 	}
 
 	public void setMaker(CharSequence maker) {
-		this.maker.setText(maker);
-	}
-	
-	public TextView getOrgNum() {
-		return orgNum;
+		if (!maker.equals(""))
+			this.maker.setText(maker);
 	}
 
 	private final void setOrgNum(TextView orgNum) {
@@ -89,11 +141,8 @@ public class DeviceForECGFragment extends Fragment {
 	}
 
 	public void setOrgNum(CharSequence orgNum) {
-		this.orgNum.setText(orgNum);
-	}
-	
-	public TextView getDepNum() {
-		return depNum;
+		if (!orgNum.equals(""))
+			this.orgNum.setText(orgNum);
 	}
 
 	private final void setDepNum(TextView depNum) {
@@ -101,11 +150,8 @@ public class DeviceForECGFragment extends Fragment {
 	}
 
 	public void setDepNum(CharSequence depNum) {
-		this.depNum.setText(depNum);
-	}
-	
-	public TextView getIdDev() {
-		return idDev;
+		if (!depNum.equals(""))
+			this.depNum.setText(depNum);
 	}
 
 	private final void setIdDev(TextView idDev) {
@@ -113,11 +159,8 @@ public class DeviceForECGFragment extends Fragment {
 	}
 
 	public void setIdDev(CharSequence idDev) {
-		this.idDev.setText(idDev);
-	}
-
-	public TextView getTypeDev() {
-		return typeDev;
+		if (!idDev.equals(""))
+			this.idDev.setText(idDev);
 	}
 
 	private final void setTypeDev(TextView typeDev) {
@@ -125,11 +168,8 @@ public class DeviceForECGFragment extends Fragment {
 	}
 
 	public void setTypeDev(CharSequence typeDev) {
-		this.typeDev.setText(typeDev);
-	}
-
-	public TextView getSoftVersion() {
-		return softVersion;
+		if (!typeDev.equals(""))
+			this.typeDev.setText(typeDev);
 	}
 
 	private final void setSoftVersion(TextView softVersion) {
@@ -137,11 +177,8 @@ public class DeviceForECGFragment extends Fragment {
 	}
 
 	public void setSoftVersion(CharSequence softVersion) {
-		this.softVersion.setText(softVersion);
-	}
-
-	public TextView getSerialNum() {
-		return serialNum;
+		if (!softVersion.equals(""))
+			this.softVersion.setText(softVersion);
 	}
 
 	private final void setSerialNum(TextView serialNum) {
@@ -149,11 +186,8 @@ public class DeviceForECGFragment extends Fragment {
 	}
 
 	public void setSerialNum(CharSequence serialNum) {
-		this.serialNum.setText(serialNum);
-	}
-
-	public TextView getSysSoft() {
-		return sysSoft;
+		if (!serialNum.equals(""))
+			this.serialNum.setText(serialNum);
 	}
 
 	private final void setSysSoft(TextView sysSoft) {
@@ -161,11 +195,8 @@ public class DeviceForECGFragment extends Fragment {
 	}
 
 	public void setSysSoft(CharSequence sysSoft) {
-		this.sysSoft.setText(sysSoft);
-	}
-
-	public TextView getSoftSCP() {
-		return softSCP;
+		if (!sysSoft.equals(""))
+			this.sysSoft.setText(sysSoft);
 	}
 
 	private final void setSoftSCP(TextView softSCP) {
@@ -173,6 +204,93 @@ public class DeviceForECGFragment extends Fragment {
 	}
 
 	public void setSoftSCP(CharSequence softSCP) {
-		this.softSCP.setText(softSCP);
+		if (!softSCP.equals(""))
+			this.softSCP.setText(softSCP);
+	}
+
+	/**
+	 * @param print the print to set
+	 */
+	private final void setPrint(CheckBox print) {
+		this.print = print;
+	}
+
+	/**
+	 * @param print the print to set
+	 */
+	public void setPrint(Boolean print) {
+		this.print.setChecked(print);
+	}
+	
+	/**
+	 * @param analys the analys to set
+	 */
+	private final void setAnalys(CheckBox analys) {
+		this.analys = analys;
+	}
+
+	/**
+	 * @param analys the analys to set
+	 */
+	public void setAnalys(Boolean analys) {
+		this.analys.setChecked(analys);
+	}
+	
+	/**
+	 * @param store the store to set
+	 */
+	private final void setStore(CheckBox store) {
+		this.store = store;
+	}
+
+	/**
+	 * @param store the store to set
+	 */
+	public void setStore(Boolean store) {
+		this.store.setChecked(store);
+	}
+	
+	/**
+	 * @param receive CheckBox
+	 */
+	private final void setReceive(CheckBox receive) {
+		this.receive = receive;
+	}
+	
+	/**
+	 * @param receive - Boolean
+	 */
+	public void setReceive(Boolean receive) {
+		this.receive.setChecked(receive);
+	}
+
+	/**
+	 * @param model the model to set
+	 */
+	private final void setModel(TextView model) {
+		this.model = model;
+	}
+
+	/**
+	 * @param model the model to set
+	 */
+	public void setModel(CharSequence model) {
+		if (!model.equals(""))
+			this.model.setText(model);
+	}
+	
+	/**
+	 * @param frequency the frequency to set
+	 */
+	private final void setFrequency(TextView frequency) {
+		this.frequency = frequency;
+	}
+	
+	/**
+	 * @param frequency the frequency to set
+	 */
+	public void setFrequency(CharSequence frequency) {
+		if (!frequency.equals(""))
+			this.frequency.setText(frequency);
 	}
 }

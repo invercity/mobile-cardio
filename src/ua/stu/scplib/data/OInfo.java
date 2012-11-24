@@ -259,11 +259,15 @@ public class OInfo {
 		if (mpADIN == null)
 			getAcquiringDeviceIdentificationNumber();
 		String binput = Integer.toBinaryString(Integer.parseInt(mpADIN
-				.get("capabilitiesCode")));
-		for (int i = 0; i < binput.length(); i++) {
-			capabilitiesOfDevice[i] = Integer.valueOf(String.valueOf(binput
+				.get("capabilitiesCode")));		
+		//init mas
+		for(int i=0;i<8;i++) capabilitiesOfDevice[i]=0;
+		int k=0;
+		for (int i=binput.length()-1; i >=0 ; i--) {		
+			capabilitiesOfDevice[k] = Integer.valueOf(String.valueOf(binput
 					.charAt(i)));
-		}
+			k++;
+		}		
 	}
 
 	/**
@@ -272,7 +276,7 @@ public class OInfo {
 	 * @return boolean
 	 */
 	public boolean getPrint() {
-		return capabilitiesOfDevice[3] != 0;
+		return capabilitiesOfDevice[4] != 0;
 	}
 
 	/**
@@ -281,7 +285,7 @@ public class OInfo {
 	 * @return boolean
 	 */
 	public boolean getAnalysis() {
-		return capabilitiesOfDevice[2] != 0;
+		return capabilitiesOfDevice[5] != 0;
 	}
 
 	/**
@@ -290,7 +294,7 @@ public class OInfo {
 	 * @return boolean
 	 */
 	public boolean getStorage() {
-		return capabilitiesOfDevice[1] != 0;
+		return capabilitiesOfDevice[6] != 0;
 	}
 
 	/**
@@ -299,8 +303,9 @@ public class OInfo {
 	 * @return boolean
 	 */
 	public boolean getReceive() {
-		return capabilitiesOfDevice[0] != 0;
+		return capabilitiesOfDevice[7] != 0;
 	}
+
 
 	/**
 	 * Учреждение, записывавшее ЭКГ

@@ -34,9 +34,10 @@ public class Section0 extends Section {
 	}
 		
 	public long read(BinaryInputStream i) throws IOException {
-		if (sectionBytesRemaining%10 != 0) {
+	/*	if (sectionBytesRemaining%10 != 0) {
 			throw new IOException("Section 0 (Pointer Section) variable data length not a multiple of 10");
-		}
+		}*/
+		System.out.println(sectionBytesRemaining%10);
 		int numberOfSections = (int)(sectionBytesRemaining/10);
 		sectionIDNumbers = new int [numberOfSections];
 		  sectionLengths = new long[numberOfSections];
@@ -55,8 +56,7 @@ public class Section0 extends Section {
 			sectionBytesRemaining-=4;
 			++section;
 		}
-		//assert sectionBytesRemaining == 0
-		//assert section == numberOfSections
+
 		skipToEndOfSectionIfNotAlreadyThere(i);
 		return bytesRead;
 	}

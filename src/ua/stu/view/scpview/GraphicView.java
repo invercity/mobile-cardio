@@ -319,6 +319,10 @@ public class GraphicView extends AwtView {
 		//setForeground(curveColor);
 		//g2.setStroke(new BasicStroke(curveWidth));
 		float interceptY = heightOfTileInPixels/2;
+		System.out.println("SamplingIntervalInMilliSeconds");
+		System.out.println(g.getSamplingIntervalInMilliSeconds());
+		System.out.println("timeOffsetInMilliSeconds");
+		System.out.println(timeOffsetInMilliSeconds);
 		float widthOfSampleInPixels=g.getSamplingIntervalInMilliSeconds()*xPixelsInMilliseconds;
 		int timeOffsetInSamples = (int)(timeOffsetInMilliSeconds/g.getSamplingIntervalInMilliSeconds());
 		int widthOfTileInSamples = (int)(widthOfTileInMilliSeconds/g.getSamplingIntervalInMilliSeconds());
@@ -331,18 +335,24 @@ public class GraphicView extends AwtView {
 			usableSamples=widthOfTileInSamples-1;
 		}
 
-		drawingOffsetY = 0;
+		drawingOffsetY = 10;
 	 channel = 0;
 		GeneralPath thePath = new GeneralPath();
 		for (int row=0;row<nTilesPerColumn && channel<g.getNumberOfChannels();++row) {
 			float drawingOffsetX = xTitlesOffset;
+			System.out.println("samplesForThisChannel ");
 			for (int col=0;col<nTilesPerRow && channel<g.getNumberOfChannels();++col) {
 				float yOffset = drawingOffsetY + interceptY;
-				short[] samplesForThisChannel = g.getSamples()[g.getDisplaySequence()[channel]];
+				short[] samplesForThisChannel = g.getSamples()[g.getDisplaySequence()[channel]];				
+				
 				int i = timeOffsetInSamples;
+				
 				float rescaleY = g.getAmplitudeScalingFactorInMilliVolts()[g.getDisplaySequence()[channel]]*yPixelsInMillivolts;
-
 				float fromXValue = drawingOffsetX;
+				System.out.print(samplesForThisChannel[i]);
+				System.out.print(";");
+				System.out.print(i);
+				System.out.print(";");
 				float fromYValue = yOffset - samplesForThisChannel[i]*rescaleY;
 				thePath.reset();
 				thePath.moveTo(fromXValue,fromYValue);

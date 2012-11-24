@@ -6,6 +6,8 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.io.IOException;
 
+
+
 import ua.stu.scplib.attribute.BinaryInputStream;
 
 
@@ -172,6 +174,8 @@ public class SCPECG {
 		byte[][]     compressedLeadData = section6 == null ? null : section6.getCompressedLeadData();
 		int      bimodalCompressionUsed = section6 == null ?    0 : section6.getBimodalCompressionUsed();
 		int sampleTimeIntervalForRhythm = section6 == null ?    0 : section6.getSampleTimeInterval();
+
+			
 		
 		int samplingRateDecimationFactor = (sampleTimeIntervalForReference == 0)
 			? 1
@@ -189,6 +193,7 @@ public class SCPECG {
 					sampleNumberOfResidualToStartSubtractingQRS,sampleNumberOfResidualOfFiducial,sampleNumberOfResidualToEndSubtractingQRS)
 			: null;
 
+		
 		decompressedRhythmData = new short[numberOfLeads][];
 		for (int lead=0; lead<numberOfLeads; ++lead) {
 //System.err.println("Decompressing rhythm or residual data for lead "+lead);
@@ -197,10 +202,13 @@ public class SCPECG {
 			int useNumberOfSamples = (int)(numbersOfSamples[lead]);
 //System.err.println("useNumberOfSamples = "+useNumberOfSamples);
 			try {
-				HuffmanDecoder decoder = new HuffmanDecoder(
+				HuffmanDecoder decoder=null;
+				if (section2!=null){
+			 decoder = new HuffmanDecoder(
 						compressedLeadData[lead],
 						differenceDataUsed,amplitudeValueMultiplier/1000,	// amplitudeValueMultiplier is nanoVolts, not microVolts
 						numberOfHuffmanTables,huffmanTablesList);
+				}
 
 				{
 					decompressedRhythmData[lead] = new short[useNumberOfSamples];
@@ -212,12 +220,20 @@ public class SCPECG {
 						boolean within = protectedAreas != null && protectedAreas.isSampleWithinProtectedArea(sample);
 //System.err.println("["+sample+"] in protected area = "+within);
 						if (within) {
-							value = decoder.decode();
+							if (section2!=null)	value = decoder.decode();
+							else {
+								value = compressedLeadData[lead][sample-1];
+								value*=amplitudeValueMultiplier/1000;
+							}
 							decimationOffsetCount = 0;
 						}
 						else {
 							if (samplingRateDecimationFactor <= 1) {	// should never happen, but if we didn't check, division by zero
-								value = decoder.decode();
+								if (section2!=null)	value = decoder.decode();
+								else {
+									value = compressedLeadData[lead][sample-1];
+									value*=amplitudeValueMultiplier/1000;
+								}
 							}
 							else {
 								//int interpolationOffset = decimationOffsetCount%samplingRateDecimationFactor;
@@ -233,7 +249,12 @@ public class SCPECG {
 								
 								int interpolationOffset = decimationOffsetCount%samplingRateDecimationFactor;
 								if (interpolationOffset == 0) {
-									currentDecimatedValue = decoder.decode();
+									if (section2!=null)	currentDecimatedValue = decoder.decode();
+									else {
+										currentDecimatedValue = compressedLeadData[lead][sample-1];
+										currentDecimatedValue*=amplitudeValueMultiplier/1000;
+									}
+									
 								}
 								value = (short)currentDecimatedValue;
 							}
@@ -260,6 +281,7 @@ public class SCPECG {
 				e.printStackTrace(System.err);
 			}
 		}
+		System.out.println();
 	}
 	
 	private short[][] decompressedReferenceBeatData;

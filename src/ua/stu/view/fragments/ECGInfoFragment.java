@@ -106,7 +106,8 @@ public class ECGInfoFragment extends Fragment {
 	}
 
 	public void setDepTakeECG(CharSequence depTakeECG) {
-		this.depTakeECG.setText(depTakeECG);
+		if (!depTakeECG.equals(""))
+			this.depTakeECG.setText(depTakeECG);
 	}
 	
 	private final void setDepAnalysECG(TextView depAnalysECG) {

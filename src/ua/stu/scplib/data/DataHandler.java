@@ -76,9 +76,9 @@ public class DataHandler {
 			i = new BinaryInputStream(new BufferedInputStream(
 					new FileInputStream(new File(filename))), false);
 			scpecg = new SCPECG(i, false);
-/*			i = new BinaryInputStream(new BufferedInputStream(
+			i = new BinaryInputStream(new BufferedInputStream(
 					new FileInputStream(filename)), false);
-			graphic = new GraphicAttribute(i, false);*/
+			graphic = new GraphicAttribute(i, false);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

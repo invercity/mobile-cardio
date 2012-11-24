@@ -852,8 +852,10 @@ public class Section1 extends Section {
 
 		public String getValueAsString() {
 			StringBuffer strbuf = new StringBuffer();
+			if (dd>=0 && dd<10) strbuf.append(0);
 			strbuf.append(dd);
 			strbuf.append(".");
+			if (mm>=0 && mm<10) strbuf.append(0);
 			strbuf.append(mm);
 			strbuf.append(".");
 			strbuf.append(yyyy);

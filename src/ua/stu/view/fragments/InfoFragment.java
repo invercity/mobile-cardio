@@ -1,8 +1,6 @@
 package ua.stu.view.fragments;
 
-import ua.stu.scplib.data.DataHandler;
 import ua.stu.view.scpview.R;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
-@TargetApi(11)
 public class InfoFragment extends Fragment implements OnItemClickListener  {
 	
 	private static String TAG = "InfoFragment";

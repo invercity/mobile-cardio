@@ -1,12 +1,14 @@
 package ua.stu.view.scpview;
 
+import group.pals.android.lib.ui.filechooser.FileChooserActivity;
+import group.pals.android.lib.ui.filechooser.io.localfile.LocalFile;
+import group.pals.android.lib.ui.filechooser.services.IFileProvider;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
 import ua.stu.scplib.data.DataHandler;
-import ua.stu.scplib.data.OInfo;
-import ua.stu.scplib.data.PInfo;
 import ua.stu.view.adapter.SamplePagerAdapter;
 import ua.stu.view.fragments.ECGPanelFragment;
 import ua.stu.view.fragments.InfoFragment;
@@ -17,6 +19,7 @@ import ua.stu.view.temporary.InfoP;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,8 +33,11 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 	
 	private String patientKey;//maybe, out of constant class
 	private String otherKey;//maybe, out of constant class
+	private String filePath;
+	private Bundle state;
 
-	private static String TAG = "SCPViewActivity";
+	private static final String TAG = "SCPViewActivity";
+	private static final int RequestChooseFile = 0;
 	
     /** Called when the activity is first created. */
 	@Override
@@ -39,33 +45,16 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
     {
     	setTheme(R.style.Theme_Sherlock);
         super.onCreate(savedInstanceState);
-
-        patientKey = getResources().getString(R.string.app_patient);
-        otherKey = getResources().getString(R.string.app_other);
+        state = savedInstanceState;
         
-        h = new DataHandler("/mnt/sdcard/Example.scp");
-        ecgPanel = new ECGPanelFragment(h);
-        info = new InfoFragment();
-        
-        LayoutInflater inflater = LayoutInflater.from(this);
-        List<View> pages = new ArrayList<View>();
-        
-        View page = inflater.inflate(R.layout.main, null);
-        pages.add(page);
-      
-        page = ecgPanel.onCreateView(inflater,null,savedInstanceState);
-        pages.add(page);
-        
-        page = info.onCreateView(inflater,null,savedInstanceState);
-        pages.add(page);
-        
-        SamplePagerAdapter pagerAdapter = new SamplePagerAdapter(pages);
-        ViewPager viewPager = new ViewPager(this);
-        viewPager.setAdapter(pagerAdapter);
-        viewPager.setCurrentItem(2);     
-        
-        setContentView(viewPager);
-        
+        Intent intent = new Intent(getBaseContext(), FileChooserActivity.class);
+		/*
+		 * by default, if not specified, default rootpath is sdcard,
+		 * if sdcard is not available, "/" will be used
+		 */
+		intent.putExtra(FileChooserActivity._Theme, R.style.Theme_Sherlock);
+		intent.putExtra(FileChooserActivity._Rootpath, (Parcelable) new LocalFile("/mnt/sdcard"));
+		startActivityForResult(intent, RequestChooseFile);  
     }
 
 	public void itemClickEvent(int position) {
@@ -96,5 +85,56 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 			}
 			break;
 		}
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    switch (requestCode) {
+	    case RequestChooseFile:
+	        if (resultCode == RESULT_OK) {
+	            /*
+	             * you can use two flags included in data
+	             */
+	            IFileProvider.FilterMode filterMode = (IFileProvider.FilterMode)
+	                data.getSerializableExtra(FileChooserActivity._FilterMode);
+	            boolean saveDialog = data.getBooleanExtra(FileChooserActivity._SaveDialog, false);
+
+	            /*
+	             * a list of files will always return,
+	             * if selection mode is single, the list contains one file
+	             */
+	            List<LocalFile> files = (List<LocalFile>)
+	                data.getSerializableExtra(FileChooserActivity._Results);
+	            
+	            filePath = files.get(0).getPath();
+	            
+	            patientKey = getResources().getString(R.string.app_patient);
+	            otherKey = getResources().getString(R.string.app_other);
+	            try {
+		            h = new DataHandler(filePath);
+	            }catch(Exception e){
+	            	Log.i(TAG, e.toString());
+	            }
+		        ecgPanel = new ECGPanelFragment(h);
+	            info = new InfoFragment();
+           
+	            LayoutInflater inflater = LayoutInflater.from(this);
+	            List<View> pages = new ArrayList<View>();
+	          
+	            View page = ecgPanel.onCreateView(inflater,null,state);
+	            pages.add(page);
+	            
+	            page = info.onCreateView(inflater,null,state);
+	            pages.add(page);
+	            
+	            SamplePagerAdapter pagerAdapter = new SamplePagerAdapter(pages);
+	            ViewPager viewPager = new ViewPager(this);
+	            viewPager.setAdapter(pagerAdapter);
+	            viewPager.setCurrentItem(0);     
+	            
+	            setContentView(viewPager);
+	        }
+	        break;
+	    }
 	}
 }

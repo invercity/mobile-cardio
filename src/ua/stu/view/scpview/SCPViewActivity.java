@@ -43,7 +43,7 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
         patientKey = getResources().getString(R.string.app_patient);
         otherKey = getResources().getString(R.string.app_other);
         
-        h = new DataHandler("/mnt/sdcard/Example.scp");
+        h = new DataHandler("/mnt/sdcard/tredex_1.scp");
         ecgPanel = new ECGPanelFragment(h);
         info = new InfoFragment();
         

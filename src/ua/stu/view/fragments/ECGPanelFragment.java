@@ -1,10 +1,43 @@
 package ua.stu.view.fragments;
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import net.pbdavey.awt.Graphics2D;
 import ua.stu.scplib.data.DataHandler;
 import ua.stu.view.scpview.GraphicView;
 import ua.stu.view.scpview.R;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.IntentSender;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.content.IntentSender.SendIntentException;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
+import android.content.res.Resources.Theme;
+import android.database.DatabaseErrorHandler;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -37,7 +70,7 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	/**
 	 * Максимальное усиление ЕКГ
 	 */
-	private static int MAX_POWER = 16;
+	private static int MAX_POWER = 24;
 	
 	private int speed;
 	private int power;
@@ -69,6 +102,8 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		powerValue = (TextView)view.findViewById(R.id.power_value);
 		graphicView=(GraphicView)view.findViewById(R.id.ecgpanel);
 		graphicView.setH(h);
+		graphicView.setXScale(speed);
+		graphicView.setYScale(power);
 		
 		//temporary
 		speedValue.setText(getSpeed()+" mm/c");
@@ -93,8 +128,8 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 
 	public void tempInit()
 	{
-		setSpeed(50);
-		setPower(0);
+		setSpeed(25);
+		setPower(5);
 	}
 	
 	public int getDisplayWidth() {
@@ -122,9 +157,13 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 			{
 			case R.id.speed:
 				speedValue.setText(progress+" mm/c");
+				graphicView.setXScale(speed);
+				graphicView.invalidate();
 				break;
 			case R.id.power:
 				powerValue.setText(step/CORRECTION_POWER+" mV/cm");
+				graphicView.setYScale(power);
+				graphicView.invalidate();
 				break;
 			}
 		}

@@ -70,7 +70,7 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	/**
 	 * Максимальное усиление ЕКГ
 	 */
-	private static int MAX_POWER = 24;
+	private static int MAX_POWER = 16;
 	
 	private int speed;
 	private int power;

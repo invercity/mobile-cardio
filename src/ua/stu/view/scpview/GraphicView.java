@@ -26,10 +26,10 @@ public class GraphicView extends AwtView {
 	private final GestureDetector gestureDetector;	
 	private final Scroller scroller;
 	// window size params
-	private int W = 600;
+	private int W = 800;
 	private int H = 600;
 	// scroll window params
-	private int SW = 600;
+	private int SW = 800;
 	private int SH = 600;
 	// inch constant
 	private float duim = (float) 25.4;
@@ -438,7 +438,7 @@ public class GraphicView extends AwtView {
 	}
 	
 	public void setYScale(float millimetersPerMillivolt) {
-		this.yPixelsInMillivolts = millimetersPerMillivolt/(duim/sizeScreen);
+		this.yPixelsInMillivolts = 7/millimetersPerMillivolt/(duim/sizeScreen);
 	}
 		
 	public void setXScaleGrid(float millimetersPerSecond) {
@@ -459,6 +459,8 @@ public class GraphicView extends AwtView {
 	
 	public void setXScale(float millimetersPerSecond) {
 		this.xPixelsInMilliseconds = (float) (millimetersPerSecond*(3.15/5)/(1000*duim/sizeScreen));
+		this.W=(int) (millimetersPerSecond*31.96);
+		this.SW=(int)millimetersPerSecond*32+50;
 	}
 	
 }

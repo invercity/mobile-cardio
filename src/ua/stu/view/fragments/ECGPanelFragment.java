@@ -157,12 +157,12 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 			{
 			case R.id.speed:
 				speedValue.setText(progress+" mm/c");
-				graphicView.setXScale(speed);
+				graphicView.setXScale(progress);
 				graphicView.invalidate();
 				break;
 			case R.id.power:
-				powerValue.setText(step/CORRECTION_POWER+" mV/cm");
-				graphicView.setYScale(power);
+				powerValue.setText(step/CORRECTION_POWER+" mV/cm");	
+				graphicView.setYScale(step/CORRECTION_POWER);
 				graphicView.invalidate();
 				break;
 			}

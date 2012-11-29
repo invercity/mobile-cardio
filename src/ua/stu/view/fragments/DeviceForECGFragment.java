@@ -1,11 +1,9 @@
 package ua.stu.view.fragments;
 
-import org.omg.CORBA.CurrentHelper;
-
 import ua.stu.view.scpview.R;
 import ua.stu.view.temporary.InfoO;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +74,11 @@ public class DeviceForECGFragment extends Fragment {
 	
 	private InfoO infoO;
 	
+	public DeviceForECGFragment()
+	{
+		
+	}
+	
 	public DeviceForECGFragment(InfoO info)
 	{
 		super();
@@ -88,6 +91,8 @@ public class DeviceForECGFragment extends Fragment {
 		      Bundle savedInstanceState) 
 	{
 		View v = inflater.inflate(R.layout.device_for_ecg, null);
+		//Fragment doesn't call onDestroy и onCreate
+		setRetainInstance(true);
 	    init(v);
 		return v;
 	}

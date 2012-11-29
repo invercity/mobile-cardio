@@ -2,9 +2,8 @@ package ua.stu.view.fragments;
 
 import ua.stu.view.scpview.R;
 import ua.stu.view.temporary.InfoP;
-import android.annotation.TargetApi;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,11 @@ public class BloodPressFragment extends Fragment {
 	
 	private InfoP infoP;
 	
+	public BloodPressFragment()
+	{
+		
+	}
+	
 	public BloodPressFragment(InfoP info)
 	{
 		super();
@@ -34,6 +38,8 @@ public class BloodPressFragment extends Fragment {
 		      Bundle savedInstanceState) 
 	{
 		View v = inflater.inflate(R.layout.blood_press, null);
+		//Fragment doesn't call onDestroy и onCreate
+		setRetainInstance(true);
 	    init(v);
 		return v;
 	}

@@ -2,9 +2,8 @@ package ua.stu.view.fragments;
 
 import ua.stu.view.scpview.R;
 import ua.stu.view.temporary.InfoP;
-import android.R.id;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +57,11 @@ public class PrivatePatientInfoFragment extends Fragment {
 	
 	private InfoP infoP;
 	
+	public PrivatePatientInfoFragment()
+	{
+		
+	}
+	
 	public PrivatePatientInfoFragment(InfoP info)
 	{
 		super();
@@ -70,6 +74,8 @@ public class PrivatePatientInfoFragment extends Fragment {
 		      Bundle savedInstanceState) 
 	{
 		View v = inflater.inflate(R.layout.privatepatientinfo, null);
+		//Fragment doesn't call onDestroy и onCreate
+		setRetainInstance(true);
 	    init(v);
 		return v;
 	}
@@ -87,6 +93,7 @@ public class PrivatePatientInfoFragment extends Fragment {
 		this.setHeight((TextView)v.findViewById(R.id.stature_patient_value));
 		this.setRace((TextView)v.findViewById(R.id.race_patient_value));
 		
+		Log.d(TAG, infoP.getIdPatient());
 		this.setIdPatient(infoP.getIdPatient());
 		this.setLastName(infoP.getLastName());
 		this.setFirstName(infoP.getFirstName());

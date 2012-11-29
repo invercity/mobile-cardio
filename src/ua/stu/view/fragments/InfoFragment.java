@@ -26,13 +26,15 @@ public class InfoFragment extends Fragment implements OnItemClickListener  {
 	    public void itemClickEvent(int position);
 	}
 	
-	OnEventItemClickListener onEventItemClick;
+	private OnEventItemClickListener onEventItemClick;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		      Bundle savedInstanceState) 
 	{
 		View view = inflater.inflate(R.layout.info, null);
-		
+		//Fragment doesn't call onDestroy и onCreate
+		setRetainInstance(true);
+
 	    lvMain = (ListView) view.findViewById(R.id.lvMain);
 	    lvMain.setOnItemClickListener(this);
 	    

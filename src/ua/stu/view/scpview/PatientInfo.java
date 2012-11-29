@@ -9,15 +9,15 @@ import ua.stu.view.fragments.MedicalHistoryFragment;
 import ua.stu.view.fragments.PrivatePatientInfoFragment;
 import ua.stu.view.scpview.R;
 import ua.stu.view.temporary.InfoP;
+import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 
-public class PatientInfo extends FragmentActivity implements android.widget.CompoundButton.OnCheckedChangeListener
+public class PatientInfo extends Activity implements android.widget.CompoundButton.OnCheckedChangeListener
 {
 	private static String TAG = "PatientInfo";
 	
@@ -26,8 +26,9 @@ public class PatientInfo extends FragmentActivity implements android.widget.Comp
 	private AddrPatientFragment addrPatient;
 	private DiagnoseFragment diagnose;
 	private MedicalHistoryFragment medicalHistory;
+	private InfoP infoP = null;
 	
-	private FragmentTransaction fTrans;
+	private FragmentTransaction fTrans = null;
 	
 	private CheckBox chPrivatePatientInfo;
 	private CheckBox chBloodPress;
@@ -41,18 +42,35 @@ public class PatientInfo extends FragmentActivity implements android.widget.Comp
 	public void onCreate(Bundle savedInstanceState)
     {
 		setTheme(R.style.Theme_Sherlock);
-		patientKey = getResources().getString(R.string.app_patient);
 		
         super.onCreate(savedInstanceState);
         setContentView(R.layout.patientinfo);
         
-        HashMap table = (HashMap) getIntent().getSerializableExtra(patientKey);
-        InfoP infoP = (InfoP)table.get(patientKey);
         init(infoP);
     }
 
+	@Override
+	public void onStop(){
+		super.onStop();
+		Log.d(TAG,"onStop");
+
+		fTrans = getFragmentManager().beginTransaction();
+
+		if (isFragmentInStack(R.id.frame_private_patient_info)) fTrans.hide(privatePatientInfo);
+		if (isFragmentInStack(R.id.frame_blood_press)) fTrans.hide(bloodPress);
+		if (isFragmentInStack(R.id.frame_addr_patient)) fTrans.hide(addrPatient);
+		if (isFragmentInStack(R.id.frame_diagnos_patient)) fTrans.hide(diagnose);
+		if (isFragmentInStack(R.id.frame_medical_history)) fTrans.hide(medicalHistory);
+
+		fTrans.commitAllowingStateLoss();
+	}
+	
 	private final void init(InfoP infoP)
 	{
+		patientKey = getResources().getString(R.string.app_patient);
+		HashMap table = (HashMap) getIntent().getSerializableExtra(patientKey);
+	    infoP = (InfoP)table.get(patientKey);
+		
 		chPrivatePatientInfo = (CheckBox)findViewById(R.id.check_private_patient_info);
 		chBloodPress = (CheckBox)findViewById(R.id.check_blood_press);
 		chAddrPatient = (CheckBox)findViewById(R.id.check_addr_patient);
@@ -74,62 +92,56 @@ public class PatientInfo extends FragmentActivity implements android.widget.Comp
 
 	public void onCheckedChanged(CompoundButton view, boolean checked) 
 	{
-		fTrans = getSupportFragmentManager().beginTransaction();
+		fTrans = getFragmentManager().beginTransaction();
 		
 		switch(view.getId()) {
         case R.id.check_private_patient_info:
             if (checked)
             {
-            	if (!isFragmentInStack(R.id.frame_private_patient_info)){fTrans.add(R.id.frame_private_patient_info, privatePatientInfo);}
-            	fTrans.show(privatePatientInfo);
+            	fTrans.add(R.id.frame_private_patient_info, privatePatientInfo);
             } else {
-            	fTrans.hide(privatePatientInfo);
+            	fTrans.remove(privatePatientInfo);
             }
             break;
 		case R.id.check_blood_press:
 	        if (checked)
 	        {
-	        	if (!isFragmentInStack(R.id.frame_blood_press)){fTrans.add(R.id.frame_blood_press, bloodPress);}
-            	fTrans.show(bloodPress);
+	        	fTrans.add(R.id.frame_blood_press, bloodPress);
 	        } else {
-	        	fTrans.hide(bloodPress);
+	        	fTrans.remove(bloodPress);
 	        }
 	        break;
 		case R.id.check_addr_patient:
 	        if (checked)
 	        {
-	        	if (!isFragmentInStack(R.id.frame_addr_patient)){fTrans.add(R.id.frame_addr_patient, addrPatient);}
-            	fTrans.show(addrPatient);
+	        	fTrans.add(R.id.frame_addr_patient, addrPatient);
 	        } else {
-	        	fTrans.hide(addrPatient);
+	        	fTrans.remove(addrPatient);
 	        }
 	        break;
 		case R.id.check_diagnos_patient:
 	        if (checked)
 	        {
-	        	if (!isFragmentInStack(R.id.frame_diagnos_patient)){fTrans.add(R.id.frame_diagnos_patient, diagnose);}
-            	fTrans.show(diagnose);
+	        	fTrans.add(R.id.frame_diagnos_patient, diagnose);
 	        } else {
-	        	fTrans.hide(diagnose);
+	        	fTrans.remove(diagnose);
 	        }
 	        break;
 		case R.id.check_medical_history:
 	        if (checked)
 	        {
-	        	if (!isFragmentInStack(R.id.frame_medical_history)){fTrans.add(R.id.frame_medical_history, medicalHistory);}
-            	fTrans.show(medicalHistory);
+	        	fTrans.add(R.id.frame_medical_history, medicalHistory);
 	        } else {
-	        	fTrans.hide(medicalHistory);
+	        	fTrans.remove(medicalHistory);
 	        }
 	        break;
 		}
-		
-		fTrans.commit();
+        fTrans.commit();
 	}
 	
 	private final boolean isFragmentInStack(int id)
 	{
-		if (this.getSupportFragmentManager().findFragmentById(id) == null)return false;
+		if (this.getFragmentManager().findFragmentById(id) == null)return false;
 		else return true;
 	}
 }

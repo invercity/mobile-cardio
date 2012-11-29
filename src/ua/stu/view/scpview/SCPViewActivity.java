@@ -27,6 +27,9 @@ import android.view.View;
 
 public class SCPViewActivity extends Activity implements OnEventItemClickListener
 {
+	private static final String TAG = "SCPViewActivity";
+	private static final int RequestChooseFile = 0;
+	
 	private ECGPanelFragment ecgPanel;
 	private InfoFragment info;
 	private DataHandler h;
@@ -34,10 +37,9 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 	private String patientKey;//maybe, out of constant class
 	private String otherKey;//maybe, out of constant class
 	private String filePath;
-	private Bundle state;
 
-	private static final String TAG = "SCPViewActivity";
-	private static final int RequestChooseFile = 0;
+	private Bundle state;
+	private ViewPager viewPager;
 	
     /** Called when the activity is first created. */
 	@Override
@@ -56,13 +58,19 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 		intent.putExtra(FileChooserActivity._Rootpath, (Parcelable) new LocalFile("/mnt/sdcard"));
 		startActivityForResult(intent, RequestChooseFile);  
     }
-
+	/**
+	 * Method is handle which list item clicked on the InfoFragment
+	 * @param position
+	 * <p>0 - item for patient information</p>
+	 * <p>1 - item for other information</p>
+	 */
 	public void itemClickEvent(int position) {
 		switch (position)
 		{
 		case 0:
 			Hashtable<String, InfoP> patientTable = new Hashtable<String,InfoP>();
-			InfoP infoP = new InfoP(h.getPInfo().getAllPInfo()); 
+			InfoP infoP = new InfoP(h.getPInfo().getAllPInfo());
+			patientKey = getResources().getString(R.string.app_patient);
 			patientTable.put(patientKey,infoP);
 			try {
 				Intent intent = new Intent(this,PatientInfo.class);
@@ -75,6 +83,7 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 		case 1:
 			Hashtable<String, InfoO> otherTable = new Hashtable<String,InfoO>();
 			InfoO infoO = new InfoO(h.getOInfo().getAllOInfo());
+			otherKey = getResources().getString(R.string.app_other);
 			otherTable.put(otherKey, infoO);
 			try {
 				Intent intent = new Intent(this,OtherInfo.class);
@@ -108,8 +117,6 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 	            
 	            filePath = files.get(0).getPath();
 	            
-	            patientKey = getResources().getString(R.string.app_patient);
-	            otherKey = getResources().getString(R.string.app_other);
 	            try {
 		            h = new DataHandler(filePath);
 	            }catch(Exception e){
@@ -127,14 +134,22 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 	            page = info.onCreateView(inflater,null,state);
 	            pages.add(page);
 	            
-	            SamplePagerAdapter pagerAdapter = new SamplePagerAdapter(pages);
-	            ViewPager viewPager = new ViewPager(this);
-	            viewPager.setAdapter(pagerAdapter);
-	            viewPager.setCurrentItem(0);     
+	            viewPager = createPager(pages);
 	            
-	            setContentView(viewPager);
 	        }
 	        break;
 	    }
+	}
+	
+	private final ViewPager createPager(List<View> pages)
+	{
+		SamplePagerAdapter pagerAdapter = new SamplePagerAdapter(pages);
+        ViewPager viewPager = new ViewPager(this);
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.setCurrentItem(0);     
+        
+        setContentView(viewPager);
+        
+        return viewPager;
 	}
 }

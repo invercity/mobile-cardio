@@ -97,6 +97,8 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		setDisplayHeight(metrics.heightPixels);
 		
 		View view = inflater.inflate(R.layout.ecg_panel, null);
+		//Fragment doesn't call onDestroy и onCreate
+		setRetainInstance(true);
 	
 		speedValue = (TextView)view.findViewById(R.id.speed_value);
 		powerValue = (TextView)view.findViewById(R.id.power_value);

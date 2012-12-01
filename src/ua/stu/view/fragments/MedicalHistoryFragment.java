@@ -51,7 +51,7 @@ public class MedicalHistoryFragment extends Fragment {
 		this.medicalHistory = medicalHistory;
 	}
 	
-	public void setMedicalHistory(CharSequence medicalHistory) {
+	private final void setMedicalHistory(CharSequence medicalHistory) {
 		if (!medicalHistory.equals(""))
 			this.medicalHistory.setText(medicalHistory);
 	}

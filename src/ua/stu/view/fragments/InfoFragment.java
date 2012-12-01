@@ -28,6 +28,7 @@ public class InfoFragment extends Fragment implements OnItemClickListener  {
 	
 	private OnEventItemClickListener onEventItemClick;
 
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		      Bundle savedInstanceState) 
 	{
@@ -54,15 +55,15 @@ public class InfoFragment extends Fragment implements OnItemClickListener  {
         try {
         	onEventItemClick = (OnEventItemClickListener) activity;
         } catch (ClassCastException e) {
-        	throw new ClassCastException(activity.toString() + " must implement onSomeEventListener");
+        	throw new ClassCastException(activity.toString() + " must implement OnEventItemListener");
         }
     }
-	
+	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		try {
         	onEventItemClick = (OnEventItemClickListener) view.getContext();        	
         } catch (ClassCastException e) {
-        	throw new ClassCastException(view.getContext().toString() + " must implement onSomeEventListener");
+        	throw new ClassCastException(view.getContext().toString() + " must implement OnEventItemListener");
         }
 		onEventItemClick.itemClickEvent(position);
 	}

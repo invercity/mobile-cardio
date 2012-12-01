@@ -11,6 +11,8 @@ import java.util.List;
 import ua.stu.scplib.data.DataHandler;
 import ua.stu.view.adapter.SamplePagerAdapter;
 import ua.stu.view.fragments.ECGPanelFragment;
+import ua.stu.view.fragments.FileChooserFragment;
+import ua.stu.view.fragments.FileChooserFragment.OnEventImageButtonClickListener;
 import ua.stu.view.fragments.InfoFragment;
 import ua.stu.view.fragments.InfoFragment.OnEventItemClickListener;
 import ua.stu.view.temporary.InfoO;
@@ -25,17 +27,31 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
-public class SCPViewActivity extends Activity implements OnEventItemClickListener
+public class SCPViewActivity extends Activity implements OnEventItemClickListener,OnEventImageButtonClickListener
 {
 	private static final String TAG = "SCPViewActivity";
-	private static final int RequestChooseFile = 0;
+	private static final int REQUEST_CHOOSE_FILE = 0;
+	private static final String ROOT_PATH = "/mnt/sdcard";
 	
 	private ECGPanelFragment ecgPanel;
 	private InfoFragment info;
+	private FileChooserFragment fileChooser;
 	private DataHandler h;
-	
-	private String patientKey;//maybe, out of constant class
-	private String otherKey;//maybe, out of constant class
+	/**
+	 * Key for sending data to activity PatientInfo
+	 */
+	private String patientKey;
+	/**
+	 * Key for sending data to activity OtherInfo
+	 */
+	private String otherKey;
+	/**
+	 * Key for save file state
+	 */
+	private String filePathKey;
+	/**
+	 * ECG file path
+	 */
 	private String filePath;
 
 	private Bundle state;
@@ -47,23 +63,93 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
     {
     	setTheme(R.style.Theme_Sherlock);
         super.onCreate(savedInstanceState);
-        state = savedInstanceState;
         
-        Intent intent = new Intent(getBaseContext(), FileChooserActivity.class);
-		/*
-		 * by default, if not specified, default rootpath is sdcard,
-		 * if sdcard is not available, "/" will be used
-		 */
-		intent.putExtra(FileChooserActivity._Theme, R.style.Theme_Sherlock);
-		intent.putExtra(FileChooserActivity._Rootpath, (Parcelable) new LocalFile("/mnt/sdcard"));
-		startActivityForResult(intent, RequestChooseFile);  
+        filePathKey = getResources().getString(R.string.app_file_path);
+        state = savedInstanceState;
+		if (state == null){
+        	runFileChooser(R.style.Theme_Sherlock,ROOT_PATH);
+        }
     }
+	@Override
+	public void onStart()
+	{
+		super.onStart();
+		Log.d(TAG,"onStart");
+	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		
+		try {
+			h = new DataHandler(filePath);
+		}catch(Exception e){
+		  	Log.e(TAG, e.toString());
+		}
+		ecgPanel = new ECGPanelFragment(h);
+		info = new InfoFragment();
+		fileChooser = new FileChooserFragment();
+		
+		LayoutInflater inflater = LayoutInflater.from(this);
+		List<View> pages = new ArrayList<View>();
+		
+		View page = fileChooser.onCreateView(inflater,null,state);
+		pages.add(page);
+		  
+		page = ecgPanel.onCreateView(inflater,null,state);
+		pages.add(page);
+		  
+		page = info.onCreateView(inflater,null,state);
+		pages.add(page);
+		      
+		viewPager = createPager(pages);
+		
+		Log.d(TAG,"onResume");
+	}
+	
+	@Override
+	public void onPause()
+	{
+		super.onPause();
+		Log.d(TAG,"onPause");
+	}
+	
+	@Override
+	public void onStop()
+	{
+		super.onStop();
+		Log.d(TAG,"onStop");
+	}
+	
+	@Override
+	public void onRestart()
+	{
+		super.onRestart();
+		Log.d(TAG,"onRestart");
+	}
+	@Override
+	protected void onSaveInstanceState(Bundle outState) 
+	{
+	    super.onSaveInstanceState(outState);
+	    outState.putString(filePathKey, filePath);
+	    Log.d(TAG, "onSaveInstanceState");
+	}
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) 
+	{
+	    super.onRestoreInstanceState(savedInstanceState);
+	    filePath = savedInstanceState.getString(filePathKey);
+	    Log.d(TAG, "onRestoreInstanceState");
+	}
+	
 	/**
 	 * Method is handle which list item clicked on the InfoFragment
 	 * @param position
 	 * <p>0 - item for patient information</p>
 	 * <p>1 - item for other information</p>
 	 */
+	@Override
 	public void itemClickEvent(int position) {
 		switch (position)
 		{
@@ -77,7 +163,7 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 				intent.putExtra(patientKey,patientTable);
 				startActivity(intent);
 			}catch(Exception e){
-				Log.i("Error in A " , e.toString());
+				Log.e("Error in A " , e.toString());
 			} 
 			break;
 		case 1:
@@ -90,16 +176,17 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 				intent.putExtra(otherKey,otherTable);
 				startActivity(intent);
 			}catch(Exception e){
-				Log.i("Error in A " , e.toString());
+				Log.e("Error in A " , e.toString());
 			}
 			break;
 		}
 	}
 	
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	    switch (requestCode) {
-	    case RequestChooseFile:
+	protected void onActivityResult(int requestCode, int resultCode, Intent data){
+	    switch (requestCode)
+	    {
+	    case REQUEST_CHOOSE_FILE:
 	        if (resultCode == RESULT_OK) {
 	            /*
 	             * you can use two flags included in data
@@ -116,29 +203,34 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 	                data.getSerializableExtra(FileChooserActivity._Results);
 	            
 	            filePath = files.get(0).getPath();
-	            
-	            try {
-		            h = new DataHandler(filePath);
-	            }catch(Exception e){
-	            	Log.i(TAG, e.toString());
-	            }
-		        ecgPanel = new ECGPanelFragment(h);
-	            info = new InfoFragment();
-           
-	            LayoutInflater inflater = LayoutInflater.from(this);
-	            List<View> pages = new ArrayList<View>();
-	          
-	            View page = ecgPanel.onCreateView(inflater,null,state);
-	            pages.add(page);
-	            
-	            page = info.onCreateView(inflater,null,state);
-	            pages.add(page);
-	            
-	            viewPager = createPager(pages);
-	            
 	        }
 	        break;
 	    }
+	}
+
+	@Override
+	public void imageButtonClickEvent(int resId) {
+		switch (resId) {
+		case R.id.file_chooser:
+			Log.d(TAG,"file chooser");
+			runFileChooser(R.style.Theme_Sherlock,ROOT_PATH);
+			break;
+		case R.id.camera:
+			Log.d(TAG,"camera");
+			break;
+		}
+	}
+	
+	private final void runFileChooser(int style,String rootPath)
+	{
+		Intent intent = new Intent(getBaseContext(), FileChooserActivity.class);
+		/*
+		 * by default, if not specified, default rootpath is sdcard,
+		 * if sdcard is not available, "/" will be used
+		 */
+		intent.putExtra(FileChooserActivity._Theme, style);
+		intent.putExtra(FileChooserActivity._Rootpath, (Parcelable) new LocalFile(rootPath));
+		startActivityForResult(intent, REQUEST_CHOOSE_FILE);
 	}
 	
 	private final ViewPager createPager(List<View> pages)

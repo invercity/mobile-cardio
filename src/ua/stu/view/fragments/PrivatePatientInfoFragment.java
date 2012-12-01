@@ -93,7 +93,6 @@ public class PrivatePatientInfoFragment extends Fragment {
 		this.setHeight((TextView)v.findViewById(R.id.stature_patient_value));
 		this.setRace((TextView)v.findViewById(R.id.race_patient_value));
 		
-		Log.d(TAG, infoP.getIdPatient());
 		this.setIdPatient(infoP.getIdPatient());
 		this.setLastName(infoP.getLastName());
 		this.setFirstName(infoP.getFirstName());

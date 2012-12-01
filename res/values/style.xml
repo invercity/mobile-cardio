@@ -42,7 +42,7 @@
         <item name="android:clickable">true</item>
     </style>
     <style name="ECGViewStyle" parent="@android:style/TextAppearance.Small">
-        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_width">80dip</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">5dp</item>
         <item name="android:typeface">serif</item>

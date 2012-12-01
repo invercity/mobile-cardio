@@ -55,9 +55,9 @@ public class SampleArrayAdapter extends ArrayAdapter<String> {
         if (s.startsWith("Windows7") || s.startsWith("iPhone")
                 || s.startsWith("Solaris")) {
 
-            holder.imageView.setImageResource(R.drawable.perm_group_device_alarms_normal);
+            holder.imageView.setImageResource(R.drawable.camera_selected);
         } else {
-            holder.imageView.setImageResource(R.drawable.perm_group_location_normal);
+            holder.imageView.setImageResource(R.drawable.camera_default);
         }
 
         return rowView;

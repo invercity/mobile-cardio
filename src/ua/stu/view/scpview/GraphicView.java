@@ -1,9 +1,14 @@
 package ua.stu.view.scpview;
 
+import com.sun.swing.internal.plaf.basic.resources.basic;
+
 import ua.stu.scplib.attribute.GraphicAttribute;
 import ua.stu.scplib.attribute.GraphicAttributeBase;
 import ua.stu.scplib.data.DataHandler;
+import and.awt.BasicStroke;
 import and.awt.Color;
+import and.awt.Shape;
+import and.awt.Stroke;
 import and.awt.geom.GeneralPath;
 import and.awt.geom.Line2D;
 import and.awt.geom.Rectangle2D;
@@ -63,20 +68,25 @@ public class GraphicView extends AwtView {
 	Font font = new Font("Ubuntu",0,14);
 	// any info?
 	private boolean fillBackgroundFirst;
+	private boolean invert=false;
 	
 	/*
 	 * Scrolling
 	 */
 	
+
+
 	public GraphicView(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
 				gestureDetector = new GestureDetector(context, new MyGestureListener());
 				 scroller = new Scroller(context);
+				
 				// init scrollbars
 		        setHorizontalScrollBarEnabled(true);
 		        setVerticalScrollBarEnabled(true);
-
+		        
+		        
 		        TypedArray a = context.obtainStyledAttributes(R.styleable.View);
 		        initializeScrollbars(a);
 		        a.recycle();
@@ -90,7 +100,8 @@ public class GraphicView extends AwtView {
 				// init scrollbars
 		        setHorizontalScrollBarEnabled(true);
 		        setVerticalScrollBarEnabled(true);
-
+		        
+		        
 		        TypedArray a = context.obtainStyledAttributes(R.styleable.View);
 		        initializeScrollbars(a);
 		        a.recycle();
@@ -225,13 +236,14 @@ public class GraphicView extends AwtView {
 		for (int row=0;row<nTilesPerColumn;++row) {
 			float drawingOffsetX = xTitlesOffset;
 			for (int col=0;col<nTilesPerRow;++col) {
-				//g2.setStroke(new BasicStroke((float) 0.1));			
+				g2.setStroke(new BasicStroke((float) 0.15));	
+		
 				for (float time=0; time<widthOfTileGrid; time+=200) {
 					float x = drawingOffsetX+time*xPixelsGrid;
 					g2.draw(new Line2D.Float(x,drawingOffsetY,x,drawingOffsetY+heightOfTileInPixels));
 				}
 
-				//g2.setStroke(new BasicStroke(gridWidth));
+				g2.setStroke(new BasicStroke((float) 0.2));
 				for (float milliVolts=-heightOfTileGrid/2; milliVolts<=heightOfTileGrid/2; milliVolts+=0.5) {
 					float y = drawingOffsetY + heightOfTileInPixels/2 + milliVolts/heightOfTileGrid*heightOfTileInPixels;
 					g2.draw(new Line2D.Float(drawingOffsetX,y,drawingOffsetX+widthOfTileInPixels,y));
@@ -242,7 +254,7 @@ public class GraphicView extends AwtView {
 		}
 
 		g2.setColor(boxColor);
-		//g2.setStroke(new BasicStroke(boxWidth));
+		g2.setStroke(new BasicStroke((float) 1.0));
 
 		drawingOffsetY = 0;
 		int channel=0;
@@ -262,6 +274,7 @@ public class GraphicView extends AwtView {
 						g.getDisplaySequence()[channel] < g.getChannelNames().length) {
 					String channelName=g.getChannelNames()[g.getDisplaySequence()[channel]];
 					if (channelName != null) {
+						g2.setStroke(new BasicStroke());
 						g2.setColor(channelNameColor);
 						g2.setFont(font);
 						g2.drawString(channelName,drawingOffsetX+channelNameXOffset,drawingOffsetY+channelNameYOffset+25);
@@ -278,7 +291,7 @@ public class GraphicView extends AwtView {
 
 		g2.setColor(curveColor);
 		//setForeground(curveColor);
-		//g2.setStroke(new BasicStroke(curveWidth));
+		g2.setStroke(new BasicStroke((float) 0.7));
 		float interceptY = heightOfTileInPixels/2;
 		//System.out.println("SamplingIntervalInMilliSeconds");
 		//System.out.println(g.getSamplingIntervalInMilliSeconds());
@@ -314,13 +327,23 @@ public class GraphicView extends AwtView {
 				//System.out.print(";");
 				//System.out.print(i);
 				//System.out.print(";");
-				float fromYValue = yOffset - samplesForThisChannel[i]*rescaleY;
+				
+				float fromYValue;
+				if (invert)
+				 fromYValue = yOffset + samplesForThisChannel[i]*rescaleY;
+				else
+			  fromYValue = yOffset - samplesForThisChannel[i]*rescaleY;	
 				thePath.reset();
 				thePath.moveTo(fromXValue,fromYValue);
 				++i;
 				for (int j=1;j<usableSamples;++j) {
 					float toXValue = fromXValue + widthOfSampleInPixels;
-					float toYValue = yOffset - samplesForThisChannel[i]*rescaleY;
+					float toYValue;
+					if (invert)
+					 toYValue = yOffset + samplesForThisChannel[i]*rescaleY;
+					else 
+					 toYValue = yOffset - samplesForThisChannel[i]*rescaleY;
+					
 					i++;
 					if ((int)fromXValue != (int)toXValue || (int)fromYValue != (int)toYValue) {
 						thePath.lineTo(toXValue,toYValue);
@@ -461,6 +484,9 @@ public class GraphicView extends AwtView {
 		this.xPixelsInMilliseconds = (float) (millimetersPerSecond*(3.15/5)/(1000*duim/sizeScreen));
 		this.W=(int) (millimetersPerSecond*31.96);
 		this.SW=(int)millimetersPerSecond*32+50;
+	}
+	public void setInvert(boolean invert) {
+		this.invert = invert;
 	}
 	
 }

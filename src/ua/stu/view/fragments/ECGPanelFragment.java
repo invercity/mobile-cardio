@@ -9,7 +9,9 @@ import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -49,7 +51,10 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	private TextView powerValue;
 
 	private GraphicView graphicView;
-	
+
+	private CheckBox invert;
+	OnClickListener checkBoxListener;
+
 	public ECGPanelFragment(DataHandler dh){
 		this.h=dh;
 	}
@@ -69,6 +74,23 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	
 		speedValue = (TextView)view.findViewById(R.id.speed_value);
 		powerValue = (TextView)view.findViewById(R.id.power_value);
+		invert = (CheckBox)view.findViewById(R.id.check_revert_ecg);
+		checkBoxListener=new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (invert.isChecked()){
+	                graphicView.setInvert(true);
+	            	graphicView.invalidate();				
+			}else{
+                graphicView.setInvert(false);
+            	graphicView.invalidate();			
+			}
+			}
+		};
+		invert.setOnClickListener(checkBoxListener);
+
 		graphicView=(GraphicView)view.findViewById(R.id.ecgpanel);
 		graphicView.setH(h);
 		graphicView.setXScale(speed);
@@ -137,7 +159,7 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 			}
 		}
 	}
-
+	
 	public void onStartTrackingTouch(SeekBar arg0) {
 		// TODO Auto-generated method stub
 		

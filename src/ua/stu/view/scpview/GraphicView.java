@@ -13,10 +13,13 @@ import and.awt.geom.Line2D;
 import and.awt.geom.Rectangle2D;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.style.LineHeightSpan.WithDensity;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.ScaleGestureDetector;
+import android.view.ScaleGestureDetector.OnScaleGestureListener;
 import android.widget.Scroller;
 import net.pbdavey.awt.AwtView;
 import net.pbdavey.awt.Font;
@@ -29,6 +32,9 @@ public class GraphicView extends AwtView {
 	// scrolling
 	private final GestureDetector gestureDetector;	
 	private final Scroller scroller;
+	//scale(zoom)
+	private final ScaleGestureDetector scaleGestureDetector;
+	private float scaleFactor=(float)1.0;
 	// window size params
 	private int W = 800;
 	private int H = 600;
@@ -79,7 +85,8 @@ public class GraphicView extends AwtView {
 		super(context);
 		// TODO Auto-generated constructor stub
 				gestureDetector = new GestureDetector(context, new MyGestureListener());
-				 scroller = new Scroller(context);
+				scaleGestureDetector = new ScaleGestureDetector(context, new MyScaleGestureListener());
+				scroller = new Scroller(context);
 				
 				// init scrollbars
 		        setHorizontalScrollBarEnabled(true);
@@ -95,7 +102,8 @@ public class GraphicView extends AwtView {
 		super(context, attribSet);
 		// TODO Auto-generated constructor stub
 				gestureDetector = new GestureDetector(context, new MyGestureListener());
-				 scroller = new Scroller(context);
+				scaleGestureDetector = new ScaleGestureDetector(context, new MyScaleGestureListener());
+				scroller = new Scroller(context);
 				// init scrollbars
 		        setHorizontalScrollBarEnabled(true);
 		        setVerticalScrollBarEnabled(true);
@@ -108,79 +116,142 @@ public class GraphicView extends AwtView {
 	@Override
     public boolean onTouchEvent(MotionEvent event)
     {
-	
-		  // check for tap and cancel fling
-	    if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN)
-	    {
-	        if (!scroller.isFinished()) scroller.abortAnimation();
-	    }
+		// check for tap and cancel fling
+		if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN)
+		{
+			if (!scroller.isFinished()) scroller.abortAnimation();
+		}
+		
+		// handle pinch zoom gesture
+		// don't check return value since it is always true
+		scaleGestureDetector.onTouchEvent(event);
+		
+		// check for scroll gesture
+		if (gestureDetector.onTouchEvent(event)) return true;
 
-	    if (gestureDetector.onTouchEvent(event)) return true;
+		// check for pointer release 
+		if ((event.getPointerCount() == 1) && ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP))
+		{
+			int newScrollX = getScrollX();
+			if (getScaledWidth() < getWidth()) newScrollX = -(getWidth() - getScaledWidth()) / 2;
+			else if (getScrollX() < 0) newScrollX = 0;
+			else if (getScrollX() > getScaledWidth() - getWidth()) newScrollX = getScaledWidth() - getWidth();
 
-	    // check for pointer release 
-	    if ((event.getPointerCount() == 1) && ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP))
-	    {
-	        int newScrollX = getScrollX();
-	        if (getScrollX() < 0) newScrollX = 0;
-	        else if (getScrollX() > SW - getWidth()) newScrollX = SW - getWidth();
+			int newScrollY = getScrollY();
+			if (getScaledHeight() < getHeight()) newScrollY = -(getHeight() - getScaledHeight()) / 2;
+			else if (getScrollY() < 0) newScrollY = 0;
+			else if (getScrollY() > getScaledHeight() - getHeight()) newScrollY = getScaledHeight() - getHeight();
 
-	        int newScrollY = getScrollY();
-	        if (getScrollY() < 0) newScrollY = 0;
-	        else if (getScrollY() > SH - getHeight()) newScrollY = SH - getHeight();
-
-	        if ((newScrollX != getScrollX()) || (newScrollY != getScrollY()))
-	        {
-	            scroller.startScroll(getScrollX(), getScrollY(), newScrollX - getScrollX(), newScrollY - getScrollY());
-	            awakenScrollBars(scroller.getDuration());
-	        }
-	    }
-
-	    return true;
+			if ((newScrollX != getScrollX()) || (newScrollY != getScrollY()))
+			{
+				scroller.startScroll(getScrollX(), getScrollY(), newScrollX - getScrollX(), newScrollY - getScrollY());
+				awakenScrollBars(scroller.getDuration());
+			}
+		}
+		
+		return true;
     }
+	
 	 @Override
 	    protected int computeHorizontalScrollRange()
 	    {
-	        return SW;
+	        return getSW();
 	    }
 
 	    @Override
 	    protected int computeVerticalScrollRange()
 	    {
-	        return SH;
+	        return getSH();
 	    }
 	    @Override
 	    public void computeScroll()
 	    {
-	        if (scroller.computeScrollOffset())
-	        {
-	            int oldX = getScrollX();
-	            int oldY = getScrollY();
-	            int x = scroller.getCurrX();
-	            int y = scroller.getCurrY();
-	            scrollTo(x, y);
-	            if (oldX != getScrollX() || oldY != getScrollY())
-	            {
-	                onScrollChanged(getScrollX(), getScrollY(), oldX, oldY);
-	            }
+			if (scroller.computeScrollOffset())
+			{
+				int oldX = getScrollX();
+				int oldY = getScrollY();
+				int x = scroller.getCurrX();
+				int y = scroller.getCurrY();
+				scrollTo(x, y);
+				if (oldX != getScrollX() || oldY != getScrollY())
+				{
+					onScrollChanged(getScrollX(), getScrollY(), oldX, oldY);
+				}
 
-	            postInvalidate();
-	        }
+				postInvalidate();
+			}
 	    }
-
+		@Override
+		protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight)
+		{
+/*			int scrollX = (getSW() < width ? -(width - getSW()) / 2 : getSW() / 2);
+			int scrollY = (getSH() < height ? -(height - getSH()) / 2 : getSH() / 2);
+			scrollTo(scrollX, scrollY);*/
+		}
+		
 	    private class MyGestureListener extends SimpleOnGestureListener
 	    {
+	    	@Override
+			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
+			{
+				scrollBy((int)distanceX, (int)distanceY);
+				return true;
+			}
 	        @Override
-	        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
-	        {
-	        	 boolean scrollBeyondImage = ((getScrollX() < 0) || (getScrollX() > SW) || (getScrollY() < 0) || (getScrollY() > SH));
-	        	    if (scrollBeyondImage) return false;
+			public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
+			{
+				int fixedScrollX = 0, fixedScrollY = 0;
+				int maxScrollX = getScaledWidth(), maxScrollY = getScaledHeight();
+				
+				if (getScaledWidth() < getWidth())
+				{
+					fixedScrollX = -(getWidth() - getScaledWidth()) / 2;
+					maxScrollX = fixedScrollX + getScaledWidth();
+				}
+				
+				if (getScaledHeight() < getHeight())
+				{
+					fixedScrollY = -(getHeight() - getScaledHeight()) / 2;
+					maxScrollY = fixedScrollY + getScaledHeight();
+				}
 
-	        	    scroller.fling(getScrollX(), getScrollY(), -(int)velocityX, -(int)velocityY, 0, SW - getWidth(), 0, SH - getHeight());
-	        	    awakenScrollBars(scroller.getDuration());
-
-	        	    return true;
-	        }
+				boolean scrollBeyondImage = (fixedScrollX < 0) || (fixedScrollX > maxScrollX) || (fixedScrollY < 0) || (fixedScrollY > maxScrollY);
+				if (scrollBeyondImage) return false;
+				
+				scroller.fling(getScrollX(), getScrollY(), -(int)velocityX, -(int)velocityY, 0,getSW() - getWidth(), 0, getSH() - getHeight());
+				awakenScrollBars(scroller.getDuration());
+				
+				return true;
+			}
+	        
 	    }
+
+
+
+		private class MyScaleGestureListener implements OnScaleGestureListener
+		{
+			public boolean onScale(ScaleGestureDetector detector)
+			{
+				scaleFactor *= detector.getScaleFactor();
+				yPixelsInMillivolts*=detector.getScaleFactor();
+				xPixelsInMilliseconds*=detector.getScaleFactor();
+				int newScrollX = (int)((getScrollX() + detector.getFocusX()) * detector.getScaleFactor() - detector.getFocusX());
+				int newScrollY = (int)((getScrollY() + detector.getFocusY()) * detector.getScaleFactor() - detector.getFocusY());
+				scrollTo(newScrollX, newScrollY);
+				invalidate();
+			
+				return true;
+			}
+
+			public boolean onScaleBegin(ScaleGestureDetector detector)
+			{
+				return true;
+			}
+
+			public void onScaleEnd(ScaleGestureDetector detector)
+			{
+			}
+		}
 	
 	/*
 	 * Initializing
@@ -190,7 +261,7 @@ public class GraphicView extends AwtView {
 		if (h!=null) {
 			g = h.getGraphic();
 			setYScaleGrid(5);
-			setXScaleGrid((float) (12.5));
+			setXScaleGrid((float) (12.5));			
 		}
 	}
 
@@ -204,9 +275,11 @@ public class GraphicView extends AwtView {
 		// check DataHandler
 		if (h == null) return;
 		
+
 		//perfom default init
 		init();
-		
+	//	System.out.println("scale in paint");
+	//	System.out.println(scaleFactor);
 		//setting offsets for labels
 		int channelNameXOffset = 10;
 		int channelNameYOffset = 0;
@@ -223,6 +296,7 @@ public class GraphicView extends AwtView {
 		float widthOfTileInPixels = getW()/nTilesPerRow;
 		float heightOfTileInPixels = getH()/nTilesPerColumn;
 		
+		
 		float widthOfTileInMilliSeconds = widthOfTileInPixels/xPixelsInMilliseconds;
 		float widthOfTileGrid = widthOfTileInPixels/xPixelsGrid;
 		float heightOfTileGrid = heightOfTileInPixels/yPixelsGrid;
@@ -237,13 +311,13 @@ public class GraphicView extends AwtView {
 			for (int col=0;col<nTilesPerRow;++col) {
 				g2.setStroke(new BasicStroke((float) 0.15));	
 		
-				for (float time=0; time<widthOfTileGrid; time+=200) {
+				for (float time=0; time<widthOfTileGrid; time+=200*scaleFactor) {
 					float x = drawingOffsetX+time*xPixelsGrid;
 					g2.draw(new Line2D.Float(x,drawingOffsetY,x,drawingOffsetY+heightOfTileInPixels));
 				}
 
 				g2.setStroke(new BasicStroke((float) 0.2));
-				for (float milliVolts=-heightOfTileGrid/2; milliVolts<=heightOfTileGrid/2; milliVolts+=0.5) {
+				for (float milliVolts=-heightOfTileGrid/2; milliVolts<=heightOfTileGrid/2; milliVolts+=0.5*scaleFactor) {
 					float y = drawingOffsetY + heightOfTileInPixels/2 + milliVolts/heightOfTileGrid*heightOfTileInPixels;
 					g2.draw(new Line2D.Float(drawingOffsetX,y,drawingOffsetX+widthOfTileInPixels,y));
 				}
@@ -263,12 +337,13 @@ public class GraphicView extends AwtView {
 				// Just drawing each bounding line once doesn't seem to help them sometimes
 				// being thicker than others ... is this a stroke width problem (better if anti-aliasing on, but then too slow) ?
 				if (row == 0)
-					g2.draw(new Line2D.Float(drawingOffsetX,drawingOffsetY,drawingOffsetX+widthOfTileInPixels,drawingOffsetY));					// top
+					g2.draw(new Line2D.Float(drawingOffsetX,drawingOffsetY,drawingOffsetX+widthOfTileInPixels+xTitlesOffset,drawingOffsetY));					// top
 				if (col == 0)
-					g2.draw(new Line2D.Float(drawingOffsetX,drawingOffsetY,drawingOffsetX,drawingOffsetY+heightOfTileInPixels));					// left
-				g2.draw(new Line2D.Float(drawingOffsetX,drawingOffsetY+heightOfTileInPixels,drawingOffsetX+widthOfTileInPixels,drawingOffsetY+heightOfTileInPixels));	// bottom
-				g2.draw(new Line2D.Float(drawingOffsetX+widthOfTileInPixels,drawingOffsetY,drawingOffsetX+widthOfTileInPixels,drawingOffsetY+heightOfTileInPixels));	// right
+					g2.draw(new Line2D.Float(drawingOffsetX,drawingOffsetY,drawingOffsetX,drawingOffsetY+heightOfTileInPixels));					// left		
 				
+				g2.draw(new Line2D.Float(drawingOffsetX,drawingOffsetY+heightOfTileInPixels,drawingOffsetX+widthOfTileInPixels+xTitlesOffset,drawingOffsetY+heightOfTileInPixels));	// bottom
+		
+				g2.draw(new Line2D.Float(drawingOffsetX+widthOfTileInPixels+xTitlesOffset,drawingOffsetY,drawingOffsetX+widthOfTileInPixels+xTitlesOffset,drawingOffsetY+heightOfTileInPixels));	// right
 				if (g.getChannelNames() != null && channel < g.getDisplaySequence().length && 
 						g.getDisplaySequence()[channel] < g.getChannelNames().length) {
 					String channelName=g.getChannelNames()[g.getDisplaySequence()[channel]];
@@ -276,7 +351,7 @@ public class GraphicView extends AwtView {
 						g2.setStroke(new BasicStroke());
 						g2.setColor(channelNameColor);
 						g2.setFont(font);
-						g2.drawString(channelName,drawingOffsetX+channelNameXOffset,drawingOffsetY+channelNameYOffset+25);
+						g2.drawString(channelName,drawingOffsetX+channelNameXOffset,drawingOffsetY+channelNameYOffset+25*scaleFactor);
 					}
 				}
 				
@@ -313,7 +388,7 @@ public class GraphicView extends AwtView {
 		GeneralPath thePath = new GeneralPath();
 		for (int row=0;row<nTilesPerColumn && channel<g.getNumberOfChannels();++row) {
 			float drawingOffsetX = xTitlesOffset;
-			//System.out.println("samplesForThisChannel ");
+
 			for (int col=0;col<nTilesPerRow && channel<g.getNumberOfChannels();++col) {
 				float yOffset = drawingOffsetY + interceptY;
 				short[] samplesForThisChannel = g.getSamples()[g.getDisplaySequence()[channel]];				
@@ -322,10 +397,7 @@ public class GraphicView extends AwtView {
 				
 				float rescaleY = g.getAmplitudeScalingFactorInMilliVolts()[g.getDisplaySequence()[channel]]*yPixelsInMillivolts;
 				float fromXValue = drawingOffsetX;
-				//System.out.print(samplesForThisChannel[i]);
-				//System.out.print(";");
-				//System.out.print(i);
-				//System.out.print(";");
+
 				
 				float fromYValue;
 				if (invert)
@@ -433,10 +505,17 @@ public class GraphicView extends AwtView {
 	}
 
 	public void setSH(int sH) {
-		SH = sH;
+		SH =sH;
+	}
+	public int getSW() {
+		return  (int) (SW*scaleFactor);
+	}
+
+	public int getSH() {
+		return (int) (SH*scaleFactor);
 	}
 	public int getW() {
-		return W;
+		return (int) (W*scaleFactor);
 	}
 
 	public void setW(int w) {
@@ -444,10 +523,10 @@ public class GraphicView extends AwtView {
 	}
 
 	public int getH() {
-		return H;
+		return (int) (H*scaleFactor);
 	}
 
-	public void setH(int h) {
+	public void setHeight(int h) {
 		H = h;
 	}
 	
@@ -460,7 +539,7 @@ public class GraphicView extends AwtView {
 	}
 	
 	public void setYScale(float millimetersPerMillivolt) {
-		this.yPixelsInMillivolts = 7/millimetersPerMillivolt/(duim/sizeScreen);
+		this.yPixelsInMillivolts = (7/millimetersPerMillivolt/(duim/sizeScreen));
 	}
 		
 	public void setXScaleGrid(float millimetersPerSecond) {
@@ -470,22 +549,29 @@ public class GraphicView extends AwtView {
 	public void setYScaleGrid(float millimetersPerMillivolt) {
 		this.yPixelsGrid = millimetersPerMillivolt/(duim/sizeScreen);
 	}
-		
-	public int getXSCale() {
-		return 0;
-	}
-		
-	public int getYScale() {
-		return 0;
-	}
+
 	
 	public void setXScale(float millimetersPerSecond) {
-		this.xPixelsInMilliseconds = (float) (millimetersPerSecond*(3.15/5)/(1000*duim/sizeScreen));
-		this.W=(int) (millimetersPerSecond*31.96);
-		this.SW=(int)millimetersPerSecond*32+50;
+		this.xPixelsInMilliseconds = (float)( (millimetersPerSecond*(3.15/5)/(1000*duim/sizeScreen)));
+		this.W=(int) (millimetersPerSecond*31.3);
+		this.SW=(int)millimetersPerSecond*32+50;		
 	}
 	public void setInvert(boolean invert) {
 		this.invert = invert;
 	}
 	
+	private int getScaledWidth()
+	{		
+		return (int)(W * scaleFactor);
+	}
+	
+	private int getScaledHeight()
+	{
+		return (int)(H * scaleFactor);
+		
+	}
+	public int getScaleFactor() {
+		return (int)(scaleFactor*100);
+	}
+
 }

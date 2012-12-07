@@ -7,16 +7,23 @@ import ua.stu.view.scpview.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
+import android.view.ScaleGestureDetector.OnScaleGestureListener;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListener {
+public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListener{
 	
 	private DataHandler h;	
 	
@@ -41,8 +48,8 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	 */
 	private static int MAX_POWER = 16;
 	
-	private int speed;
-	private int power;
+	private int speed=25;
+	private int power=1;
 	
 	private SeekBar sliderSpeed;
 	private SeekBar sliderPower;
@@ -54,6 +61,9 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 
 	private CheckBox invert;
 	OnClickListener checkBoxListener;
+	OnTouchListener graphicViewScaleListener;
+
+	private TextView zoom;
 
 	public ECGPanelFragment(DataHandler dh){
 		this.h=dh;
@@ -71,9 +81,10 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		View view = inflater.inflate(R.layout.ecg_panel, null);
 		//Fragment doesn't call onDestroy и onCreate
 		setRetainInstance(true);
-	
 		speedValue = (TextView)view.findViewById(R.id.speed_value);
 		powerValue = (TextView)view.findViewById(R.id.power_value);
+		zoom = (TextView)view.findViewById(R.id.zoom);
+		
 		invert = (CheckBox)view.findViewById(R.id.check_revert_ecg);
 		checkBoxListener=new OnClickListener() {
 			
@@ -88,17 +99,28 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
             	graphicView.invalidate();			
 			}
 			}
+	
 		};
 		invert.setOnClickListener(checkBoxListener);
-
+		
 		graphicView=(GraphicView)view.findViewById(R.id.ecgpanel);
 		graphicView.setH(h);
 		graphicView.setXScale(speed);
-		graphicView.setYScale(power);
-		
-		//temporary
+		graphicView.setYScale((float)0.75);		
+		zoom.setText("Увеличение"+graphicView.getScaleFactor()+"%");
+		graphicViewScaleListener =new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				zoom.setText("Увеличение: "+graphicView.getScaleFactor()+" %");				
+				return false;
+			
+			}
+		};		
+		graphicView.setOnTouchListener(graphicViewScaleListener);
+	    //temporary
 		speedValue.setText(getSpeed()+" mm/c");
-		powerValue.setText(getPower()+" mV/cm");
+		powerValue.setText("0.75"+" mV/cm");
 		
 		sliderSpeed = (SeekBar)view.findViewById(R.id.speed);
 		sliderSpeed.setMax(MAX_SPEED);
@@ -108,7 +130,7 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		
 		sliderPower = (SeekBar)view.findViewById(R.id.power);
 		sliderPower.setMax(MAX_POWER);
-		sliderPower.setProgress(getPower());
+		sliderPower.setProgress(1);
 		sliderSpeed.incrementProgressBy(1);
 		sliderPower.setOnSeekBarChangeListener(this);
 		
@@ -138,6 +160,7 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		this.displayHeight = displayHeight;
 	}
 
+	
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) 
 	{	
@@ -165,10 +188,7 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		
 	}
 
-	public void onStopTrackingTouch(SeekBar arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	public int getSpeed() {
 		return speed;
@@ -184,6 +204,12 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 
 	public void setPower(int power) {
 		this.power = power;
+	}
+
+	@Override
+	public void onStopTrackingTouch(SeekBar seekBar) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

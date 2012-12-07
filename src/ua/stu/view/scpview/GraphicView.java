@@ -1,6 +1,5 @@
 package ua.stu.view.scpview;
 
-import com.sun.swing.internal.plaf.basic.resources.basic;
 
 import ua.stu.scplib.attribute.GraphicAttribute;
 import ua.stu.scplib.attribute.GraphicAttributeBase;

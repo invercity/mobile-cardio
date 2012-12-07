@@ -1,5 +1,6 @@
 package ua.stu.view.scpview;
 
+
 import group.pals.android.lib.ui.filechooser.FileChooserActivity;
 import group.pals.android.lib.ui.filechooser.io.localfile.LocalFile;
 import group.pals.android.lib.ui.filechooser.services.IFileProvider;
@@ -67,7 +68,7 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
         filePathKey = getResources().getString(R.string.app_file_path);
         state = savedInstanceState;
 		if (state == null){
-        	runFileChooser(R.style.Theme_Sherlock,ROOT_PATH);
+        	runFileChooser(R.style.Theme_Sherlock_Dialog,ROOT_PATH);
         }
     }
 	@Override
@@ -213,7 +214,7 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 		switch (resId) {
 		case R.id.file_chooser:
 			Log.d(TAG,"file chooser");
-			runFileChooser(R.style.Theme_Sherlock,ROOT_PATH);
+			runFileChooser(R.style.Theme_Sherlock_Dialog,ROOT_PATH);
 			break;
 		case R.id.camera:
 			Log.d(TAG,"camera");

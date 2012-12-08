@@ -1,6 +1,10 @@
 package ua.stu.view.fragments;
 
 
+
+
+import com.actionbarsherlock.app.SherlockFragment;
+
 import ua.stu.scplib.data.DataHandler;
 import ua.stu.view.scpview.GraphicView;
 import ua.stu.view.scpview.R;
@@ -107,7 +111,7 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		graphicView.setH(h);
 		graphicView.setXScale(speed);
 		graphicView.setYScale((float)0.75);		
-		zoom.setText("Увеличение"+graphicView.getScaleFactor()+"%");
+		zoom.setText("Увеличение: "+graphicView.getScaleFactor()+" %");	
 		graphicViewScaleListener =new OnTouchListener() {
 			
 			@Override

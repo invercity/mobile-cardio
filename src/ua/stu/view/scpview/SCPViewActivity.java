@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import com.actionbarsherlock.app.SherlockActivity;
+
 import ua.stu.scplib.data.DataHandler;
 import ua.stu.view.adapter.SamplePagerAdapter;
 import ua.stu.view.fragments.ECGPanelFragment;
@@ -62,13 +64,13 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 	@Override
     public void onCreate(Bundle savedInstanceState)
     {
-    	setTheme(R.style.Theme_Sherlock);
+		setTheme(R.style.Theme_Sherlock);
         super.onCreate(savedInstanceState);
         
         filePathKey = getResources().getString(R.string.app_file_path);
         state = savedInstanceState;
 		if (state == null){
-        	runFileChooser(R.style.Theme_Sherlock_Dialog,ROOT_PATH);
+        	runFileChooser(R.style.Theme_Sherlock,ROOT_PATH);
         }
     }
 	@Override
@@ -214,7 +216,7 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 		switch (resId) {
 		case R.id.file_chooser:
 			Log.d(TAG,"file chooser");
-			runFileChooser(R.style.Theme_Sherlock_Dialog,ROOT_PATH);
+			runFileChooser(R.style.Theme_Sherlock,ROOT_PATH);
 			break;
 		case R.id.camera:
 			Log.d(TAG,"camera");

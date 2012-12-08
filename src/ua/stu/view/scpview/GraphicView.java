@@ -70,7 +70,7 @@ public class GraphicView extends AwtView {
 	Color gridColor = Color.black;
 	Color channelNameColor = Color.black;
 	// basic font
-	Font font = new Font("Ubuntu",0,14);
+	Font font = null;
 	// any info?
 	private boolean fillBackgroundFirst;
 	private boolean invert=false;
@@ -283,6 +283,7 @@ public class GraphicView extends AwtView {
 		//setting offsets for labels
 		int channelNameXOffset = 10;
 		int channelNameYOffset = 0;
+		font=new Font("Ubuntu",0,(int) (14*scaleFactor));
 		
 		// setting color map
 		g2.setBackground(backgroundColor);
@@ -309,14 +310,14 @@ public class GraphicView extends AwtView {
 		for (int row=0;row<nTilesPerColumn;++row) {
 			float drawingOffsetX = xTitlesOffset;
 			for (int col=0;col<nTilesPerRow;++col) {
-				g2.setStroke(new BasicStroke((float) 0.15));	
+				g2.setStroke(new BasicStroke((float) 0.6));	
 		
 				for (float time=0; time<widthOfTileGrid; time+=200*scaleFactor) {
 					float x = drawingOffsetX+time*xPixelsGrid;
 					g2.draw(new Line2D.Float(x,drawingOffsetY,x,drawingOffsetY+heightOfTileInPixels));
 				}
 
-				g2.setStroke(new BasicStroke((float) 0.2));
+				g2.setStroke(new BasicStroke((float) 0.6));
 				for (float milliVolts=-heightOfTileGrid/2; milliVolts<=heightOfTileGrid/2; milliVolts+=0.5*scaleFactor) {
 					float y = drawingOffsetY + heightOfTileInPixels/2 + milliVolts/heightOfTileGrid*heightOfTileInPixels;
 					g2.draw(new Line2D.Float(drawingOffsetX,y,drawingOffsetX+widthOfTileInPixels,y));
@@ -552,7 +553,7 @@ public class GraphicView extends AwtView {
 
 	
 	public void setXScale(float millimetersPerSecond) {
-		this.xPixelsInMilliseconds = (float)( (millimetersPerSecond*(3.15/5)/(1000*duim/sizeScreen)));
+		this.xPixelsInMilliseconds = (float)( (millimetersPerSecond*(3.15/5)/(1000*duim/sizeScreen)))* scaleFactor;
 		this.W=(int) (millimetersPerSecond*31.3);
 		this.SW=(int)millimetersPerSecond*32+50;		
 	}

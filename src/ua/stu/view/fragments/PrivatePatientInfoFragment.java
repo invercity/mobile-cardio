@@ -1,5 +1,7 @@
 package ua.stu.view.fragments;
 
+import com.actionbarsherlock.app.SherlockFragment;
+
 import ua.stu.view.scpview.R;
 import ua.stu.view.temporary.InfoP;
 import android.app.Fragment;
@@ -10,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class PrivatePatientInfoFragment extends Fragment {
+public class PrivatePatientInfoFragment extends Fragment{
 	
 	private static String TAG = "PrivatePatientInfoFragment";
 	

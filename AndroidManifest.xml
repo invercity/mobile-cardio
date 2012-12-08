@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="ua.stu.view.scpview"
       android:versionCode="1"
-      android:versionName="1.0">
-<application android:label="@string/app_name" android:icon="@drawable/ic_launcher" android:hardwareAccelerated="true">
+      android:versionName="1.0">           
+           
+<application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
         <activity android:name="SCPViewActivity" android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,4 +18,5 @@
         <activity android:name="group.pals.android.lib.ui.filechooser.FileChooserActivity"></activity>
         <service android:name="group.pals.android.lib.ui.filechooser.services.LocalFileProvider"></service>
     </application>
+
 </manifest>

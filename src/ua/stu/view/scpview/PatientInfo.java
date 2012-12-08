@@ -2,6 +2,8 @@ package ua.stu.view.scpview;
 
 import java.util.HashMap;
 
+import com.actionbarsherlock.app.SherlockActivity;
+
 import ua.stu.view.fragments.AddrPatientFragment;
 import ua.stu.view.fragments.BloodPressFragment;
 import ua.stu.view.fragments.DiagnoseFragment;
@@ -132,7 +134,7 @@ public class PatientInfo extends Activity implements android.widget.CompoundButt
 	        {
 	        	fTrans.add(R.id.frame_medical_history, medicalHistory);
 	        } else {
-	        	fTrans.remove(medicalHistory);
+	       	fTrans.remove(medicalHistory);
 	        }
 	        break;
 		}

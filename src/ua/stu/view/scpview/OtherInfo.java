@@ -2,11 +2,17 @@ package ua.stu.view.scpview;
 
 import java.util.HashMap;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.app.SherlockListActivity;
+
 import ua.stu.view.fragments.DeviceForECGFragment;
 import ua.stu.view.fragments.ECGInfoFragment;
 import ua.stu.view.scpview.R;
 import ua.stu.view.temporary.InfoO;
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +28,6 @@ public class OtherInfo extends Activity implements android.widget.CompoundButton
 	private InfoO infoO;
 	
 	private FragmentTransaction fTrans;
-	
 	private CheckBox chDeviceForECG;
 	private CheckBox chECGInfo;
 	

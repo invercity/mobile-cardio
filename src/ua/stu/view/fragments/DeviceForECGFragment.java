@@ -1,5 +1,7 @@
 package ua.stu.view.fragments;
 
+import com.actionbarsherlock.app.SherlockFragment;
+
 import ua.stu.view.scpview.R;
 import ua.stu.view.temporary.InfoO;
 import android.app.Fragment;

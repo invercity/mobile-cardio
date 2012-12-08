@@ -1,6 +1,8 @@
 package ua.stu.view.scpview;
 
 
+import java.awt.image.BufferedImage;
+
 import ua.stu.scplib.attribute.GraphicAttribute;
 import ua.stu.scplib.attribute.GraphicAttributeBase;
 import ua.stu.scplib.data.DataHandler;
@@ -11,8 +13,10 @@ import and.awt.Stroke;
 import and.awt.geom.GeneralPath;
 import and.awt.geom.Line2D;
 import and.awt.geom.Rectangle2D;
+import and.awt.geom.RectangularShape;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.text.style.LineHeightSpan.WithDensity;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
@@ -29,12 +33,6 @@ import net.pbdavey.awt.RenderingHints;
 public class GraphicView extends AwtView {
 	// object which holds all required data for drawing
 	private DataHandler h = null;
-	// scrolling
-	private final GestureDetector gestureDetector;	
-	private final Scroller scroller;
-	//scale(zoom)
-	private final ScaleGestureDetector scaleGestureDetector;
-	private float scaleFactor=(float)1.0;
 	// window size params
 	private int W = 800;
 	private int H = 600;
@@ -74,7 +72,7 @@ public class GraphicView extends AwtView {
 	// any info?
 	private boolean fillBackgroundFirst;
 	private boolean invert=false;
-	
+	private GraphicView graphicView;
 	/*
 	 * Scrolling
 	 */
@@ -84,174 +82,13 @@ public class GraphicView extends AwtView {
 	public GraphicView(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
-				gestureDetector = new GestureDetector(context, new MyGestureListener());
-				scaleGestureDetector = new ScaleGestureDetector(context, new MyScaleGestureListener());
-				scroller = new Scroller(context);
-				
-				// init scrollbars
-		        setHorizontalScrollBarEnabled(true);
-		        setVerticalScrollBarEnabled(true);
-		        
-		        
-		        TypedArray a = context.obtainStyledAttributes(R.styleable.View);
-		        initializeScrollbars(a);
-		        a.recycle();
 	}
+	
 	
 	public GraphicView(Context context, AttributeSet attribSet) {
 		super(context, attribSet);
-		// TODO Auto-generated constructor stub
-				gestureDetector = new GestureDetector(context, new MyGestureListener());
-				scaleGestureDetector = new ScaleGestureDetector(context, new MyScaleGestureListener());
-				scroller = new Scroller(context);
-				// init scrollbars
-		        setHorizontalScrollBarEnabled(true);
-		        setVerticalScrollBarEnabled(true);
-		        
-		        
-		        TypedArray a = context.obtainStyledAttributes(R.styleable.View);
-		        initializeScrollbars(a);
-		        a.recycle();
+
 	}
-	@Override
-    public boolean onTouchEvent(MotionEvent event)
-    {
-		// check for tap and cancel fling
-		if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN)
-		{
-			if (!scroller.isFinished()) scroller.abortAnimation();
-		}
-		
-		// handle pinch zoom gesture
-		// don't check return value since it is always true
-		scaleGestureDetector.onTouchEvent(event);
-		
-		// check for scroll gesture
-		if (gestureDetector.onTouchEvent(event)) return true;
-
-		// check for pointer release 
-		if ((event.getPointerCount() == 1) && ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP))
-		{
-			int newScrollX = getScrollX();
-			if (getScaledWidth() < getWidth()) newScrollX = -(getWidth() - getScaledWidth()) / 2;
-			else if (getScrollX() < 0) newScrollX = 0;
-			else if (getScrollX() > getScaledWidth() - getWidth()) newScrollX = getScaledWidth() - getWidth();
-
-			int newScrollY = getScrollY();
-			if (getScaledHeight() < getHeight()) newScrollY = -(getHeight() - getScaledHeight()) / 2;
-			else if (getScrollY() < 0) newScrollY = 0;
-			else if (getScrollY() > getScaledHeight() - getHeight()) newScrollY = getScaledHeight() - getHeight();
-
-			if ((newScrollX != getScrollX()) || (newScrollY != getScrollY()))
-			{
-				scroller.startScroll(getScrollX(), getScrollY(), newScrollX - getScrollX(), newScrollY - getScrollY());
-				awakenScrollBars(scroller.getDuration());
-			}
-		}
-		
-		return true;
-    }
-	
-	 @Override
-	    protected int computeHorizontalScrollRange()
-	    {
-	        return getSW();
-	    }
-
-	    @Override
-	    protected int computeVerticalScrollRange()
-	    {
-	        return getSH();
-	    }
-	    @Override
-	    public void computeScroll()
-	    {
-			if (scroller.computeScrollOffset())
-			{
-				int oldX = getScrollX();
-				int oldY = getScrollY();
-				int x = scroller.getCurrX();
-				int y = scroller.getCurrY();
-				scrollTo(x, y);
-				if (oldX != getScrollX() || oldY != getScrollY())
-				{
-					onScrollChanged(getScrollX(), getScrollY(), oldX, oldY);
-				}
-
-				postInvalidate();
-			}
-	    }
-		@Override
-		protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight)
-		{
-/*			int scrollX = (getSW() < width ? -(width - getSW()) / 2 : getSW() / 2);
-			int scrollY = (getSH() < height ? -(height - getSH()) / 2 : getSH() / 2);
-			scrollTo(scrollX, scrollY);*/
-		}
-		
-	    private class MyGestureListener extends SimpleOnGestureListener
-	    {
-	    	@Override
-			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
-			{
-				scrollBy((int)distanceX, (int)distanceY);
-				return true;
-			}
-	        @Override
-			public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
-			{
-				int fixedScrollX = 0, fixedScrollY = 0;
-				int maxScrollX = getScaledWidth(), maxScrollY = getScaledHeight();
-				
-				if (getScaledWidth() < getWidth())
-				{
-					fixedScrollX = -(getWidth() - getScaledWidth()) / 2;
-					maxScrollX = fixedScrollX + getScaledWidth();
-				}
-				
-				if (getScaledHeight() < getHeight())
-				{
-					fixedScrollY = -(getHeight() - getScaledHeight()) / 2;
-					maxScrollY = fixedScrollY + getScaledHeight();
-				}
-
-				boolean scrollBeyondImage = (fixedScrollX < 0) || (fixedScrollX > maxScrollX) || (fixedScrollY < 0) || (fixedScrollY > maxScrollY);
-				if (scrollBeyondImage) return false;
-				
-				scroller.fling(getScrollX(), getScrollY(), -(int)velocityX, -(int)velocityY, 0,getSW() - getWidth(), 0, getSH() - getHeight());
-				awakenScrollBars(scroller.getDuration());
-				
-				return true;
-			}
-	        
-	    }
-
-
-
-		private class MyScaleGestureListener implements OnScaleGestureListener
-		{
-			public boolean onScale(ScaleGestureDetector detector)
-			{
-				scaleFactor *= detector.getScaleFactor();
-				yPixelsInMillivolts*=detector.getScaleFactor();
-				xPixelsInMilliseconds*=detector.getScaleFactor();
-				int newScrollX = (int)((getScrollX() + detector.getFocusX()) * detector.getScaleFactor() - detector.getFocusX());
-				int newScrollY = (int)((getScrollY() + detector.getFocusY()) * detector.getScaleFactor() - detector.getFocusY());
-				scrollTo(newScrollX, newScrollY);
-				invalidate();
-			
-				return true;
-			}
-
-			public boolean onScaleBegin(ScaleGestureDetector detector)
-			{
-				return true;
-			}
-
-			public void onScaleEnd(ScaleGestureDetector detector)
-			{
-			}
-		}
 	
 	/*
 	 * Initializing
@@ -271,7 +108,7 @@ public class GraphicView extends AwtView {
 	
 	@Override
 	public void paint(Graphics2D g2) {
-		
+
 		// check DataHandler
 		if (h == null) return;
 		
@@ -283,7 +120,7 @@ public class GraphicView extends AwtView {
 		//setting offsets for labels
 		int channelNameXOffset = 10;
 		int channelNameYOffset = 0;
-		font=new Font("Ubuntu",0,(int) (14*scaleFactor));
+		font=new Font("Ubuntu",0,(int) (14));
 		
 		// setting color map
 		g2.setBackground(backgroundColor);
@@ -312,13 +149,13 @@ public class GraphicView extends AwtView {
 			for (int col=0;col<nTilesPerRow;++col) {
 				g2.setStroke(new BasicStroke((float) 0.6));	
 		
-				for (float time=0; time<widthOfTileGrid; time+=200*scaleFactor) {
+				for (float time=0; time<widthOfTileGrid; time+=200) {
 					float x = drawingOffsetX+time*xPixelsGrid;
 					g2.draw(new Line2D.Float(x,drawingOffsetY,x,drawingOffsetY+heightOfTileInPixels));
 				}
 
 				g2.setStroke(new BasicStroke((float) 0.6));
-				for (float milliVolts=-heightOfTileGrid/2; milliVolts<=heightOfTileGrid/2; milliVolts+=0.5*scaleFactor) {
+				for (float milliVolts=-heightOfTileGrid/2; milliVolts<=heightOfTileGrid/2; milliVolts+=0.5) {
 					float y = drawingOffsetY + heightOfTileInPixels/2 + milliVolts/heightOfTileGrid*heightOfTileInPixels;
 					g2.draw(new Line2D.Float(drawingOffsetX,y,drawingOffsetX+widthOfTileInPixels,y));
 				}
@@ -352,7 +189,7 @@ public class GraphicView extends AwtView {
 						g2.setStroke(new BasicStroke());
 						g2.setColor(channelNameColor);
 						g2.setFont(font);
-						g2.drawString(channelName,drawingOffsetX+channelNameXOffset,drawingOffsetY+channelNameYOffset+25*scaleFactor);
+						g2.drawString(channelName,drawingOffsetX+channelNameXOffset,drawingOffsetY+channelNameYOffset+25);
 					}
 				}
 				
@@ -509,14 +346,14 @@ public class GraphicView extends AwtView {
 		SH =sH;
 	}
 	public int getSW() {
-		return  (int) (SW*scaleFactor);
+		return  (int) (SW);
 	}
 
 	public int getSH() {
-		return (int) (SH*scaleFactor);
+		return (int) (SH);
 	}
 	public int getW() {
-		return (int) (W*scaleFactor);
+		return (int) (W);
 	}
 
 	public void setW(int w) {
@@ -524,13 +361,8 @@ public class GraphicView extends AwtView {
 	}
 
 	public int getH() {
-		return (int) (H*scaleFactor);
+		return H;
 	}
-
-	public void setHeight(int h) {
-		H = h;
-	}
-	
 	public void setFont(String fontName) {
 		this.font = new Font(fontName,0,14);
 	}
@@ -553,7 +385,7 @@ public class GraphicView extends AwtView {
 
 	
 	public void setXScale(float millimetersPerSecond) {
-		this.xPixelsInMilliseconds = (float)( (millimetersPerSecond*(3.15/5)/(1000*duim/sizeScreen)))* scaleFactor;
+		this.xPixelsInMilliseconds = (float)( (millimetersPerSecond*(3.15/5)/(1000*duim/sizeScreen)));
 		this.W=(int) (millimetersPerSecond*31.3);
 		this.SW=(int)millimetersPerSecond*32+50;		
 	}
@@ -561,18 +393,5 @@ public class GraphicView extends AwtView {
 		this.invert = invert;
 	}
 	
-	private int getScaledWidth()
-	{		
-		return (int)(W * scaleFactor);
-	}
-	
-	private int getScaledHeight()
-	{
-		return (int)(H * scaleFactor);
-		
-	}
-	public int getScaleFactor() {
-		return (int)(scaleFactor*100);
-	}
 
 }

@@ -59,7 +59,7 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 
 	private Bundle state;
 	private ViewPager viewPager;
-	
+	private GraphicView graphicView;
     /** Called when the activity is first created. */
 	@Override
     public void onCreate(Bundle savedInstanceState)
@@ -72,6 +72,7 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 		if (state == null){
         	runFileChooser(R.style.Theme_Sherlock,ROOT_PATH);
         }
+		graphicView=new GraphicView(this);
     }
 	@Override
 	public void onStart()
@@ -90,7 +91,8 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 		}catch(Exception e){
 		  	Log.e(TAG, e.toString());
 		}
-		ecgPanel = new ECGPanelFragment(h);
+		graphicView.setH(h);
+		ecgPanel = new ECGPanelFragment(graphicView);
 		info = new InfoFragment();
 		fileChooser = new FileChooserFragment();
 		

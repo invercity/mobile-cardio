@@ -7,7 +7,12 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 import ua.stu.scplib.data.DataHandler;
 import ua.stu.view.scpview.GraphicView;
+import ua.stu.view.scpview.ImageViewer;
 import ua.stu.view.scpview.R;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
@@ -28,8 +33,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListener{
-	
-	private DataHandler h;	
 	
 	/**
 	 * Длина экрана
@@ -62,17 +65,27 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	private TextView powerValue;
 
 	private GraphicView graphicView;
-
+	private ImageViewer imageViewer;
 	private CheckBox invert;
 	OnClickListener checkBoxListener;
 	OnTouchListener graphicViewScaleListener;
 
 	private TextView zoom;
 
-	public ECGPanelFragment(DataHandler dh){
-		this.h=dh;
+	public ECGPanelFragment(GraphicView graphicView){
+		this.graphicView=graphicView;
 	}
-	
+	public static Bitmap getBitmapFromView(GraphicView view) {
+	    Bitmap returnedBitmap = Bitmap.createBitmap(view.getSW(), view.getSH(),Bitmap.Config.ARGB_8888);
+	    Canvas canvas = new Canvas(returnedBitmap);
+	    Drawable bgDrawable =view.getBackground();
+	    if (bgDrawable!=null) 
+	        bgDrawable.draw(canvas);
+	    else 
+	        canvas.drawColor(Color.WHITE);
+	    view.draw(canvas);
+	    return returnedBitmap;
+	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
 	{
@@ -97,31 +110,36 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 				// TODO Auto-generated method stub
 				if (invert.isChecked()){
 	                graphicView.setInvert(true);
-	            	graphicView.invalidate();				
+	                graphicView.invalidate();
+	                imageViewer.loadImage(getBitmapFromView(graphicView));	
+	                imageViewer.invalidate();
+	                zoom.setText("Увеличение: "+imageViewer.getScaleFactor()+" %");	
 			}else{
-                graphicView.setInvert(false);
-            	graphicView.invalidate();			
+				 graphicView.setInvert(false);
+				 graphicView.invalidate();
+	             imageViewer.loadImage(getBitmapFromView(graphicView));	
+	             imageViewer.invalidate();
+	             zoom.setText("Увеличение: "+imageViewer.getScaleFactor()+" %");	
 			}
 			}
 	
 		};
 		invert.setOnClickListener(checkBoxListener);
-		
-		graphicView=(GraphicView)view.findViewById(R.id.ecgpanel);
-		graphicView.setH(h);
+		imageViewer=(ImageViewer)view.findViewById(R.id.ImageViewer);		
 		graphicView.setXScale(speed);
 		graphicView.setYScale((float)0.75);		
-		zoom.setText("Увеличение: "+graphicView.getScaleFactor()+" %");	
+		imageViewer.loadImage(getBitmapFromView(graphicView));
+		zoom.setText("Увеличение: "+imageViewer.getScaleFactor()+" %");	
 		graphicViewScaleListener =new OnTouchListener() {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				zoom.setText("Увеличение: "+graphicView.getScaleFactor()+" %");				
+				zoom.setText("Увеличение: "+imageViewer.getScaleFactor()+" %");				
 				return false;
 			
 			}
 		};		
-		graphicView.setOnTouchListener(graphicViewScaleListener);
+		imageViewer.setOnTouchListener(graphicViewScaleListener);
 	    //temporary
 		speedValue.setText(getSpeed()+" mm/c");
 		powerValue.setText("0.75"+" mV/cm");
@@ -177,11 +195,17 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 				speedValue.setText(progress+" mm/c");
 				graphicView.setXScale(progress);
 				graphicView.invalidate();
+				imageViewer.loadImage(getBitmapFromView(graphicView));
+				imageViewer.invalidate();
+				zoom.setText("Увеличение: "+imageViewer.getScaleFactor()+" %");	
 				break;
 			case R.id.power:
 				powerValue.setText(step/CORRECTION_POWER+" mV/cm");	
 				graphicView.setYScale(step/CORRECTION_POWER);
 				graphicView.invalidate();
+				imageViewer.loadImage(getBitmapFromView(graphicView));
+				imageViewer.invalidate();
+				zoom.setText("Увеличение: "+imageViewer.getScaleFactor()+" %");	
 				break;
 			}
 		}

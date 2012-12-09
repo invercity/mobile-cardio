@@ -77,6 +77,7 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	}
 	public static Bitmap getBitmapFromView(GraphicView view) {
 	    Bitmap returnedBitmap = Bitmap.createBitmap(view.getSW(), view.getSH(),Bitmap.Config.ARGB_8888);
+	   
 	    Canvas canvas = new Canvas(returnedBitmap);
 	    Drawable bgDrawable =view.getBackground();
 	    if (bgDrawable!=null) 

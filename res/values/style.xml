@@ -9,7 +9,7 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:typeface">serif</item>
-        <item name="android:paddingLeft">30dp</item>
+        
     </style>
     <style name="Edit2StyleValue" parent="@android:style/TextAppearance.Small">
         <item name="android:layout_width">fill_parent</item>
@@ -52,10 +52,17 @@
     </style>
     <style name="ECGSeekStyle" parent="@style/ECGViewStyle">
         <item name="android:paddingTop">0dp</item>
+        
     </style>
     <style name="FrameStyle" parent="@android:style/TextAppearance.Small">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">10dp</item>
     </style>
+    <style name="CustomSeekBar" parent="@style/ECGViewStyle">
+  <!--  <item name="android:progressDrawable">@drawable/custom_seek_bar</item> -->
+    <item name="android:thumb">@drawable/seek_bar_thumb</item> 
+  <!--  <item name="android:thumbOffset">0dip</item> -->
+</style>
+    
 </resources>

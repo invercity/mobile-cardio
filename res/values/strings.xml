@@ -4,6 +4,8 @@
     <string name="app_patient">PatientInfo</string>
     <string name="app_other">OtherInfo</string>
     <string name="app_file_path">FilePath</string>
+	<string name="app_current_page">CurrentPage</string>    
+
     <string name="patient">Информация о пациенте</string> 
     <string name="patient_info">PatientInfo</string>
     <string name="id_patient">ID Пациента:</string>

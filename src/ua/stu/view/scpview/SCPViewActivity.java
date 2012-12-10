@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-import com.actionbarsherlock.app.SherlockActivity;
-
 import ua.stu.scplib.data.DataHandler;
 import ua.stu.view.adapter.SamplePagerAdapter;
 import ua.stu.view.fragments.ECGPanelFragment;
@@ -41,6 +39,15 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 	private FileChooserFragment fileChooser;
 	private DataHandler h;
 	/**
+	 * Current page in ViewPager.
+	 * <p><b>Default</b> 1 - ECGPanel
+	 */
+	private int currentPage = 1;
+	/**
+	 * Key for save current page state
+	 */
+	private String currentPageKey;
+	/**
 	 * Key for sending data to activity PatientInfo
 	 */
 	private String patientKey;
@@ -68,6 +75,8 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
         super.onCreate(savedInstanceState);
         
         filePathKey = getResources().getString(R.string.app_file_path);
+        currentPageKey = getResources().getString(R.string.app_current_page);
+        
         state = savedInstanceState;
 		if (state == null){
         	runFileChooser(R.style.Theme_Sherlock,ROOT_PATH);
@@ -110,6 +119,8 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 		      
 		viewPager = createPager(pages);
 		
+		viewPager.setCurrentItem(currentPage);
+		
 		Log.d(TAG,"onResume");
 	}
 	
@@ -137,14 +148,24 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 	protected void onSaveInstanceState(Bundle outState) 
 	{
 	    super.onSaveInstanceState(outState);
+
+	    //save the current ecg file path
 	    outState.putString(filePathKey, filePath);
+	    //save the current page into viewPager
+	    outState.putInt(currentPageKey, viewPager.getCurrentItem());
+
 	    Log.d(TAG, "onSaveInstanceState");
 	}
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) 
 	{
 	    super.onRestoreInstanceState(savedInstanceState);
+
+	    //restore the current ecg file path
 	    filePath = savedInstanceState.getString(filePathKey);
+	    //restore the current page into viewPager
+	    currentPage = savedInstanceState.getInt(currentPageKey);
+
 	    Log.d(TAG, "onRestoreInstanceState");
 	}
 	
@@ -243,10 +264,9 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 		SamplePagerAdapter pagerAdapter = new SamplePagerAdapter(pages);
         ViewPager viewPager = new ViewPager(this);
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setCurrentItem(0);     
+        viewPager.setCurrentItem(currentPage);     
         
         setContentView(viewPager);
-        
         return viewPager;
 	}
 }

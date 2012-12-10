@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <ScrollView
+    	    android:id="@+id/device_scroll_view"
+    	    android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:orientation="vertical">
+	        <RelativeLayout
+    	        android:id="@+id/device_for_ecg"
+    	        style="@style/RelativeStyle">
+    	        <RelativeLayout
+    	            android:id="@+id/maker_layout"
+    	        	style="@style/RelativeStyle">
+					<TextView
+					    android:id="@+id/maker"
+					    style="@style/ViewStyleKey"
+					    android:text="@string/maker" />
+					<TextView
+					    android:id="@+id/maker_value"
+					    style="@style/EditStyleValue"
+					    android:layout_toRightOf="@+id/maker"
+					    android:text="@string/none_patient" />
+				</RelativeLayout>
+				<RelativeLayout
+    	            android:id="@+id/org_num_layout"
+    	        	style="@style/RelativeStyle"
+    	        	android:layout_below="@id/maker_layout">
+					<TextView
+					    android:id="@+id/org_num"
+					    style="@style/ViewStyleKey"
+					    android:text="@string/org_num" />
+					<TextView
+					    android:id="@+id/org_num_value"
+					    style="@style/EditStyleValue"
+					    android:layout_toRightOf="@+id/org_num"
+					    android:text="@string/none_patient" />
+				</RelativeLayout>
+				<RelativeLayout
+    	            android:id="@+id/dep_num_layout"
+    	        	style="@style/RelativeStyle"
+    	        	android:layout_below="@id/org_num_layout">
+					<TextView
+					    android:id="@+id/dep_num"
+					    style="@style/ViewStyleKey"
+					    android:text="@string/dep_num" />
+					<TextView
+					    android:id="@+id/dep_num_value"
+					    style="@style/EditStyleValue"
+					    android:layout_toRightOf="@+id/dep_num"
+					    android:text="@string/none_patient" />
+				</RelativeLayout>
+				<RelativeLayout
+    	            android:id="@+id/dev_id_layout"
+    	        	style="@style/RelativeStyle"
+    	        	android:layout_below="@id/dep_num_layout">
+					<TextView
+					    android:id="@+id/dev_id"
+					    style="@style/ViewStyleKey"
+					    android:text="@string/dev_id" />
+					<TextView
+					    android:id="@+id/dev_id_value"
+					    style="@style/EditStyleValue"
+					    android:layout_toRightOf="@+id/dev_id"
+					    android:text="@string/none_patient" />
+				</RelativeLayout>
+				<RelativeLayout
+    	            android:id="@+id/dev_type_layout"
+    	        	style="@style/RelativeStyle"
+    	        	android:layout_below="@id/dev_id_layout">
+					<TextView
+					    android:id="@+id/dev_type"
+					    style="@style/ViewStyleKey"
+					    android:text="@string/dev_type" />
+					<TextView
+					    android:id="@+id/dev_type_value"
+					    style="@style/EditStyleValue"
+					    android:layout_toRightOf="@+id/dev_type"
+					    android:text="@string/none_patient" />
+				</RelativeLayout>
+				<RelativeLayout
+    	            android:id="@+id/model_layout"
+    	        	style="@style/RelativeStyle"
+    	        	android:layout_below="@id/dev_type_layout">
+					<TextView
+					    android:id="@+id/model"
+					    style="@style/ViewStyleKey"
+					    android:text="@string/model" />
+					<TextView
+					    android:id="@+id/model_value"
+					    style="@style/EditStyleValue"
+					    android:layout_toRightOf="@+id/model"
+					    android:text="@string/none_patient" />
+				</RelativeLayout>
+				<RelativeLayout
+    	            android:id="@+id/hz_layout"
+    	        	style="@style/RelativeStyle"
+    	        	android:layout_below="@id/model_layout">
+					<TextView
+					    android:id="@+id/hz"
+					    style="@style/ViewStyleKey"
+					    android:text="@string/hz" />
+					<TextView
+					    android:id="@+id/hz_value"
+					    style="@style/EditStyleValue"
+					    android:layout_toRightOf="@+id/hz"
+					    android:text="@string/none_patient" />
+				</RelativeLayout>
+				<RelativeLayout
+    	            android:id="@+id/soft_version_layout"
+    	        	style="@style/RelativeStyle"
+    	        	android:layout_below="@id/hz_layout">
+					<TextView
+					    android:id="@+id/soft_version"
+					    style="@style/ViewStyleKey"
+					    android:text="@string/soft_version" />
+					<TextView
+					    android:id="@+id/soft_version_value"
+					    style="@style/EditStyleValue"
+					    android:layout_toRightOf="@+id/soft_version"
+					    android:text="@string/none_patient" />
+				</RelativeLayout>
+				<RelativeLayout
+    	            android:id="@+id/serial_num_layout"
+    	        	style="@style/RelativeStyle"
+    	        	android:layout_below="@id/soft_version_layout">
+					<TextView
+					    android:id="@+id/serial_num"
+					    style="@style/ViewStyleKey"
+					    android:text="@string/serial_num" />
+					<TextView
+					    android:id="@+id/serial_num_value"
+					    style="@style/EditStyleValue"
+					    android:layout_toRightOf="@+id/serial_num"
+					    android:text="@string/none_patient" />
+				</RelativeLayout>
+				<RelativeLayout
+    	            android:id="@+id/sys_soft_layout"
+    	        	style="@style/RelativeStyle"
+    	        	android:layout_below="@id/serial_num_layout">
+					<TextView
+					    android:id="@+id/sys_soft"
+					    style="@style/ViewStyleKey"
+					    android:text="@string/sys_soft" />
+					<TextView
+					    android:id="@+id/sys_soft_value"
+					    style="@style/EditStyleValue"
+					    android:layout_toRightOf="@+id/sys_soft"
+					    android:text="@string/none_patient" />
+				</RelativeLayout>
+				<RelativeLayout
+    	            android:id="@+id/soft_scp_layout"
+    	        	style="@style/RelativeStyle"
+    	        	android:layout_below="@id/sys_soft_layout">
+					<TextView
+					    android:id="@+id/soft_scp"
+					    style="@style/ViewStyleKey"
+					    android:text="@string/soft_scp" />
+					<TextView
+					    android:id="@+id/soft_scp_value"
+					    style="@style/EditStyleValue"
+					    android:layout_toRightOf="@+id/soft_scp"
+					    android:text="@string/none_patient" />
+				</RelativeLayout>
+				<RelativeLayout
+    	            android:id="@+id/dev_do_layout"
+    	        	style="@style/RelativeStyle"
+    	        	android:layout_below="@id/soft_scp_layout">
+					<TextView
+					    android:id="@+id/dev_do_txt"
+					    style="@style/HeadRealativeStyle"
+					    android:text="@string/title_dev_do" />
+				</RelativeLayout>
+				<RelativeLayout
+    	            android:id="@+id/check_layout"
+    	        	style="@style/RelativeStyle"
+    	        	android:layout_below="@id/dev_do_layout"
+    	        	android:paddingLeft="0dp">
+					<CheckBox
+				        android:id="@+id/check_print_value"
+				        style="@style/CheckStyle"
+				        android:text="@string/check_print" />
+					<CheckBox
+				        android:id="@+id/check_analys_value"
+				        style="@style/CheckStyle"
+				        android:layout_toRightOf="@+id/check_print_value"
+				        android:text="@string/check_analys" />
+					<CheckBox
+				        android:id="@+id/check_save_value"
+				        style="@style/CheckStyle"
+				        android:layout_below="@+id/check_analys_value"
+				        android:text="@string/check_save" />
+					<CheckBox
+				        android:id="@+id/check_take_value"
+				        style="@style/CheckStyle"
+				        android:layout_toRightOf="@+id/check_analys_value"
+				        android:text="@string/check_take" />
+				</RelativeLayout>
+    	    </RelativeLayout>    
+	</ScrollView>
+</LinearLayout>

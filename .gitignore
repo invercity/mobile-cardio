@@ -1,8 +1,0 @@
-.git/
-.settings/
-.classpath
-.project
-bin/
-gen/
-*.class
-/project.properties

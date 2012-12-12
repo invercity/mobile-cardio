@@ -20,7 +20,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>            
             <intent-filter
                 android:icon="@drawable/ic_launcher"
                 android:label="@string/app_name"
@@ -35,7 +35,38 @@
                     android:host="*"
                     android:pathPattern=".*\\.scp"
                     android:scheme="file" >
-                </data>
+                </data>                
+            </intent-filter>           
+            <intent-filter
+          android:icon="@drawable/ic_launcher"
+                android:label="@string/app_name"
+                android:priority="1" >
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.EDIT" />
+                <action android:name="android.intent.action.PICK" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:mimeType="application/octet-stream" />
+                <data android:pathPattern="*.scp" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="*"
+                    android:mimeType="application/octet-stream"
+                    android:pathPattern=".*\\.scp"
+                    android:scheme="http" />
+                <data
+                    android:host="*"
+                    android:mimeType="application/octet-stream"
+                    android:pathPattern=".*\\.scp"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
         <activity android:name="PatientInfo" >

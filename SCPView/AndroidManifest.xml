@@ -1,22 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="ua.stu.view.scpview"
-      android:versionCode="1"
-      android:versionName="1.0">           
-         <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="16"/> 
-<application android:label="@string/app_name" android:icon="@drawable/ic_launcher" android:allowBackup="false" android:hardwareAccelerated="false">
-        <activity android:name="SCPViewActivity" android:label="@string/app_name">
+    package="ua.stu.view.scpview"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="16" />
+
+    <application
+        android:allowBackup="false"
+        android:hardwareAccelerated="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name" >
+        <activity
+            android:name="SCPViewActivity"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter
+                android:icon="@drawable/ic_launcher"
+                android:label="@string/app_name"
+                android:priority="1" >
+                <category android:name="android.intent.category.DEFAULT" >
+                </category>
+
+                <action android:name="android.intent.action.VIEW" >
+                </action>
+
+                <data
+                    android:host="*"
+                    android:pathPattern=".*\\.scp"
+                    android:scheme="file" >
+                </data>
+            </intent-filter>
         </activity>
-        <activity android:name="PatientInfo">
+        <activity android:name="PatientInfo" >
         </activity>
-        <activity android:name="OtherInfo">
+        <activity android:name="OtherInfo" >
         </activity>
-        <activity android:name="group.pals.android.lib.ui.filechooser.FileChooserActivity"></activity>
-        <service android:name="group.pals.android.lib.ui.filechooser.services.LocalFileProvider"></service>
+        <activity android:name="group.pals.android.lib.ui.filechooser.FileChooserActivity" >
+        </activity>
+
+        <service android:name="group.pals.android.lib.ui.filechooser.services.LocalFileProvider" >
+        </service>
     </application>
 
 </manifest>

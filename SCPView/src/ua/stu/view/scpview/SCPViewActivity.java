@@ -27,6 +27,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 
 public class SCPViewActivity extends Activity implements OnEventItemClickListener,OnEventImageButtonClickListener
 {
@@ -71,6 +72,7 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 	@Override
     public void onCreate(Bundle savedInstanceState)
     {
+		Log.d(TAG,"onCreate");
 		setTheme(R.style.Theme_Sherlock);
         super.onCreate(savedInstanceState);
         
@@ -78,9 +80,7 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
         currentPageKey = getResources().getString(R.string.app_current_page);
         
         state = savedInstanceState;
-		if (state == null){
-        	runFileChooser(R.style.Theme_Sherlock,ROOT_PATH);
-        }
+		
 		graphicView=new GraphicView(this);
     }
 	@Override
@@ -88,21 +88,56 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 	{
 		super.onStart();
 		Log.d(TAG,"onStart");
+		final android.content.Intent intent = getIntent ();
+
+	      if (intent != null)
+	      {
+	         final android.net.Uri data = intent.getData ();
+	         if (data != null)
+	         {	
+	           filePath = data.getEncodedPath ();
+	            System.out.println(filePath);	        
+	            // file loading comes here.
+	         } // if
+	      } // if
+	      if (state == null & filePath==null){
+	        	runFileChooser(R.style.Theme_Sherlock,ROOT_PATH);
+	        }
 	}
-	
+	public String get_mime_by_filename(String filename){
+		  String ext;
+		  String type;
+		 
+		  int lastdot = filename.lastIndexOf(".");
+		  if(lastdot > 0){
+		    ext = filename.substring(lastdot + 1);
+		    MimeTypeMap mime = MimeTypeMap.getSingleton();
+		    type = mime.getMimeTypeFromExtension(ext);
+		    if(type != null) {
+		      return type;
+		    }
+		  }
+		 // return "application/octet-stream";
+		  return "no type";
+		}
 	@Override
 	public void onResume()
 	{
 		super.onResume();
 		
-		try {
+		try {			
+			System.out.println("------------");
+			System.out.println(filePath);
+			System.out.println(get_mime_by_filename(filePath));
+			System.out.println("-------------");
 			h = new DataHandler(filePath);
 		}catch(Exception e){
 		  	Log.e(TAG, e.toString());
 		}
+
 		graphicView.setH(h);
 		ecgPanel = new ECGPanelFragment(graphicView);
-		info = new InfoFragment();
+		info = new InfoFragment();		
 		fileChooser = new FileChooserFragment();
 		
 		LayoutInflater inflater = LayoutInflater.from(this);
@@ -118,7 +153,7 @@ public class SCPViewActivity extends Activity implements OnEventItemClickListene
 		pages.add(page);
 		      
 		viewPager = createPager(pages);
-		
+		System.out.println(currentPage);
 		viewPager.setCurrentItem(currentPage);
 		
 		Log.d(TAG,"onResume");

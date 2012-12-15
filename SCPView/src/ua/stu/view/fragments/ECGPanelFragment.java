@@ -1,10 +1,4 @@
 package ua.stu.view.fragments;
-
-
-
-
-import com.actionbarsherlock.app.SherlockFragment;
-
 import ua.stu.scplib.data.DataHandler;
 import ua.stu.view.scpview.GraphicView;
 import ua.stu.view.scpview.ImageViewer;
@@ -71,7 +65,12 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	OnTouchListener graphicViewScaleListener;
 
 	private TextView zoom;
+	private String zoomText;
 
+	public ECGPanelFragment(){
+		
+	}
+	
 	public ECGPanelFragment(GraphicView graphicView){
 		this.graphicView=graphicView;
 	}
@@ -90,15 +89,15 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
 	{
-		tempInit();
-		
 		DisplayMetrics metrics = inflater.getContext().getResources().getDisplayMetrics();
 		setDisplayWidth(metrics.widthPixels);
 		setDisplayHeight(metrics.heightPixels);
 		
 		View view = inflater.inflate(R.layout.ecg_panel, null);
+		zoomText = view.getResources().getString(R.string.zoom);
 		//Fragment doesn't call onDestroy и onCreate
 		setRetainInstance(true);
+		
 		speedValue = (TextView)view.findViewById(R.id.speed_value);
 		powerValue = (TextView)view.findViewById(R.id.power_value);
 		zoom = (TextView)view.findViewById(R.id.zoom);
@@ -109,19 +108,20 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				String zoomText = v.getResources().getString(R.string.zoom);
 				if (invert.isChecked()){
 	                graphicView.setInvert(true);
 	                graphicView.invalidate();
 	                imageViewer.loadImage(getBitmapFromView(graphicView));	
 	                imageViewer.invalidate();
-	                zoom.setText("Увеличение: "+imageViewer.getScaleFactor()+" %");	
-			}else{
-				 graphicView.setInvert(false);
-				 graphicView.invalidate();
-	             imageViewer.loadImage(getBitmapFromView(graphicView));	
-	             imageViewer.invalidate();
-	             zoom.setText("Увеличение: "+imageViewer.getScaleFactor()+" %");	
-			}
+	                zoom.setText(zoomText+imageViewer.getScaleFactor()+" %");	
+				}else{
+					 graphicView.setInvert(false);
+					 graphicView.invalidate();
+		             imageViewer.loadImage(getBitmapFromView(graphicView));	
+		             imageViewer.invalidate();
+		             zoom.setText(zoomText+imageViewer.getScaleFactor()+" %");	
+				}
 			}
 	
 		};
@@ -130,12 +130,13 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		graphicView.setXScale(speed);
 		graphicView.setYScale((float)0.75);		
 		imageViewer.loadImage(getBitmapFromView(graphicView));
-		zoom.setText("Увеличение: "+imageViewer.getScaleFactor()+" %");	
+		zoom.setText(zoomText+imageViewer.getScaleFactor()+" %");	
 		graphicViewScaleListener =new OnTouchListener() {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				zoom.setText("Увеличение: "+imageViewer.getScaleFactor()+" %");				
+				String zoomText = v.getResources().getString(R.string.zoom);
+				zoom.setText(zoomText+imageViewer.getScaleFactor()+" %");				
 				return false;
 			
 			}
@@ -159,12 +160,6 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		
 	    return view;
 	    
-	}
-
-	public void tempInit()
-	{
-		setSpeed(25);
-		setPower(5);
 	}
 	
 	public int getDisplayWidth() {
@@ -198,7 +193,7 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 				graphicView.invalidate();
 				imageViewer.loadImage(getBitmapFromView(graphicView));
 				imageViewer.invalidate();
-				zoom.setText("Увеличение: "+imageViewer.getScaleFactor()+" %");	
+				zoom.setText(zoomText+imageViewer.getScaleFactor()+" %");	
 				break;
 			case R.id.power:
 				powerValue.setText(step/CORRECTION_POWER+" mV/cm");	
@@ -206,7 +201,7 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 				graphicView.invalidate();
 				imageViewer.loadImage(getBitmapFromView(graphicView));
 				imageViewer.invalidate();
-				zoom.setText("Увеличение: "+imageViewer.getScaleFactor()+" %");	
+				zoom.setText(zoomText+imageViewer.getScaleFactor()+" %");	
 				break;
 			}
 		}
@@ -216,8 +211,6 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		// TODO Auto-generated method stub
 		
 	}
-
-	
 
 	public int getSpeed() {
 		return speed;

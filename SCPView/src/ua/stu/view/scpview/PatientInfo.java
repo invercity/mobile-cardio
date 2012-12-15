@@ -12,14 +12,15 @@ import ua.stu.view.fragments.PrivatePatientInfoFragment;
 import ua.stu.view.scpview.R;
 import ua.stu.view.temporary.InfoP;
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 
-public class PatientInfo extends Activity implements android.widget.CompoundButton.OnCheckedChangeListener
+public class PatientInfo extends FragmentActivity implements android.widget.CompoundButton.OnCheckedChangeListener
 {
 	private static String TAG = "PatientInfo";
 	
@@ -38,8 +39,6 @@ public class PatientInfo extends Activity implements android.widget.CompoundButt
 	private CheckBox chDiagnosPatient;
 	private CheckBox chMedicalHistory;
 	
-	private String patientKey;//maybe, out of constant class
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
     {
@@ -56,7 +55,7 @@ public class PatientInfo extends Activity implements android.widget.CompoundButt
 		super.onStop();
 		Log.d(TAG,"onStop");
 
-		fTrans = getFragmentManager().beginTransaction();
+		fTrans = getSupportFragmentManager().beginTransaction();
 
 		if (isFragmentInStack(R.id.frame_private_patient_info)) fTrans.hide(privatePatientInfo);
 		if (isFragmentInStack(R.id.frame_blood_press)) fTrans.hide(bloodPress);
@@ -69,7 +68,7 @@ public class PatientInfo extends Activity implements android.widget.CompoundButt
 	
 	private final void init(InfoP infoP)
 	{
-		patientKey = getResources().getString(R.string.app_patient);
+		String patientKey = getResources().getString(R.string.app_patient);
 		HashMap table = (HashMap) getIntent().getSerializableExtra(patientKey);
 	    infoP = (InfoP)table.get(patientKey);
 		
@@ -94,7 +93,7 @@ public class PatientInfo extends Activity implements android.widget.CompoundButt
 
 	public void onCheckedChanged(CompoundButton view, boolean checked) 
 	{
-		fTrans = getFragmentManager().beginTransaction();
+		fTrans = getSupportFragmentManager().beginTransaction();
 		
 		switch(view.getId()) {
         case R.id.check_private_patient_info:

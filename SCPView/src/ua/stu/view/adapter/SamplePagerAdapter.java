@@ -2,16 +2,20 @@ package ua.stu.view.adapter;
 
 import java.util.List;
 
+import javax.swing.text.AbstractDocument.Content;
+
+import android.content.Context;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 
 public class SamplePagerAdapter extends PagerAdapter {
 
 	private List<View> pages = null;
-    
-    public SamplePagerAdapter(List<View> pages){
+
+	public SamplePagerAdapter(List<View> pages){
         this.pages = pages;
     }
     
@@ -53,5 +57,4 @@ public class SamplePagerAdapter extends PagerAdapter {
     @Override
     public void startUpdate(View arg0){
     }
-
 }

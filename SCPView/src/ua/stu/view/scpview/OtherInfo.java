@@ -12,14 +12,14 @@ import ua.stu.view.fragments.ECGInfoFragment;
 import ua.stu.view.scpview.R;
 import ua.stu.view.temporary.InfoO;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
-public class OtherInfo extends Activity implements android.widget.CompoundButton.OnCheckedChangeListener
+public class OtherInfo extends FragmentActivity implements android.widget.CompoundButton.OnCheckedChangeListener
 {
 	private static String TAG = "OtherInfo";
 	
@@ -30,8 +30,6 @@ public class OtherInfo extends Activity implements android.widget.CompoundButton
 	private FragmentTransaction fTrans;
 	private CheckBox chDeviceForECG;
 	private CheckBox chECGInfo;
-	
-	private String otherKey;//maybe, out of constant class
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -49,7 +47,7 @@ public class OtherInfo extends Activity implements android.widget.CompoundButton
 		super.onStop();
 		Log.d(TAG,"onStop");
 
-		fTrans = getFragmentManager().beginTransaction();
+		fTrans = getSupportFragmentManager().beginTransaction();
 
 		if (isFragmentInStack(R.id.frame_dev_take_ecg)) fTrans.hide(device);
 		if (isFragmentInStack(R.id.frame_ecg_info)) fTrans.hide(ecgInfo);
@@ -59,7 +57,7 @@ public class OtherInfo extends Activity implements android.widget.CompoundButton
 	
 	private final void init(InfoO infoO)
 	{
-		otherKey = getResources().getString(R.string.app_other);
+		String otherKey = getResources().getString(R.string.app_other);
 		HashMap table = (HashMap) getIntent().getSerializableExtra(otherKey);
 	    infoO = (InfoO)table.get(otherKey);
 		
@@ -75,7 +73,7 @@ public class OtherInfo extends Activity implements android.widget.CompoundButton
 	
 	public void onCheckedChanged(CompoundButton view, boolean checked)
 	{
-		fTrans = getFragmentManager().beginTransaction();
+		fTrans = getSupportFragmentManager().beginTransaction();
 		
 		switch(view.getId()) {
         case R.id.check_dev_take_ecg:

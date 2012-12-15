@@ -4,6 +4,11 @@ import group.pals.android.lib.ui.filechooser.FileChooserActivity;
 import group.pals.android.lib.ui.filechooser.io.localfile.LocalFile;
 import group.pals.android.lib.ui.filechooser.services.IFileProvider;
 
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -11,14 +16,11 @@ import java.util.List;
 import ua.stu.scplib.data.DataHandler;
 import ua.stu.view.adapter.SamplePagerAdapter;
 import ua.stu.view.fragments.ECGPanelFragment;
-import ua.stu.view.fragments.FileChooserFragment;
-import ua.stu.view.fragments.FileChooserFragment.OnEventImageButtonClickListener;
 import ua.stu.view.fragments.InfoFragment;
 import ua.stu.view.fragments.InfoFragment.OnEventItemClickListener;
 import ua.stu.view.temporary.InfoO;
 import ua.stu.view.temporary.InfoP;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -28,38 +30,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 
-public class SCPViewActivity extends Activity implements
-		OnEventItemClickListener, OnEventImageButtonClickListener {
+public class SCPViewActivity extends SherlockFragmentActivity implements
+		OnEventItemClickListener{
+	
 	private static final String TAG = "SCPViewActivity";
 	private static final int REQUEST_CHOOSE_FILE = 0;
 	private static final String ROOT_PATH = "/mnt/sdcard";
 
 	private ECGPanelFragment ecgPanel;
 	private InfoFragment info;
-	private FileChooserFragment fileChooser;
 	private DataHandler h;
 	/**
 	 * Current page in ViewPager.
 	 * <p>
 	 * <b>Default</b> 1 - ECGPanel
 	 */
-	private int currentPage = 1;
-	/**
-	 * Key for save current page state
-	 */
-	private String currentPageKey;
-	/**
-	 * Key for sending data to activity PatientInfo
-	 */
-	private String patientKey;
-	/**
-	 * Key for sending data to activity OtherInfo
-	 */
-	private String otherKey;
-	/**
-	 * Key for save file state
-	 */
-	private String filePathKey;
+	private int currentPage = 0;
 	/**
 	 * ECG file path
 	 */
@@ -76,9 +62,6 @@ public class SCPViewActivity extends Activity implements
 		setTheme(R.style.Theme_Sherlock);
 		super.onCreate(savedInstanceState);
 
-		filePathKey = getResources().getString(R.string.app_file_path);
-		currentPageKey = getResources().getString(R.string.app_current_page);
-
 		state = savedInstanceState;
 		graphicView = new GraphicView(this);
 		final android.content.Intent intent = getIntent();
@@ -94,7 +77,38 @@ public class SCPViewActivity extends Activity implements
 			runFileChooser(R.style.Theme_Sherlock, ROOT_PATH);
 		}
 	}
-
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		String titleFileOpen = getResources().getString(R.string.msg_open_file);
+		String titleCamera = getResources().getString(R.string.msg_camera);
+		
+		menu.add(titleFileOpen)
+        	.setIcon(R.drawable.file_chooser)
+         	.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		
+		menu.add(titleCamera)
+    		.setIcon(R.drawable.camera)
+    		.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+	    return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected (MenuItem item)
+	{
+		String titleFileOpen = getResources().getString(R.string.msg_open_file);
+		String titleCamera = getResources().getString(R.string.msg_camera);
+				
+		if (item.getTitle().equals( titleCamera ))
+		{
+			
+		}	else if (item.getTitle().equals( titleFileOpen )){
+			runFileChooser(R.style.Theme_Sherlock, ROOT_PATH);
+		}
+		
+		return true;
+	}
+	
 	@Override
 	public void onStart() {
 		super.onStart();
@@ -132,15 +146,11 @@ public class SCPViewActivity extends Activity implements
 		graphicView.setH(h);
 		ecgPanel = new ECGPanelFragment(graphicView);
 		info = new InfoFragment();
-		fileChooser = new FileChooserFragment();
 
 		LayoutInflater inflater = LayoutInflater.from(this);
 		List<View> pages = new ArrayList<View>();
 
-		View page = fileChooser.onCreateView(inflater, null, state);
-		pages.add(page);
-
-		page = ecgPanel.onCreateView(inflater, null, state);
+		View page = ecgPanel.onCreateView(inflater, null, state);
 		pages.add(page);
 
 		page = info.onCreateView(inflater, null, state);
@@ -175,6 +185,9 @@ public class SCPViewActivity extends Activity implements
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
+		String filePathKey = getResources().getString(R.string.app_file_path);
+		String currentPageKey = getResources().getString(R.string.app_current_page);
+		
 		// save the current ecg file path
 		outState.putString(filePathKey, filePath);
 		// save the current page into viewPager
@@ -187,6 +200,9 @@ public class SCPViewActivity extends Activity implements
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 
+		String filePathKey = getResources().getString(R.string.app_file_path);
+		String currentPageKey = getResources().getString(R.string.app_current_page);
+		
 		// restore the current ecg file path
 		filePath = savedInstanceState.getString(filePathKey);
 		// restore the current page into viewPager
@@ -212,7 +228,7 @@ public class SCPViewActivity extends Activity implements
 		case 0:
 			Hashtable<String, InfoP> patientTable = new Hashtable<String, InfoP>();
 			InfoP infoP = new InfoP(h.getPInfo().getAllPInfo());
-			patientKey = getResources().getString(R.string.app_patient);
+			String patientKey = getResources().getString(R.string.app_patient);
 			patientTable.put(patientKey, infoP);
 			try {
 				Intent intent = new Intent(this, PatientInfo.class);
@@ -225,7 +241,7 @@ public class SCPViewActivity extends Activity implements
 		case 1:
 			Hashtable<String, InfoO> otherTable = new Hashtable<String, InfoO>();
 			InfoO infoO = new InfoO(h.getOInfo().getAllOInfo());
-			otherKey = getResources().getString(R.string.app_other);
+			String otherKey = getResources().getString(R.string.app_other);
 			otherTable.put(otherKey, infoO);
 			try {
 				Intent intent = new Intent(this, OtherInfo.class);
@@ -260,19 +276,6 @@ public class SCPViewActivity extends Activity implements
 
 				filePath = files.get(0).getPath();
 			}
-			break;
-		}
-	}
-
-	@Override
-	public void imageButtonClickEvent(int resId) {
-		switch (resId) {
-		case R.id.file_chooser:
-			Log.d(TAG, "file chooser");
-			runFileChooser(R.style.Theme_Sherlock, ROOT_PATH);
-			break;
-		case R.id.camera:
-			Log.d(TAG, "camera");
 			break;
 		}
 	}

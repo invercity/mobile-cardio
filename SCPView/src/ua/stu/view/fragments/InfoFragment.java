@@ -1,11 +1,14 @@
 package ua.stu.view.fragments;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 
 import ua.stu.view.scpview.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +18,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
-public class InfoFragment extends Fragment implements OnItemClickListener  {
+public class InfoFragment extends SherlockFragment implements OnItemClickListener  {
 	
 	private static String TAG = "InfoFragment";
 	
 	private ListView lvMain;
 	
-	private String[] values = new String[] {"Пациент","Прочее"};
+	private String[] values;
 	
 	public interface OnEventItemClickListener 
 	{
@@ -34,10 +37,13 @@ public class InfoFragment extends Fragment implements OnItemClickListener  {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		      Bundle savedInstanceState) 
 	{
+		setHasOptionsMenu(true);
 		View view = inflater.inflate(R.layout.info, null);
 		//Fragment doesn't call onDestroy и onCreate
 		setRetainInstance(true);
 
+		values = view.getResources().getStringArray(R.array.info);
+		
 	    lvMain = (ListView) view.findViewById(R.id.lvMain);
 	    lvMain.setOnItemClickListener(this);
 	    
@@ -49,6 +55,23 @@ public class InfoFragment extends Fragment implements OnItemClickListener  {
 	    lvMain.setAdapter(adapter);
 		
 		return view;
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		Log.d(TAG, "onStart");
+
+	}
+	
+	public boolean onCreateOptionsMenu(Menu menu) {
+		String msgFileOpen = getResources().getString(R.string.msg_open_file);
+		String msgCamera = getResources().getString(R.string.msg_camera);
+		
+		menu.add(msgFileOpen)
+        	.setIcon(R.drawable.file_chooser)
+         	.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+	    return true;
 	}
 	
 	@Override

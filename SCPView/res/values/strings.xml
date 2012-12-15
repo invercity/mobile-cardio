@@ -6,61 +6,75 @@
     <string name="app_file_path">FilePath</string>
 	<string name="app_current_page">CurrentPage</string>    
 
-    <string name="patient">Информация о пациенте</string> 
+    <string name="patient">Patient Information</string> 
     <string name="patient_info">PatientInfo</string>
-    <string name="id_patient">ID Пациента:</string>
-    <string name="surname_patient">Фамилия:</string>
-    <string name="father_patient">Отчество:</string>
-    <string name="name_patient">Имя:</string>
-    <string name="birthday_patient">Дата Рождения:</string>
-    <string name="age_patient">Возраст:</string>
-    <string name="high_patient">Высота:</string>
-    <string name="weight_patient">Вес:</string>
-    <string name="sex_patient">Пол:</string>
-    <string name="race_patient">Раса:</string>
-    <string name="stature_patient">Рост:</string>
-    <string name="none_patient">неуказано</string>
-    <string name="blood_press_patient">Кровяное давления</string>
-    <string name="sys_press_patient">Систолическое:</string>
-    <string name="dya_press_patient">Дистолическое:</string>
-    <string name="addr_patient">Адрес</string>
-    <string name="posta_code_patient">Почтовый код:</string>
-    <string name="area_patient">Область:</string>
-    <string name="zone_patient">Район:</string>
-    <string name="nas_punkt_patient">Населенный пункт:</string>
-    <string name="street_patient">Улица:</string>
-    <string name="house_patient">Дом:</string>
-    <string name="time_life_patient">Время проживания(лет):</string>
-    <string name="diagnos_patient">Диагноз или направления</string>
-    <string name="medical_history_patient">История болезни</string>
-    <string name="speed">Скорость:</string>
-    <string name="power">Усиление:</string>
-    <string name="revert_ecg">Инвертировать ЕКГ</string>
-    <string name="title_device_get_ecg">Устройства для получения ЭКГ</string>
-	<string name="maker">Производитель:</string>
-	<string name="org_num">Номер организации:</string>
-	<string name="dep_num">Номер отдела:</string>
-	<string name="dev_id">ID устройства:</string>
-	<string name="dev_type">Тип устройства:</string>
-	<string name="model">Модель:</string>
-	<string name="hz">Частота сети(Гц):</string>
-	<string name="title_dev_do">Возможности устройства</string>
-	<string name="soft_version">Версия анализирующего ПО:</string>
-	<string name="serial_num">Серийный номер:</string>
-	<string name="sys_soft">Системное ПО:</string>
-	<string name="soft_scp">ПО, реализующее протокол SCP:</string>
-	<string name="check_print">Печать</string>
-	<string name="check_analys">Анализ</string>
-	<string name="check_save">Хранения</string>
-	<string name="check_take">Прием</string>
-	<string name="org_write_ecg">Учреждения, записывавшее ЭКГ:</string>
-	<string name="org_analys_ecg">Учреждения, анализировавшее ЭКГ:</string>
-	<string name="dep_get_ecg">Отдел, принимавший ЭКГ:</string>
-	<string name="dep_analys_ecg">Отдел, анализировавший ЭКГ:</string>
-	<string name="go_doctor">Направляющие врачи:</string>
-	<string name="ok_doctor">Подтверждающие врачи:</string>
-	<string name="date_get_ecg">Дата получения ЭКГ:</string>
-	<string name="time_get_ecg">Время получения ЭКГ:</string>
-	<string name="ecg_info">Информация о ЕКГ</string>
+    <string name="id_patient">Patient ID:</string>
+    <string name="surname_patient">Surname:</string>
+    <string name="father_patient">Middle name:</string>
+    <string name="name_patient">Name:</string>
+    <string name="birthday_patient">Date of Birth:</string>
+    <string name="age_patient">Age:</string>
+    <string name="high_patient">Height:</string>
+    <string name="weight_patient">Weight:</string>
+    <string name="sex_patient">Sex:</string>
+    <string name="race_patient">Race:</string>
+    <string name="stature_patient">Stature:</string>
+    <string name="none_patient">not specified</string>
+    <string name="blood_press_patient">Blood pressure</string>
+    <string name="sys_press_patient">Systolic blood pressure:</string>
+    <string name="dya_press_patient">Diastolic blood pressure:</string>
+    <string name="addr_patient">Address</string>
+    <string name="posta_code_patient">Postal Code:</string>
+    <string name="area_patient">Scope:</string>
+    <string name="zone_patient">District:</string>
+    <string name="nas_punkt_patient">Settlement:</string>
+    <string name="street_patient">Street:</string>
+    <string name="house_patient">House:</string>
+    <string name="time_life_patient">Length of stay (years):</string>
+    <string name="diagnos_patient">Diagnosis or directions:</string>
+    <string name="medical_history_patient">Medical history</string>
+    <string name="speed">Speed:</string>
+    <string name="power">Gain:</string>
+    <string name="revert_ecg">Reverse ECG</string>
+    <string name="title_device_get_ecg">Device for ECG</string>
+	<string name="maker">Manufacturer:</string>
+	<string name="org_num">Number of the organization:</string>
+	<string name="dep_num">Department number:</string>
+	<string name="dev_id">Device ID:</string>
+	<string name="dev_type">Device Type:</string>
+	<string name="model">Model:</string>
+	<string name="hz">Frequency (Hz):</string>
+	<string name="title_dev_do">Special Features</string>
+	<string name="soft_version">Analyzing software version:</string>
+	<string name="serial_num">Serial number:</string>
+	<string name="sys_soft">System Software:</string>
+	<string name="soft_scp">Software that implements the SCP:</string>
+	<string name="check_print">Print</string>
+	<string name="check_analys">Analyz</string>
+	<string name="check_save">Storage</string>
+	<string name="check_take">Reception</string>
+	<string name="org_write_ecg">Institutions, recording ECG:</string>
+	<string name="org_analys_ecg">Institution that analyzes ECG:</string>
+	<string name="dep_get_ecg">Department who took ECG</string>
+	<string name="dep_analys_ecg">Department who analyze ECG</string>
+	<string name="go_doctor">Referring physicians:</string>
+	<string name="ok_doctor">Certifying physicians:</string>
+	<string name="date_get_ecg">Date of receipt of ECG:</string>
+	<string name="time_get_ecg">Time of receipt of ECG:</string>
+	<string name="ecg_info">Information on the ECG</string>
+	<string name="msg_open_file">Open ECG File</string>
+	<string name="msg_camera">QR-code</string>
+	<string name="zoom">Zoom: </string>
     <string name="none"></string>
+    <array name="info">
+	    <item>Patient</item>
+	    <item>Other</item>
+	</array>
 </resources>
+
+
+
+
+
+
+

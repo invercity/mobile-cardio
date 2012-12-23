@@ -336,11 +336,12 @@ public class SCPViewActivity extends SherlockFragmentActivity implements
             		break;
             	}
             	case 1: {
-            		if (!isOnline()) {
-        				Toast.makeText(SCPViewActivity.this, "Отсутствует интернет подключение", 
-                        Toast.LENGTH_SHORT).show();
-        			}
-            		else runScanner();
+            		if (SCANNER_ENABLED) {
+            			if (!isOnline()) 
+            				Toast.makeText(SCPViewActivity.this, R.string.no_connection,Toast.LENGTH_SHORT).show();
+            			else runScanner();
+            		}
+            		else Toast.makeText(SCPViewActivity.this, R.string.not_avialable,Toast.LENGTH_SHORT).show();
             		break;
             	}
             	case 2: {

@@ -21,10 +21,10 @@ public class GraphicView extends AwtView {
 	// object which holds all required data for drawing
 	private DataHandler h = null;
 	// window size params
-	private int W = 800;
+	private int W = 920;
 	private int H = 600;
 	// scroll window params
-	private int SW = 800;
+	private int SW = 920;
 	private int SH = 600;
 	// inch constant
 	private float duim = (float) 25.4;
@@ -43,7 +43,7 @@ public class GraphicView extends AwtView {
 	//how much of the sample data to skip, specified in milliseconds from the start of the samples
 	private float timeOffsetInMilliSeconds;
 	//offset for graphic
-	private float xTitlesOffset = sizeScreen/3;
+	private float xTitlesOffset = 2*sizeScreen/3;
 	// how many pixels per mV use for grid
 	private float xPixelsGrid;
 	// how many pixels per mS use for grid
@@ -95,12 +95,7 @@ public class GraphicView extends AwtView {
 
 		// check DataHandler
 		if (h == null) return;
-		
-
-		//perfom default init
 		init();
-	//	System.out.println("scale in paint");
-	//	System.out.println(scaleFactor);
 		//setting offsets for labels
 		int channelNameXOffset = 10;
 		int channelNameYOffset = 0;
@@ -147,15 +142,16 @@ public class GraphicView extends AwtView {
 			}
 			drawingOffsetY+=heightOfTileInPixels;
 		}
-
-		g2.setColor(boxColor);
-		g2.setStroke(new BasicStroke((float) 1.0));
-
+		
+		float tile = yPixelsInMillivolts*duim/sizeScreen;
+		float yIdealTiles = 4*tile - (int)(tile/2);
 		drawingOffsetY = 0;
 		int channel=0;
 		for (int row=0;row<nTilesPerColumn;++row) {
 			float drawingOffsetX = 0;
 			for (int col=0;col<nTilesPerRow;++col) {
+				g2.setColor(boxColor);
+				g2.setStroke(new BasicStroke((float) 1.0));
 				// Just drawing each bounding line once doesn't seem to help them sometimes
 				// being thicker than others ... is this a stroke width problem (better if anti-aliasing on, but then too slow) ?
 				if (row == 0)
@@ -174,6 +170,44 @@ public class GraphicView extends AwtView {
 						g2.setColor(channelNameColor);
 						g2.setFont(font);
 						g2.drawString(channelName,drawingOffsetX+channelNameXOffset,drawingOffsetY+channelNameYOffset+25);
+						g2.setColor(curveColor);
+						// drawing ideal signal
+						g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/8)
+								,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels)
+								,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+								,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels));
+						if (!invert) {
+							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels)
+									,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels - yIdealTiles));
+							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels - yIdealTiles)
+									,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels - yIdealTiles));
+							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels - yIdealTiles)
+									,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels));
+						}
+						else {
+							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels)
+									,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels + yIdealTiles));
+							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels + yIdealTiles)
+									,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels + yIdealTiles));
+							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels + yIdealTiles)
+									,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels));
+						}
+						g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+								,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels)
+								,(int)(channelNameXOffset*4 + 5*heightOfTileInPixels/8)
+								,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels));
 					}
 				}
 				
@@ -370,8 +404,8 @@ public class GraphicView extends AwtView {
 	
 	public void setXScale(float millimetersPerSecond) {
 		this.xPixelsInMilliseconds = (float)( (millimetersPerSecond*(3.15/5)/(1000*duim/sizeScreen)));
-		this.W=(int) (millimetersPerSecond*31.3);
-		this.SW=(int)millimetersPerSecond*32+50;		
+		this.W=(int) (millimetersPerSecond*32);
+		this.SW=(int) ((int)millimetersPerSecond*(32.65)+50);		
 	}
 	public void setInvert(boolean invert) {
 		this.invert = invert;

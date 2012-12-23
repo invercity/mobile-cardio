@@ -4,7 +4,6 @@ import group.pals.android.lib.ui.filechooser.FileChooserActivity;
 import group.pals.android.lib.ui.filechooser.io.localfile.LocalFile;
 import group.pals.android.lib.ui.filechooser.services.IFileProvider;
 
-import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -14,6 +13,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import ua.stu.scplib.data.DataHandler;
+import ua.stu.scplib.tools.Loader;
 import ua.stu.view.adapter.SamplePagerAdapter;
 import ua.stu.view.fragments.ECGPanelFragment;
 import ua.stu.view.fragments.InfoFragment;
@@ -21,20 +21,34 @@ import ua.stu.view.fragments.InfoFragment.OnEventItemClickListener;
 import ua.stu.view.temporary.InfoO;
 import ua.stu.view.temporary.InfoP;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.MimeTypeMap;
+import android.widget.Toast;
 
 public class SCPViewActivity extends SherlockFragmentActivity implements
 		OnEventItemClickListener{
 	
+	SCPViewActivity v = this;
 	private static final String TAG = "SCPViewActivity";
 	private static final int REQUEST_CHOOSE_FILE = 0;
+	private static final int REQUEST_SCAN_QRCODE = 1;
+	public static final String SCAN = "la.droid.qr.scan";
+	public static final String RESULT = "la.droid.qr.result";
+	
+	// this is test flag, allows to use QR code scanner
+	private boolean SCANNER_ENABLED = false;
+	
 	private static final String ROOT_PATH = "/mnt/sdcard";
 
 	private ECGPanelFragment ecgPanel;
@@ -43,13 +57,13 @@ public class SCPViewActivity extends SherlockFragmentActivity implements
 	/**
 	 * Current page in ViewPager.
 	 * <p>
-	 * <b>Default</b> 1 - ECGPanel
+	 * <b>Default</b> 0 - ECGPanel
 	 */
 	private int currentPage = 0;
 	/**
 	 * ECG file path
 	 */
-	private String filePath;
+	private String filePath = "";
 
 	private Bundle state;
 	private ViewPager viewPager;
@@ -64,6 +78,7 @@ public class SCPViewActivity extends SherlockFragmentActivity implements
 
 		state = savedInstanceState;
 		graphicView = new GraphicView(this);
+		
 		final android.content.Intent intent = getIntent();
 
 		if (intent != null) {
@@ -73,8 +88,8 @@ public class SCPViewActivity extends SherlockFragmentActivity implements
 				// file loading comes here.
 			} // if
 		} // if
-		if (state == null & filePath == null) {
-			runFileChooser(R.style.Theme_Sherlock, ROOT_PATH);
+		if (state == null & filePath == "") {
+			runActionDialog();
 		}
 	}
 	
@@ -100,7 +115,14 @@ public class SCPViewActivity extends SherlockFragmentActivity implements
 		String titleCamera = getResources().getString(R.string.msg_camera);
 				
 		if (item.getTitle().equals( titleCamera ))
-		{
+		{	
+			if (SCANNER_ENABLED) {
+				if (!isOnline()) 
+					Toast.makeText(SCPViewActivity.this, R.string.no_connection,Toast.LENGTH_SHORT).show();
+				else runScanner();
+			}
+			else Toast.makeText(SCPViewActivity.this, R.string.not_avialable,Toast.LENGTH_SHORT).show();
+		
 			
 		}	else if (item.getTitle().equals( titleFileOpen )){
 			runFileChooser(R.style.Theme_Sherlock, ROOT_PATH);
@@ -136,7 +158,6 @@ public class SCPViewActivity extends SherlockFragmentActivity implements
 	@Override
 	public void onResume() {
 		super.onResume();
-
 		try {
 			h = new DataHandler(filePath);
 		} catch (Exception e) {
@@ -271,13 +292,71 @@ public class SCPViewActivity extends SherlockFragmentActivity implements
 				 * a list of files will always return, if selection mode is
 				 * single, the list contains one file
 				 */
+				@SuppressWarnings("unchecked")
 				List<LocalFile> files = (List<LocalFile>) data
 						.getSerializableExtra(FileChooserActivity._Results);
 
 				filePath = files.get(0).getPath();
 			}
 			break;
+		case REQUEST_SCAN_QRCODE:
+			if (resultCode == RESULT_OK) {
+			        // this part (Loader class) still not working on Android
+					String result = data.getExtras().getString(RESULT);
+					Loader l = new Loader();
+					filePath = ROOT_PATH + l.load(result,ROOT_PATH);
+			}
+			break;
 		}
+		if (filePath.equals(""))
+			runActionDialog();
+	}
+	
+	public boolean isOnline() {
+	    ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo nInfo = cm.getActiveNetworkInfo();
+	    if (nInfo != null && nInfo.isConnected()) {
+	        Log.v("status", "ONLINE");
+	        return true;
+	    }
+	    else {
+	        Log.v("status", "OFFLINE");
+	        return false;
+	    }
+	}
+	
+
+	public void runActionDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setTitle(R.string.choose_action).setItems(R.array.choose_action_array, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) { 
+            	switch (which) {
+            	case 0: {
+            		runFileChooser(R.style.Theme_Sherlock, ROOT_PATH);
+            		break;
+            	}
+            	case 1: {
+            		if (!isOnline()) {
+        				Toast.makeText(SCPViewActivity.this, "Отсутствует интернет подключение", 
+                        Toast.LENGTH_SHORT).show();
+        			}
+            		else runScanner();
+            		break;
+            	}
+            	case 2: {
+            		v.finish();
+            		break;
+            	}
+            	}
+            }
+        });
+	    AlertDialog dialog = builder.create();
+	    dialog.show();
+	}
+	
+	private final void runScanner() {
+		Intent intent = new Intent(SCAN);
+		startActivityForResult(intent, REQUEST_SCAN_QRCODE);
 	}
 
 	private final void runFileChooser(int style, String rootPath) {
@@ -297,7 +376,6 @@ public class SCPViewActivity extends SherlockFragmentActivity implements
 		ViewPager viewPager = new ViewPager(this);
 		viewPager.setAdapter(pagerAdapter);
 		viewPager.setCurrentItem(currentPage);
-
 		setContentView(viewPager);
 		return viewPager;
 	}

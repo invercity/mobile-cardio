@@ -1,5 +1,4 @@
 package ua.stu.view.fragments;
-import ua.stu.scplib.data.DataHandler;
 import ua.stu.view.scpview.GraphicView;
 import ua.stu.view.scpview.ImageViewer;
 import ua.stu.view.scpview.R;
@@ -10,17 +9,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
-import android.view.ScaleGestureDetector.OnScaleGestureListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -128,7 +122,7 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		invert.setOnClickListener(checkBoxListener);
 		imageViewer=(ImageViewer)view.findViewById(R.id.ImageViewer);		
 		graphicView.setXScale(speed);
-		graphicView.setYScale((float)0.75);		
+		graphicView.setYScale(1);		
 		imageViewer.loadImage(getBitmapFromView(graphicView));
 		zoom.setText(zoomText+imageViewer.getScaleFactor()+" %");	
 		graphicViewScaleListener =new OnTouchListener() {
@@ -143,18 +137,18 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		};		
 		imageViewer.setOnTouchListener(graphicViewScaleListener);
 	    //temporary
-		speedValue.setText(getSpeed()+" mm/c");
-		powerValue.setText("0.75"+" mV/cm");
+		speedValue.setText(getSpeed() + " mm/c");
+		powerValue.setText(getPower() + " mV/cm");
 		
 		sliderSpeed = (SeekBar)view.findViewById(R.id.speed);
-		sliderSpeed.setMax(MAX_SPEED);
-		sliderSpeed.setProgress(getSpeed());
+		sliderSpeed.setMax(MAX_SPEED - 1);
+		sliderSpeed.setProgress(getSpeed() -1);
 		sliderSpeed.incrementProgressBy(1);
 		sliderSpeed.setOnSeekBarChangeListener(this);
 		
 		sliderPower = (SeekBar)view.findViewById(R.id.power);
-		sliderPower.setMax(MAX_POWER);
-		sliderPower.setProgress(1);
+		sliderPower.setMax(MAX_POWER -1);
+		sliderPower.setProgress(getPower() - 1);
 		sliderSpeed.incrementProgressBy(1);
 		sliderPower.setOnSeekBarChangeListener(this);
 		
@@ -182,13 +176,13 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) 
 	{	
-		float step = progress;
+		float step = progress + 4;
 		if (fromUser)
 		{
 			switch(seekBar.getId())
 			{
 			case R.id.speed:
-				speedValue.setText(progress+" mm/c");
+				speedValue.setText((progress+1) + " mm/c");
 				graphicView.setXScale(progress);
 				graphicView.invalidate();
 				imageViewer.loadImage(getBitmapFromView(graphicView));

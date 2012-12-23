@@ -70,4 +70,7 @@
 	    <item>Пациент</item>
 	    <item>Прочее</item>
 	</array>
+    <string name="choose_action">Выберите действие</string>
+    <string name="no_connection">Интернет соединение не доступно</string>
+    <string name="not_avialable">Данная функция пока недоступна</string>
 </resources>

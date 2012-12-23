@@ -25,7 +25,6 @@
 
         <SeekBar
             android:id="@+id/speed"
-            style="@style/CustomSeekBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.35"
@@ -56,7 +55,6 @@
 
         <SeekBar
             android:id="@+id/power"
-			style="@style/CustomSeekBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
              android:layout_gravity="center_vertical" 

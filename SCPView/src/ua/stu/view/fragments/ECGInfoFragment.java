@@ -1,7 +1,6 @@
 package ua.stu.view.fragments;
 
-import ua.stu.view.scpview.R;
-import ua.stu.view.temporary.InfoO;
+import ua.stu.scpview.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -43,18 +42,9 @@ public class ECGInfoFragment extends Fragment {
 	 */
 	private TextView timeECG;
 	
-	private InfoO infoO;
-	
 	public ECGInfoFragment()
 	{
 		
-	}
-	
-	public ECGInfoFragment(InfoO info)
-	{
-		super();
-		
-		this.infoO = info;
 	}
 	
 	@Override
@@ -78,15 +68,6 @@ public class ECGInfoFragment extends Fragment {
 		this.setConfirmDoctors((TextView)v.findViewById(R.id.ok_doctor_value));
 		this.setDateECG((TextView)v.findViewById(R.id.date_get_value));
 		this.setTimeECG((TextView)v.findViewById(R.id.time_get_value));
-		
-		this.setOrgWriteECG(infoO.getAcquiringInstitutionDescription());
-		this.setOrgAnalysECG(infoO.getAnalyzingInstitutionDescription());
-		this.setDepTakeECG(infoO.getAcquiringDepartmentDescription());
-		this.setDepAnalysECG(infoO.getAnalyzingDepartmentDescription());
-		this.setGuideDoctors(infoO.getReferringPhysician());
-		this.setConfirmDoctors(infoO.getLatestConfirmingPhysician());
-		this.setDateECG(infoO.getDateOfAcquisition());
-		this.setTimeECG(infoO.getTimeOfAcquisition());
 	}
 
 	private final void setOrgWriteECG(TextView orgWriteECG) {

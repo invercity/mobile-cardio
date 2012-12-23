@@ -1,8 +1,8 @@
 package ua.stu.view.fragments;
 import ua.stu.scplib.data.DataHandler;
+import ua.stu.scpview.R;
 import ua.stu.view.scpview.GraphicView;
 import ua.stu.view.scpview.ImageViewer;
-import ua.stu.view.scpview.R;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import android.widget.TextView;
 
 public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListener{
 	
+	private static String TAG = "ECGPanelFragment";
 	/**
 	 * Длина экрана
 	 */

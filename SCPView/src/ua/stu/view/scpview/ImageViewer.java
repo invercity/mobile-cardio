@@ -4,6 +4,7 @@
  */
 package ua.stu.view.scpview;
 
+import ua.stu.scpview.R;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.*;

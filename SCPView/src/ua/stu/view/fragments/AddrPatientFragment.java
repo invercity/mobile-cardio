@@ -1,7 +1,6 @@
 package ua.stu.view.fragments;
 
-import ua.stu.view.scpview.R;
-import ua.stu.view.temporary.InfoP;
+import ua.stu.scpview.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -40,17 +39,9 @@ public class AddrPatientFragment extends Fragment {
 	 */
 	private TextView TimeOfResidence;
 	
-	private InfoP infoP;
-	
 	public AddrPatientFragment()
 	{
 		
-	}
-	
-	public AddrPatientFragment(InfoP info){
-		super();
-		
-		this.infoP = info;
 	}
 	
 	@Override
@@ -73,14 +64,6 @@ public class AddrPatientFragment extends Fragment {
 		this.setHouse((TextView)v.findViewById(R.id.house_patient_value));
 		this.setTown((TextView)v.findViewById(R.id.nas_patient_value));
 		this.setTimeOfResidence((TextView)v.findViewById(R.id.life_patient_value));
-		
-		this.setPostCode(infoP.getPostCode());
-		this.setRegion(infoP.getRegion());
-		this.setStreet(infoP.getStreet());
-		this.setDistrict(infoP.getDistrict());
-		this.setHouse(infoP.getHouse());
-		this.setTown(infoP.getTown());
-		this.setTimeOfResidence(infoP.getTimeOfresidence());
 	}
 
 	private final void setPostCode(TextView postCode) {

@@ -1,7 +1,6 @@
 package ua.stu.view.fragments;
 
-import ua.stu.view.scpview.R;
-import ua.stu.view.temporary.InfoO;
+import ua.stu.scpview.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -72,18 +71,9 @@ public class DeviceForECGFragment extends Fragment {
 	 */
 	private CheckBox receive;
 	
-	private InfoO infoO;
-	
 	public DeviceForECGFragment()
 	{
 		
-	}
-	
-	public DeviceForECGFragment(InfoO info)
-	{
-		super();
-		
-		this.infoO = info;
 	}
 	
 	@Override
@@ -114,22 +104,6 @@ public class DeviceForECGFragment extends Fragment {
 		this.setReceive((CheckBox)v.findViewById(R.id.check_take_value));
 		this.setModel((TextView)v.findViewById(R.id.model_value));
 		this.setFrequency((TextView)v.findViewById(R.id.hz_value));
-		
-		this.setMaker(infoO.getManufacturer());
-		this.setOrgNum(infoO.getInstitutionNumber());
-		this.setDepNum(infoO.getDepartmentNumber());
-		this.setIdDev(infoO.getDeviceID());
-		this.setTypeDev(infoO.getDeviceType());
-		this.setSoftVersion(infoO.getVersionPO());
-		this.setSerialNum(infoO.getSerialNumber());
-		this.setSysSoft(infoO.getVersionPO());
-		this.setSoftSCP(infoO.getPOSCP());
-		this.setPrint(infoO.isPrint());
-		this.setAnalys(infoO.isAnalysis());
-		this.setReceive(infoO.isReceive());
-		this.setStore(infoO.isStorage());
-		this.setModel(infoO.getModel());
-		this.setFrequency(infoO.getFrequency());
 	}
 
 	private final void setMaker(TextView maker) {

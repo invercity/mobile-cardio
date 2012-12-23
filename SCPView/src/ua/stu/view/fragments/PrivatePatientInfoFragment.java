@@ -1,7 +1,6 @@
 package ua.stu.view.fragments;
 
-import ua.stu.view.scpview.R;
-import ua.stu.view.temporary.InfoP;
+import ua.stu.scpview.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -55,18 +54,9 @@ public class PrivatePatientInfoFragment extends Fragment{
 	 */
 	private TextView race;
 	
-	private InfoP infoP;
-	
 	public PrivatePatientInfoFragment()
 	{
 		
-	}
-	
-	public PrivatePatientInfoFragment(InfoP info)
-	{
-		super();
-		
-		this.infoP = info;
 	}
 	
 	@Override
@@ -92,17 +82,6 @@ public class PrivatePatientInfoFragment extends Fragment{
 		this.setAge((TextView)v.findViewById(R.id.age_patient_value));
 		this.setHeight((TextView)v.findViewById(R.id.stature_patient_value));
 		this.setRace((TextView)v.findViewById(R.id.race_patient_value));
-		
-		this.setIdPatient(infoP.getIdPatient());
-		this.setLastName(infoP.getLastName());
-		this.setFirstName(infoP.getFirstName());
-		this.setSecondName(infoP.getSecondName());
-		this.setBithDate(infoP.getBirthDate());
-		this.setWeight(infoP.getWeight());
-		this.setSex(infoP.getSex());
-		this.setAge(infoP.getAge());
-		this.setHeight(infoP.getHeight());
-		this.setRace(infoP.getRace());
 	}
 
 	private final void setIdPatient(TextView idPatient) {

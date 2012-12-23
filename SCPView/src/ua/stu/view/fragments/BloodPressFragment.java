@@ -1,8 +1,7 @@
 package ua.stu.view.fragments;
 
 
-import ua.stu.view.scpview.R;
-import ua.stu.view.temporary.InfoP;
+import ua.stu.scpview.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,18 +19,10 @@ public class BloodPressFragment extends Fragment{
 	 */
 	private TextView diastolicBloodPressure;
 	
-	private InfoP infoP;
 	
 	public BloodPressFragment()
 	{
 		
-	}
-	
-	public BloodPressFragment(InfoP info)
-	{
-		super();
-		
-		this.infoP = info;
 	}
 	
 	@Override
@@ -49,9 +40,6 @@ public class BloodPressFragment extends Fragment{
 	{
 		this.setSystolicBloodPressure((TextView)v.findViewById(R.id.sys_press_patient_value));
 		this.setDyaPress((TextView)v.findViewById(R.id.dya_press_patient_value));
-		
-		this.setSysPress(infoP.getSystolicBloodPressure());
-		this.setDiastolicBloodPressure(infoP.getDiastolicBloodPressure());
 	}
 
 	private final void setSystolicBloodPressure(TextView sysPress) {

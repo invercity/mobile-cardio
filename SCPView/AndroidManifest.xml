@@ -1,30 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ua.stu.view.scpview"
+    package="ua.stu.scpview"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="16" />
+        android:targetSdkVersion="15" />
 
     <application
-        android:allowBackup="false"
-        android:hardwareAccelerated="false"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
         <activity
-            android:name="SCPViewActivity"
-            android:label="@string/app_name" >
+            android:name="ua.stu.view.scpview.SCPViewActivity"
+            android:label="@string/title_activity_scpview" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>            
-            <intent-filter
-                android:icon="@drawable/ic_launcher"
-                android:label="@string/app_name"
-                android:priority="1" >
+            </intent-filter>
+            <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" >
                 </category>
 
@@ -36,11 +31,8 @@
                     android:pathPattern=".*\\.scp"
                     android:scheme="file" >
                 </data>                
-            </intent-filter>           
-            <intent-filter
-          android:icon="@drawable/ic_launcher"
-                android:label="@string/app_name"
-                android:priority="1" >
+            </intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.EDIT" />
                 <action android:name="android.intent.action.PICK" />
@@ -68,10 +60,6 @@
                     android:pathPattern=".*\\.scp"
                     android:scheme="https" />
             </intent-filter>
-        </activity>
-        <activity android:name="PatientInfo" >
-        </activity>
-        <activity android:name="OtherInfo" >
         </activity>
         <activity android:name="group.pals.android.lib.ui.filechooser.FileChooserActivity" >
         </activity>

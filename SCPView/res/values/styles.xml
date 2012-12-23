@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources>
+
+    <style name="AppTheme" parent="android:Theme.Light" />
     <style name="ViewStyleKey" parent="@android:style/TextAppearance.Small">
         <item name="android:layout_width">150dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -59,10 +60,5 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">10dp</item>
     </style>
-    <style name="CustomSeekBar" parent="@style/ECGViewStyle">
-  <!--  <item name="android:progressDrawable">@drawable/custom_seek_bar</item> -->
-    <item name="android:thumb">@drawable/seek_bar_thumb</item> 
-  <!--  <item name="android:thumbOffset">0dip</item> -->
-</style>
-    
+
 </resources>

@@ -1,7 +1,6 @@
 package ua.stu.view.fragments;
 
-import ua.stu.view.scpview.R;
-import ua.stu.view.temporary.InfoP;
+import ua.stu.scpview.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,18 +14,10 @@ public class MedicalHistoryFragment extends Fragment {
 	 */
 	private TextView medicalHistory;
 	
-	private InfoP infoP;
 	
 	public MedicalHistoryFragment()
 	{
 		
-	}
-	
-	public MedicalHistoryFragment(InfoP info)
-	{
-		super();
-		
-		this.infoP = info;
 	}
 	
 	@Override
@@ -43,8 +34,6 @@ public class MedicalHistoryFragment extends Fragment {
 	private final void init(View v)
 	{
 		this.setMedicalHistory((TextView)v.findViewById(R.id.medical_history_value));
-		
-		this.setMedicalHistory(infoP.getMedicalHistory());
 	}
 
 	private final void setMedicalHistory(TextView medicalHistory) {

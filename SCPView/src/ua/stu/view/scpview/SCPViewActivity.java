@@ -4,6 +4,7 @@ import group.pals.android.lib.ui.filechooser.FileChooserActivity;
 import group.pals.android.lib.ui.filechooser.io.localfile.LocalFile;
 import group.pals.android.lib.ui.filechooser.services.IFileProvider;
 
+import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -16,13 +17,10 @@ import ua.stu.scplib.data.DataHandler;
 import ua.stu.scplib.tools.Loader;
 import ua.stu.view.adapter.SamplePagerAdapter;
 import ua.stu.view.fragments.ECGPanelFragment;
-import ua.stu.view.fragments.InfoFragment;
-import ua.stu.view.fragments.InfoFragment.OnEventItemClickListener;
 import ua.stu.view.temporary.InfoO;
 import ua.stu.view.temporary.InfoP;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,8 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
-public class SCPViewActivity extends SherlockFragmentActivity implements
-		OnEventItemClickListener{
+public class SCPViewActivity extends SherlockFragmentActivity{
 	
 	SCPViewActivity v = this;
 	private static final String TAG = "SCPViewActivity";
@@ -52,14 +49,7 @@ public class SCPViewActivity extends SherlockFragmentActivity implements
 	private static final String ROOT_PATH = "/mnt/sdcard";
 
 	private ECGPanelFragment ecgPanel;
-	private InfoFragment info;
 	private DataHandler h;
-	/**
-	 * Current page in ViewPager.
-	 * <p>
-	 * <b>Default</b> 0 - ECGPanel
-	 */
-	private int currentPage = 0;
 	/**
 	 * ECG file path
 	 */
@@ -93,10 +83,77 @@ public class SCPViewActivity extends SherlockFragmentActivity implements
 		}
 	}
 	
+	private ActionMode infoMode;
+    
+    private final class ActionModeInfo implements ActionMode.Callback {
+ 
+    	private String titlePatient;
+    	private String titleOther;
+    	
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        	titlePatient = getResources().getString(R.string.amode_patient);
+        	titleOther = getResources().getString(R.string.amode_other);
+        	
+        	menu.add( titlePatient )
+        		.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | 
+        						 MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        	
+        	menu.add( titleOther )
+    		.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | 
+    						 MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        	
+            return true;
+        }
+ 
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            // TODO Auto-generated method stub
+            return false;
+        }
+ 
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        	
+        	if (item.getTitle().equals( titlePatient ))
+        	{
+        		Hashtable<String, InfoP> patientTable = new Hashtable<String, InfoP>();
+    			InfoP infoP = new InfoP(h.getPInfo().getAllPInfo());
+    			String patientKey = getResources().getString(R.string.app_patient);
+    			patientTable.put(patientKey, infoP);
+    			try {
+    				Intent intent = new Intent(getApplicationContext(), PatientInfo.class);
+    				intent.putExtra(patientKey, patientTable);
+    				startActivity(intent);
+    			} catch (Exception e) {
+    				Log.e("Error in ", e.toString());
+    			}
+        	}	else if (item.getTitle().equals( titleOther )) {
+        		Hashtable<String, InfoO> otherTable = new Hashtable<String, InfoO>();
+    			InfoO infoO = new InfoO(h.getOInfo().getAllOInfo());
+    			String otherKey = getResources().getString(R.string.app_other);
+    			otherTable.put(otherKey, infoO);
+    			try {
+    				Intent intent = new Intent(getApplicationContext(), OtherInfo.class);
+    				intent.putExtra(otherKey, otherTable);
+    				startActivity(intent);
+    			} catch (Exception e) {
+    				Log.e("Error in ", e.toString());
+    			}
+			}
+        	
+            return true;
+        }
+ 
+        public void onDestroyActionMode(ActionMode mode) {
+            // TODO Auto-generated method stub
+             
+        }
+         
+    }
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		String titleFileOpen = getResources().getString(R.string.msg_open_file);
 		String titleCamera = getResources().getString(R.string.msg_camera);
+		String titleInfo = getResources().getString(R.string.msg_info);
 		
 		menu.add(titleFileOpen)
         	.setIcon(R.drawable.file_chooser)
@@ -105,6 +162,10 @@ public class SCPViewActivity extends SherlockFragmentActivity implements
 		menu.add(titleCamera)
     		.setIcon(R.drawable.camera)
     		.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		
+		menu.add(titleInfo)
+			.setIcon(R.drawable.info)
+			.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 	    return true;
 	}
 	
@@ -113,6 +174,7 @@ public class SCPViewActivity extends SherlockFragmentActivity implements
 	{
 		String titleFileOpen = getResources().getString(R.string.msg_open_file);
 		String titleCamera = getResources().getString(R.string.msg_camera);
+		String titleInfo = getResources().getString(R.string.msg_info);
 				
 		if (item.getTitle().equals( titleCamera ))
 		{	
@@ -126,6 +188,8 @@ public class SCPViewActivity extends SherlockFragmentActivity implements
 			
 		}	else if (item.getTitle().equals( titleFileOpen )){
 			runFileChooser(R.style.Theme_Sherlock, ROOT_PATH);
+		}	else if (item.getTitle().equals( titleInfo )) {
+			infoMode = startActionMode(new ActionModeInfo());
 		}
 		
 		return true;
@@ -166,7 +230,6 @@ public class SCPViewActivity extends SherlockFragmentActivity implements
 
 		graphicView.setH(h);
 		ecgPanel = new ECGPanelFragment(graphicView);
-		info = new InfoFragment();
 
 		LayoutInflater inflater = LayoutInflater.from(this);
 		List<View> pages = new ArrayList<View>();
@@ -174,12 +237,7 @@ public class SCPViewActivity extends SherlockFragmentActivity implements
 		View page = ecgPanel.onCreateView(inflater, null, state);
 		pages.add(page);
 
-		page = info.onCreateView(inflater, null, state);
-		pages.add(page);
-
 		viewPager = createPager(pages);
-		System.out.println(currentPage);
-		viewPager.setCurrentItem(currentPage);
 
 		Log.d(TAG, "onResume");
 	}
@@ -207,12 +265,9 @@ public class SCPViewActivity extends SherlockFragmentActivity implements
 		super.onSaveInstanceState(outState);
 
 		String filePathKey = getResources().getString(R.string.app_file_path);
-		String currentPageKey = getResources().getString(R.string.app_current_page);
 		
 		// save the current ecg file path
 		outState.putString(filePathKey, filePath);
-		// save the current page into viewPager
-		outState.putInt(currentPageKey, viewPager.getCurrentItem());
 
 		Log.d(TAG, "onSaveInstanceState");
 	}
@@ -222,57 +277,11 @@ public class SCPViewActivity extends SherlockFragmentActivity implements
 		super.onRestoreInstanceState(savedInstanceState);
 
 		String filePathKey = getResources().getString(R.string.app_file_path);
-		String currentPageKey = getResources().getString(R.string.app_current_page);
 		
 		// restore the current ecg file path
 		filePath = savedInstanceState.getString(filePathKey);
-		// restore the current page into viewPager
-		currentPage = savedInstanceState.getInt(currentPageKey);
 
 		Log.d(TAG, "onRestoreInstanceState");
-	}
-
-	/**
-	 * Method is handle which list item clicked on the InfoFragment
-	 * 
-	 * @param position
-	 *            <p>
-	 *            0 - item for patient information
-	 *            </p>
-	 *            <p>
-	 *            1 - item for other information
-	 *            </p>
-	 */
-	@Override
-	public void itemClickEvent(int position) {
-		switch (position) {
-		case 0:
-			Hashtable<String, InfoP> patientTable = new Hashtable<String, InfoP>();
-			InfoP infoP = new InfoP(h.getPInfo().getAllPInfo());
-			String patientKey = getResources().getString(R.string.app_patient);
-			patientTable.put(patientKey, infoP);
-			try {
-				Intent intent = new Intent(this, PatientInfo.class);
-				intent.putExtra(patientKey, patientTable);
-				startActivity(intent);
-			} catch (Exception e) {
-				Log.e("Error in A ", e.toString());
-			}
-			break;
-		case 1:
-			Hashtable<String, InfoO> otherTable = new Hashtable<String, InfoO>();
-			InfoO infoO = new InfoO(h.getOInfo().getAllOInfo());
-			String otherKey = getResources().getString(R.string.app_other);
-			otherTable.put(otherKey, infoO);
-			try {
-				Intent intent = new Intent(this, OtherInfo.class);
-				intent.putExtra(otherKey, otherTable);
-				startActivity(intent);
-			} catch (Exception e) {
-				Log.e("Error in A ", e.toString());
-			}
-			break;
-		}
 	}
 
 	@Override
@@ -376,7 +385,6 @@ public class SCPViewActivity extends SherlockFragmentActivity implements
 		SamplePagerAdapter pagerAdapter = new SamplePagerAdapter(pages);
 		ViewPager viewPager = new ViewPager(this);
 		viewPager.setAdapter(pagerAdapter);
-		viewPager.setCurrentItem(currentPage);
 		setContentView(viewPager);
 		return viewPager;
 	}

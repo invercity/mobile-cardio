@@ -173,7 +173,7 @@ public class InfoP implements Serializable {
 	 * @return the idPatient
 	 */
 	public String getIdPatient() {
-		return idPatient;
+		return (idPatient == null) ? "" : idPatient;
 	}
 
 	/**
@@ -187,7 +187,7 @@ public class InfoP implements Serializable {
 	 * @return the firstName
 	 */
 	public String getFirstName() {
-		return firstName;
+		return (firstName == null) ? "" : firstName;
 	}
 
 	/**
@@ -201,7 +201,7 @@ public class InfoP implements Serializable {
 	 * @return the lastName
 	 */
 	public String getLastName() {
-		return lastName;
+		return (lastName == null) ? "" : lastName;
 	}
 
 	/**
@@ -215,7 +215,7 @@ public class InfoP implements Serializable {
 	 * @return the secondName
 	 */
 	public String getSecondName() {
-		return secondName;
+		return (secondName == null) ? "" : secondName;
 	}
 
 	/**
@@ -229,7 +229,7 @@ public class InfoP implements Serializable {
 	 * @return the age
 	 */
 	public String getAge() {
-		return age;
+		return (age == null) ? "" : age;
 	}
 
 	/**
@@ -243,7 +243,7 @@ public class InfoP implements Serializable {
 	 * @return the birthDate
 	 */
 	public String getBirthDate() {
-		return birthDate;
+		return (birthDate == null) ? "" : birthDate;
 	}
 
 	/**
@@ -257,7 +257,7 @@ public class InfoP implements Serializable {
 	 * @return the height
 	 */
 	public String getHeight() {
-		return height;
+		return (height == null) ? "" : height;
 	}
 
 	/**
@@ -271,7 +271,7 @@ public class InfoP implements Serializable {
 	 * @return the weight
 	 */
 	public String getWeight() {
-		return weight;
+		return (weight == null) ? "" : weight;
 	}
 
 	/**
@@ -285,7 +285,7 @@ public class InfoP implements Serializable {
 	 * @return the sex
 	 */
 	public String getSex() {
-		return sex;
+		return (sex == null) ? "" : sex;
 	}
 
 	/**
@@ -299,7 +299,7 @@ public class InfoP implements Serializable {
 	 * @return the race
 	 */
 	public String getRace() {
-		return race;
+		return (race == null) ? "" : race;
 	}
 
 	/**
@@ -313,7 +313,7 @@ public class InfoP implements Serializable {
 	 * @return the drugs
 	 */
 	public String getDrugs() {
-		return drugs;
+		return (drugs == null) ? "" : drugs;
 	}
 
 	/**
@@ -327,7 +327,7 @@ public class InfoP implements Serializable {
 	 * @return the systolicBloodPressure
 	 */
 	public String getSystolicBloodPressure() {
-		return systolicBloodPressure;
+		return (systolicBloodPressure == null) ? "" : systolicBloodPressure;
 	}
 
 	/**
@@ -341,7 +341,7 @@ public class InfoP implements Serializable {
 	 * @return the diastolicBloodPressure
 	 */
 	public String getDiastolicBloodPressure() {
-		return diastolicBloodPressure;
+		return (diastolicBloodPressure == null) ? "" : diastolicBloodPressure;
 	}
 
 	/**
@@ -355,7 +355,7 @@ public class InfoP implements Serializable {
 	 * @return the diagnosisOrReferralIndication
 	 */
 	public String getDiagnosisOrReferralIndication() {
-		return diagnosisOrReferralIndication;
+		return (diagnosisOrReferralIndication == null) ? "" : diagnosisOrReferralIndication;
 	}
 
 	/**
@@ -370,7 +370,7 @@ public class InfoP implements Serializable {
 	 * @return the medicalHistory
 	 */
 	public String getMedicalHistory() {
-		return medicalHistory;
+		return (medicalHistory == null) ? "" : medicalHistory;
 	}
 
 	/**
@@ -384,7 +384,7 @@ public class InfoP implements Serializable {
 	 * @return the postCode
 	 */
 	public String getPostCode() {
-		return postCode;
+		return (postCode == null) ? "" : postCode;
 	}
 
 	/**
@@ -398,7 +398,7 @@ public class InfoP implements Serializable {
 	 * @return the region
 	 */
 	public String getRegion() {
-		return region;
+		return (region == null) ? "" : region;
 	}
 
 	/**
@@ -412,7 +412,7 @@ public class InfoP implements Serializable {
 	 * @return the district
 	 */
 	public String getDistrict() {
-		return district;
+		return (district == null) ? "" : district;
 	}
 
 	/**
@@ -426,7 +426,7 @@ public class InfoP implements Serializable {
 	 * @return the street
 	 */
 	public String getStreet() {
-		return street;
+		return (street == null) ? "" : street;
 	}
 
 	/**
@@ -440,7 +440,7 @@ public class InfoP implements Serializable {
 	 * @return the house
 	 */
 	public String getHouse() {
-		return house;
+		return (house == null) ? "" : house;
 	}
 
 	/**
@@ -454,7 +454,7 @@ public class InfoP implements Serializable {
 	 * @return the timeOfresidence
 	 */
 	public String getTimeOfresidence() {
-		return timeOfresidence;
+		return (timeOfresidence == null) ? "" : timeOfresidence;
 	}
 
 	/**
@@ -468,7 +468,7 @@ public class InfoP implements Serializable {
 	 * @return the town
 	 */
 	public String getTown() {
-		return town;
+		return (town == null) ? "" : town;
 	}
 
 	/**
@@ -478,5 +478,4 @@ public class InfoP implements Serializable {
 		this.town = town;
 	}
 
-	
 }

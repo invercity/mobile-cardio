@@ -3,8 +3,7 @@
     <string name="app_name">SCPView</string>
     <string name="app_patient">PatientInfo</string>
     <string name="app_other">OtherInfo</string>
-    <string name="app_file_path">FilePath</string>
-	<string name="app_current_page">CurrentPage</string>    
+    <string name="app_file_path">FilePath</string>   
 
     <string name="patient">Информация о пациенте</string> 
     <string name="patient_info">PatientInfo</string>
@@ -62,15 +61,17 @@
 	<string name="date_get_ecg">Дата получения ЭКГ:</string>
 	<string name="time_get_ecg">Время получения ЭКГ:</string>
 	<string name="ecg_info">Информация о ЕКГ</string>
-	<string name="msg_open_file">Открыть ЭКГ файл</string>
-	<string name="msg_camera">QR-код</string>
 	<string name="zoom">Увеличения: </string>
     <string name="none"></string>
-    <array name="info">
-	    <item>Пациент</item>
-	    <item>Прочее</item>
-	</array>
+
+    <string name="amode_patient">Пациент</string>
+    <string name="amode_other">Прочее</string>
+    
     <string name="choose_action">Выберите действие</string>
     <string name="no_connection">Интернет соединение не доступно</string>
     <string name="not_avialable">Данная функция пока недоступна</string>
+    
+    <string name="msg_open_file">Открыть ЭКГ файл</string>
+	<string name="msg_camera">QR-код</string>
+	<string name="msg_info">Инфорамация</string>
 </resources>

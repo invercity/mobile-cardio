@@ -3,8 +3,7 @@
     <string name="app_name">SCPView</string>
     <string name="app_patient">PatientInfo</string>
     <string name="app_other">OtherInfo</string>
-    <string name="app_file_path">FilePath</string>
-	<string name="app_current_page">CurrentPage</string>    
+    <string name="app_file_path">FilePath</string>   
 
     <string name="patient">Patient Information</string> 
     <string name="patient_info">PatientInfo</string>
@@ -62,17 +61,19 @@
 	<string name="date_get_ecg">Date of receipt of ECG:</string>
 	<string name="time_get_ecg">Time of receipt of ECG:</string>
 	<string name="ecg_info">Information on the ECG</string>
-	<string name="msg_open_file">Open ECG File</string>
-	<string name="msg_camera">QR-code</string>
 	<string name="zoom">Zoom: </string>
     <string name="none"></string>
-    <array name="info">
-	    <item>Patient</item>
-	    <item>Other</item>
-	</array>
+
+    <string name="amode_patient">Patient</string>
+    <string name="amode_other">Other</string>
+    
     <string name="choose_action">Choose action:</string>
     <string name="no_connection">Internet connection is not avialable</string>
     <string name="not_avialable">This feature is not yet avialable</string>
+    
+    <string name="msg_open_file">Open ECG File</string>
+	<string name="msg_camera">QR-code</string>
+	<string name="msg_info">Information</string>
 </resources>
 
 

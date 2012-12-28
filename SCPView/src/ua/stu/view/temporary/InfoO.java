@@ -188,7 +188,7 @@ public class InfoO implements Serializable {
 	 * @return String
 	 */
 	public String getManufacturer() {
-		return manufacturer;
+		return (manufacturer == null) ? "" : manufacturer;
 	}
 
 	/**
@@ -203,7 +203,7 @@ public class InfoO implements Serializable {
 	 * @return the institutionNumber
 	 */
 	public String getInstitutionNumber() {
-		return institutionNumber;
+		return (institutionNumber == null) ? "" : institutionNumber;
 	}
 
 	/**
@@ -217,7 +217,7 @@ public class InfoO implements Serializable {
 	 * @return the departmentNumber
 	 */
 	public String getDepartmentNumber() {
-		return departmentNumber;
+		return (departmentNumber == null) ? "" : departmentNumber;
 	}
 
 	/**
@@ -231,7 +231,7 @@ public class InfoO implements Serializable {
 	 * @return the deviceID
 	 */
 	public String getDeviceID() {
-		return deviceID;
+		return (deviceID == null) ? "" : deviceID;
 	}
 
 	/**
@@ -245,7 +245,7 @@ public class InfoO implements Serializable {
 	 * @return the deviceType
 	 */
 	public String getDeviceType() {
-		return deviceType;
+		return (deviceType == null) ? "" : deviceType;
 	}
 
 	/**
@@ -259,7 +259,7 @@ public class InfoO implements Serializable {
 	 * @return the frequency
 	 */
 	public String getFrequency() {
-		return frequency;
+		return (frequency == null) ? "" : frequency;
 	}
 
 	/**
@@ -273,7 +273,7 @@ public class InfoO implements Serializable {
 	 * @return the model
 	 */
 	public String getModel() {
-		return model;
+		return (model == null) ? "" : model;
 	}
 
 	/**
@@ -287,7 +287,7 @@ public class InfoO implements Serializable {
 	 * @return the versionPO
 	 */
 	public String getVersionPO() {
-		return versionPO;
+		return (versionPO == null) ? "" : versionPO;
 	}
 
 	/**
@@ -301,7 +301,7 @@ public class InfoO implements Serializable {
 	 * @return the serialNumber
 	 */
 	public String getSerialNumber() {
-		return serialNumber;
+		return (serialNumber == null) ? "" : serialNumber;
 	}
 
 	/**
@@ -315,7 +315,7 @@ public class InfoO implements Serializable {
 	 * @return the pOSCP
 	 */
 	public String getPOSCP() {
-		return POSCP;
+		return (POSCP == null) ? "" : POSCP;
 	}
 
 	/**
@@ -385,7 +385,7 @@ public class InfoO implements Serializable {
 	 * @return the acquiringInstitutionDescription
 	 */
 	public String getAcquiringInstitutionDescription() {
-		return acquiringInstitutionDescription;
+		return (acquiringInstitutionDescription == null) ? "" : acquiringInstitutionDescription;
 	}
 
 	/**
@@ -400,7 +400,7 @@ public class InfoO implements Serializable {
 	 * @return the analyzingInstitutionDescription
 	 */
 	public String getAnalyzingInstitutionDescription() {
-		return analyzingInstitutionDescription;
+		return (analyzingInstitutionDescription == null) ? "" : analyzingInstitutionDescription;
 	}
 
 	/**
@@ -415,7 +415,7 @@ public class InfoO implements Serializable {
 	 * @return the acquiringDepartmentDescription
 	 */
 	public String getAcquiringDepartmentDescription() {
-		return acquiringDepartmentDescription;
+		return (acquiringDepartmentDescription == null) ? "" : acquiringDepartmentDescription;
 	}
 
 	/**
@@ -430,7 +430,7 @@ public class InfoO implements Serializable {
 	 * @return the analyzingDepartmentDescription
 	 */
 	public String getAnalyzingDepartmentDescription() {
-		return analyzingDepartmentDescription;
+		return (analyzingDepartmentDescription == null) ? "" : analyzingDepartmentDescription;
 	}
 
 	/**
@@ -445,7 +445,7 @@ public class InfoO implements Serializable {
 	 * @return the referringPhysician
 	 */
 	public String getReferringPhysician() {
-		return referringPhysician;
+		return (referringPhysician == null) ? "" : referringPhysician;
 	}
 
 	/**
@@ -459,7 +459,7 @@ public class InfoO implements Serializable {
 	 * @return the latestConfirmingPhysician
 	 */
 	public String getLatestConfirmingPhysician() {
-		return latestConfirmingPhysician;
+		return (latestConfirmingPhysician == null) ? "" : latestConfirmingPhysician;
 	}
 
 	/**
@@ -473,7 +473,7 @@ public class InfoO implements Serializable {
 	 * @return the technicianDescription
 	 */
 	public String getTechnicianDescription() {
-		return technicianDescription;
+		return (technicianDescription == null) ? "" : technicianDescription;
 	}
 
 	/**
@@ -487,7 +487,7 @@ public class InfoO implements Serializable {
 	 * @return the freeTextField
 	 */
 	public String getFreeTextField() {
-		return freeTextField;
+		return (freeTextField == null) ? "" : freeTextField;
 	}
 
 	/**
@@ -501,7 +501,7 @@ public class InfoO implements Serializable {
 	 * @return the dateOfAcquisition
 	 */
 	public String getDateOfAcquisition() {
-		return dateOfAcquisition;
+		return (dateOfAcquisition == null) ? "" : dateOfAcquisition;
 	}
 
 	/**
@@ -515,7 +515,7 @@ public class InfoO implements Serializable {
 	 * @return the timeOfAcquisition
 	 */
 	public String getTimeOfAcquisition() {
-		return timeOfAcquisition;
+		return (timeOfAcquisition == null) ? "" : timeOfAcquisition;
 	}
 
 	/**

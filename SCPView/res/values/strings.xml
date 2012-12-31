@@ -35,7 +35,6 @@
     <string name="speed">Speed:</string>
     <string name="power">Gain:</string>
     <string name="revert_ecg">Reverse ECG</string>
-    <string name="title_device_get_ecg">Device for ECG</string>
 	<string name="maker">Manufacturer:</string>
 	<string name="org_num">Number of the organization:</string>
 	<string name="dep_num">Department number:</string>
@@ -60,10 +59,12 @@
 	<string name="ok_doctor">Certifying physicians:</string>
 	<string name="date_get_ecg">Date of receipt of ECG:</string>
 	<string name="time_get_ecg">Time of receipt of ECG:</string>
-	<string name="ecg_info">Information on the ECG</string>
 	<string name="zoom">Zoom: </string>
     <string name="none"></string>
 
+    <string name="title_device_ecg">Device ECG</string>
+    <string name="title_ecg_info">ECG Info</string>
+    
     <string name="amode_patient">Patient</string>
     <string name="amode_other">Other</string>
     

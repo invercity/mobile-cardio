@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingLeft="10dip" >
     <ScrollView
     	    android:id="@+id/other_scroll_view"
     	    android:layout_width="fill_parent"
@@ -28,6 +29,11 @@
     	            android:id="@+id/org_analys_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/org_write_layout">
+					<View
+						android:layout_width="fill_parent"
+						android:layout_height="1dip"
+						android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/org_analys"
 					    style="@style/ViewStyleKey"
@@ -42,6 +48,11 @@
     	            android:id="@+id/dep_get_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/org_analys_layout">
+					<View
+						android:layout_width="fill_parent"
+						android:layout_height="1dip"
+						android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/dep_get"
 					    style="@style/ViewStyleKey"
@@ -56,6 +67,11 @@
     	            android:id="@+id/dep_analys_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/dep_get_layout">
+					<View
+						android:layout_width="fill_parent"
+						android:layout_height="1dip"
+						android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/dep_analys"
 					    style="@style/ViewStyleKey"
@@ -70,6 +86,11 @@
     	            android:id="@+id/go_doctor_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/dep_analys_layout">
+					<View
+						android:layout_width="fill_parent"
+						android:layout_height="1dip"
+						android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/go_doctor"
 					    style="@style/ViewStyleKey"
@@ -84,6 +105,11 @@
     	            android:id="@+id/ok_doctor_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/go_doctor_layout">
+					<View
+						android:layout_width="fill_parent"
+						android:layout_height="1dip"
+						android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/ok_doctor"
 					    style="@style/ViewStyleKey"
@@ -98,6 +124,11 @@
     	            android:id="@+id/date_get_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/ok_doctor_layout">
+					<View
+						android:layout_width="fill_parent"
+						android:layout_height="1dip"
+						android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/date_get"
 					    style="@style/ViewStyleKey"
@@ -112,6 +143,11 @@
     	            android:id="@+id/time_get_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/date_get_layout">
+					<View
+						android:layout_width="fill_parent"
+						android:layout_height="1dip"
+						android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/time_get"
 					    style="@style/ViewStyleKey"
@@ -124,4 +160,9 @@
 				</RelativeLayout>
     	    </RelativeLayout>
     </ScrollView>
+   	<View
+		android:layout_width="fill_parent"
+		android:layout_height="1dip"
+		android:background="#FF0000FF"
+	/>
 </LinearLayout>

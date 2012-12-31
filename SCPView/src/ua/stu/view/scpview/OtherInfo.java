@@ -2,57 +2,166 @@ package ua.stu.view.scpview;
 
 import java.util.HashMap;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.app.SherlockListActivity;
+import com.example.google.tv.leftnavbar.LeftNavBar;
+import com.example.google.tv.leftnavbar.LeftNavBarService;
 
 import ua.stu.view.fragments.DeviceForECGFragment;
 import ua.stu.view.fragments.ECGInfoFragment;
 import ua.stu.view.scpview.R;
 import ua.stu.view.temporary.InfoO;
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ActionBar.LayoutParams;
+import android.app.ActionBar.Tab;
+import android.app.ActionBar.TabListener;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.view.Gravity;
+import android.view.Window;
 
-public class OtherInfo extends FragmentActivity implements android.widget.CompoundButton.OnCheckedChangeListener
+public class OtherInfo extends FragmentActivity implements TabListener
 {
 	private static String TAG = "OtherInfo";
+	
+	private LeftNavBar mLeftNavBar;
 	
 	private DeviceForECGFragment device;
 	private ECGInfoFragment ecgInfo;
 	private InfoO infoO;
 	
-	private FragmentTransaction fTrans;
-	private CheckBox chDeviceForECG;
-	private CheckBox chECGInfo;
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
     {
-		setTheme(R.style.Theme_Sherlock);
-		
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.otherinfo);
 
-        init(infoO);
+        Log.d(TAG,"onCreate");
+        
+		(LeftNavBarService.instance()).getLeftNavBar((Activity) this);
+		setContentView(R.layout.otherinfo);
+		
+		init(infoO);
+
+		// prepare the left navigation bar
+		setupBar();
+    }
+	
+	private void setupBar() {
+
+		ActionBar bar = getLeftNavBar();
+		bar.setBackgroundDrawable(getResources().getDrawable(
+				R.drawable.leftnav_bar_background_dark));
+
+		// no navigation
+		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		
+		bar.setBackgroundDrawable(new ColorDrawable(Color.DKGRAY));
+		
+		setupCustomView();
+		
+		setupTabs();
+		
+		//don't show title
+		flipOption(ActionBar.DISPLAY_SHOW_TITLE,false);
+		//don't show home icon
+		flipOption(ActionBar.DISPLAY_SHOW_HOME,false);
+
+	}
+	
+	private void setupCustomView() {
+        getLeftNavBar().setCustomView(R.layout.custom_view);
+        LayoutParams params = new LayoutParams(0);
+        params.width = params.height = nextDimension(0);
+        params.gravity = nextGravity(nextGravity(0, true), false);
+        applyCustomParams(params);
+    }
+	
+	private void applyCustomParams(LayoutParams params) {
+        ActionBar bar = getLeftNavBar();
+        bar.setCustomView(bar.getCustomView(), params);
+    }
+	
+	private static int nextDimension(int dimension) {
+		switch (dimension) {
+		case 40:
+			return 100;
+		case 100:
+			return LayoutParams.WRAP_CONTENT;
+		case LayoutParams.FILL_PARENT:
+		default:
+			return 40;
+		}
+    }
+	
+	private static int nextGravity(int gravity, boolean horizontal) {
+        int hGravity = gravity & Gravity.HORIZONTAL_GRAVITY_MASK;
+        int vGravity = gravity & Gravity.VERTICAL_GRAVITY_MASK;
+		if (horizontal) {
+			switch (hGravity) {
+			case Gravity.LEFT:
+				hGravity = Gravity.CENTER_HORIZONTAL;
+				break;
+			case Gravity.CENTER_HORIZONTAL:
+				hGravity = Gravity.RIGHT;
+				break;
+			case Gravity.RIGHT:
+			default:
+				hGravity = Gravity.LEFT;
+				break;
+			}
+		} else {
+			switch (vGravity) {
+			case Gravity.TOP:
+				vGravity = Gravity.CENTER_VERTICAL;
+				break;
+			case Gravity.CENTER_VERTICAL:
+				vGravity = Gravity.BOTTOM;
+				break;
+			case Gravity.BOTTOM:
+			default:
+				vGravity = Gravity.TOP;
+				break;
+			}
+		}
+        return hGravity | vGravity;
+    }
+	
+	private LeftNavBar getLeftNavBar() {
+		if (mLeftNavBar == null) {
+			mLeftNavBar = new LeftNavBar(this);
+		}
+		return mLeftNavBar;
+	}
+	
+	private void flipOption(int option,boolean isShow) {
+		ActionBar bar = getLeftNavBar();
+		bar.setDisplayOptions(isShow ? option : 0, option);
+	}
+	
+	private void setupTabs() {
+        ActionBar bar = getLeftNavBar();
+        bar.removeAllTabs();
+        
+        String deviceTag = getResources().getString(R.string.title_device_ecg);
+        String ecgInfoTag = getResources().getString(R.string.title_ecg_info);
+        
+        ActionBar.Tab tab = bar.newTab().setText(R.string.title_device_ecg).setIcon(R.drawable.device)
+        		.setTag(deviceTag)
+                .setTabListener(this);
+        bar.addTab(bar.newTab().setText(R.string.title_ecg_info).setIcon(R.drawable.tab_a)
+        		.setTag(ecgInfoTag)
+        		.setTabListener(this));
+
+        bar.addTab(tab, 0, true);
     }
 	
 	@Override
-	public void onStop(){
+	public void onResume(){
 		super.onStop();
 		Log.d(TAG,"onStop");
-
-		fTrans = getSupportFragmentManager().beginTransaction();
-
-		if (isFragmentInStack(R.id.frame_dev_take_ecg)) fTrans.hide(device);
-		if (isFragmentInStack(R.id.frame_ecg_info)) fTrans.hide(ecgInfo);
-
-		fTrans.commitAllowingStateLoss();
 	}
 	
 	private final void init(InfoO infoO)
@@ -61,46 +170,59 @@ public class OtherInfo extends FragmentActivity implements android.widget.Compou
 		HashMap table = (HashMap) getIntent().getSerializableExtra(otherKey);
 	    infoO = (InfoO)table.get(otherKey);
 		
-		chDeviceForECG = (CheckBox)findViewById(R.id.check_dev_take_ecg);
-		chECGInfo = (CheckBox)findViewById(R.id.check_ecg_info);
-		
-		chDeviceForECG.setOnCheckedChangeListener(this);
-		chECGInfo.setOnCheckedChangeListener(this);
-		
 		device = new DeviceForECGFragment(infoO);
 		ecgInfo = new ECGInfoFragment(infoO);
-	}
-	
-	public void onCheckedChanged(CompoundButton view, boolean checked)
-	{
-		fTrans = getSupportFragmentManager().beginTransaction();
-		
-		switch(view.getId()) {
-        case R.id.check_dev_take_ecg:
-            if (checked)
-            {
-            	fTrans.add(R.id.frame_dev_take_ecg, device);
-            } else {
-            	fTrans.remove(device);
-            }
-            break;
-		case R.id.check_ecg_info:
-	        if (checked)
-	        {
-	        	fTrans.add(R.id.frame_ecg_info, ecgInfo);
-	        } else {
-	        	fTrans.remove(ecgInfo);
-	        }
-	        break;
-		}
-		
-		fTrans.commit();
 	}
 
 	private final boolean isFragmentInStack(int id)
 	{
-		if (this.getFragmentManager().findFragmentById(id) == null)return false;
+		if (getFragmentManager().findFragmentById(id) == null)return false;
 		else return true;
 	}
-	
+
+	@Override
+	public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
+		String deviceTag = getResources().getString(R.string.title_device_ecg);
+        String ecgInfoTag = getResources().getString(R.string.title_ecg_info);
+        
+		if ( tab.getTag().equals(deviceTag) ){
+			if (!isFragmentInStack(R.id.frame_device_info)) {
+				Log.d(TAG,"onTabSelected add device");
+				ft.add(R.id.frame_device_info, device);
+			}
+			else {
+				Log.d(TAG,"onTabSelected show device");
+				ft.show(device);
+			}
+		}	else if ( tab.getTag().equals(ecgInfoTag) ){
+			if (!isFragmentInStack(R.id.frame_ecg_info)){
+				Log.d(TAG,"onTabSelected add ecgInfo");
+				ft.add(R.id.frame_ecg_info, ecgInfo);
+			}
+			else {
+				Log.d(TAG,"onTabSelected show ecgInfo");
+				ft.show(ecgInfo);
+			}
+		}
+
+		Log.d(TAG,"onTabSelected");
+	}
+
+	@Override
+	public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
+		String deviceTag = getResources().getString(R.string.title_device_ecg);
+        String ecgInfoTag = getResources().getString(R.string.title_ecg_info);
+
+        if ( tab.getTag().equals(deviceTag) ){
+        	ft.hide(device);
+		}	else if ( tab.getTag().equals(ecgInfoTag) ){
+			ft.hide(ecgInfo);
+		}
+	}	
 }

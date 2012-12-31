@@ -37,8 +37,7 @@
 		android:id="@+id/check_revert_ecg"
 		style="@style/CheckStyleTrue"
 		android:layout_below="@+id/power"
-		android:text="@string/revert_ecg" 
-		android:textColor="@android:color/darker_gray"/>
+		android:text="@string/revert_ecg"/>
     
 	<ua.stu.view.scpview.ImageViewer
 		android:id="@+id/ImageViewer"

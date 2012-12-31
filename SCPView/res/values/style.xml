@@ -1,51 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <style name="ViewStyleKey" parent="@android:style/TextAppearance.Small">
-        <item name="android:layout_width">150dp</item>
+    <style name="ObjectStyle" parent="@android:style/TextAppearance.Holo.Medium">
+        <item name="android:typeface">serif</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+    </style>
+    <style name="ViewStyleKey" parent="@style/ObjectStyle">
+        <item name="android:layout_width">300dip</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:typeface">serif</item>
     </style>
-    <style name="EditStyleValue" parent="@android:style/TextAppearance.Small">
+    <style name="EditStyleValue" parent="@style/ObjectStyle">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:typeface">serif</item>
+        <item name="android:paddingLeft">10dip</item>
         
     </style>
-    <style name="Edit2StyleValue" parent="@android:style/TextAppearance.Small">
+    <style name="Edit2StyleValue" parent="@style/ObjectStyle">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:typeface">serif</item>
     </style>
-    <style name="RelativeStyle">
+    <style name="RelativeStyle" parent="@style/ObjectStyle">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
         <item name="android:paddingTop">10dp</item>
     </style>
-    <style name="HeadRealativeStyle">
+    <style name="HeadRealativeStyle" parent="@style/ObjectStyle">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
         <item name="android:textSize">20dp</item>
     </style>
-    <style name="CheckStyle">
+    <style name="CheckStyle" parent="@style/ObjectStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:checked">false</item>
         <item name="android:clickable">false</item>
+        <item name="android:button">@xml/custom_checkbox</item>
     </style>
-    <style name="CheckStyleSelected">
+    <style name="CheckStyleSelected" parent="@style/ObjectStyle">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:button">@xml/custom_checkbox</item>
     </style>
-    <style name="CheckStyleTrue">
+    <style name="CheckStyleTrue" parent="@style/ObjectStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:clickable">true</item>
+        <item name="android:button">@xml/custom_checkbox</item>
     </style>
-    <style name="ECGViewStyle" parent="@android:style/TextAppearance.Small">
+    <style name="ECGViewStyle" parent="@style/ObjectStyle">
         <item name="android:layout_width">80dip</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">5dp</item>
-        <item name="android:typeface">serif</item>
     </style>
     <style name="ECGValueStyle" parent="@style/EditStyleValue">
         <item name="android:paddingTop">5dp</item>
@@ -54,7 +61,7 @@
         <item name="android:paddingTop">0dp</item>
         
     </style>
-    <style name="FrameStyle" parent="@android:style/TextAppearance.Small">
+    <style name="FrameStyle" parent="@style/ObjectStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">10dp</item>

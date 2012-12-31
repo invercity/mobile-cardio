@@ -65,6 +65,12 @@
     <string name="title_device_ecg">Device ECG</string>
     <string name="title_ecg_info">ECG Info</string>
     
+    <string name="title_private_patient">Patient</string>
+    <string name="title_pressure_patient">Pressure</string>
+    <string name="title_address_patient">Address</string>
+    <string name="title_diagnosis_patient">Diagnosis</string>
+    <string name="title_history_patient">History</string>
+    
     <string name="amode_patient">Patient</string>
     <string name="amode_other">Other</string>
     

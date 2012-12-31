@@ -1,87 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	 xmlns:android="http://schemas.android.com/apk/res/android"
-	 android:layout_width="fill_parent"
-	 android:id="@+id/patieninfo"
-	 android:layout_height="fill_parent"
-	 android:orientation="vertical">
-	 <ScrollView
-    	    android:id="@+id/patient_info_scroll_view"
-    	    android:layout_width="fill_parent"
-	        android:layout_height="fill_parent"
-	        android:orientation="vertical">
-	        <RelativeLayout
-    	        android:id="@+id/patient_info"
-    	        style="@style/RelativeStyle">
-    	        <RelativeLayout
-    	            android:id="@+id/check_private_patient_layout"
-    	        	style="@style/RelativeStyle">
-					<CheckBox
-						android:id="@+id/check_private_patient_info"
-						style="@style/CheckStyleSelected"
-						android:text="@string/patient" />
-					<FrameLayout
-						android:id="@+id/frame_private_patient_info"
-						style="@style/FrameStyle"
-						android:layout_below="@+id/check_private_patient_info">
-					</FrameLayout>
-				 </RelativeLayout>
-				 <RelativeLayout
-    	            android:id="@+id/check_blood_press_layout"
-    	        	style="@style/RelativeStyle"
-    	        	android:layout_below="@+id/check_private_patient_layout">
-					<CheckBox
-						android:id="@+id/check_blood_press"
-						style="@style/CheckStyleSelected"
-						android:text="@string/blood_press_patient" />
-					<FrameLayout
-						android:id="@+id/frame_blood_press"
-						style="@style/FrameStyle"
-						android:layout_below="@+id/check_blood_press">
-					</FrameLayout>
-				</RelativeLayout>
-				<RelativeLayout
-    	            android:id="@+id/check_addr_patient_layout"
-    	        	style="@style/RelativeStyle"
-    	        	android:layout_below="@+id/check_blood_press_layout">
-					 <CheckBox
-						android:id="@+id/check_addr_patient"
-						style="@style/CheckStyleSelected"
-						android:text="@string/addr_patient" />
-					 <FrameLayout
-						android:id="@+id/frame_addr_patient"
-						style="@style/FrameStyle"
-						android:layout_below="@+id/check_addr_patient">
-					 </FrameLayout>
-				</RelativeLayout>
-				<RelativeLayout
-    	            android:id="@+id/check_diagnos_patient_layout"
-    	        	style="@style/RelativeStyle"
-    	        	android:layout_below="@+id/check_addr_patient_layout">	 
-					 <CheckBox
-						android:id="@+id/check_diagnos_patient"
-						style="@style/CheckStyleSelected"
-						android:text="@string/diagnos_patient" />
-					 <FrameLayout
-						android:id="@+id/frame_diagnos_patient"
-						style="@style/FrameStyle"
-						android:layout_below="@+id/check_diagnos_patient">
-					 </FrameLayout>
-				</RelativeLayout>
-				<RelativeLayout
-    	            android:id="@+id/check_medical_history_layout"
-    	        	style="@style/RelativeStyle"
-    	        	android:layout_below="@+id/check_diagnos_patient_layout"> 
-					 <CheckBox
-						android:id="@+id/check_medical_history"
-						style="@style/CheckStyleSelected"
-						android:text="@string/medical_history_patient"/>
-					 <FrameLayout
-						android:id="@+id/frame_medical_history"
-						style="@style/FrameStyle"
-						android:layout_below="@+id/check_medical_history">
-					 </FrameLayout>
-				</RelativeLayout>	 
-			 </RelativeLayout>
-	</ScrollView>		 
-</LinearLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:paddingLeft="10dip"
+    tools:context=".PatientInfo" >
+	 
+	<FrameLayout
+		android:id="@+id/frame_private_patient_info"
+		style="@style/FrameStyle">
+	</FrameLayout>
+	
+	<FrameLayout
+		android:id="@+id/frame_blood_press"
+		style="@style/FrameStyle">
+	</FrameLayout>
+	
+	 <FrameLayout
+		android:id="@+id/frame_addr_patient"
+		style="@style/FrameStyle">
+	 </FrameLayout>
+	 
+	 <FrameLayout
+		android:id="@+id/frame_diagnos_patient"
+		style="@style/FrameStyle">
+	 </FrameLayout>
+	 
+	 <FrameLayout
+		android:id="@+id/frame_medical_history"
+		style="@style/FrameStyle">
+	 </FrameLayout>	 
+</RelativeLayout>

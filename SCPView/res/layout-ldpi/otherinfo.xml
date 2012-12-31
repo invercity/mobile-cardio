@@ -17,7 +17,7 @@
 					<CheckBox
 						android:id="@+id/check_dev_take_ecg"
 						style="@style/CheckStyleSelected"
-						android:text="@string/title_device_get_ecg" />
+						android:text="@string/title_device_ecg" />
 					<FrameLayout
 						android:id="@+id/frame_dev_take_ecg"
 						style="@style/FrameStyle"
@@ -31,7 +31,7 @@
 					<CheckBox
 						android:id="@+id/check_ecg_info"
 						style="@style/CheckStyleSelected"
-						android:text="@string/ecg_info" />
+						android:text="@string/title_ecg_info" />
 					<FrameLayout
 						android:id="@+id/frame_ecg_info"
 						style="@style/FrameStyle"

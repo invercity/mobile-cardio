@@ -18,7 +18,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 
@@ -37,8 +36,6 @@ public class OtherInfo extends FragmentActivity implements TabListener
     {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-
-        Log.d(TAG,"onCreate");
         
 		(LeftNavBarService.instance()).getLeftNavBar((Activity) this);
 		setContentView(R.layout.otherinfo);
@@ -57,7 +54,6 @@ public class OtherInfo extends FragmentActivity implements TabListener
 
 		// no navigation
 		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		
 		bar.setBackgroundDrawable(new ColorDrawable(Color.DKGRAY));
 		
 		setupCustomView();
@@ -74,8 +70,8 @@ public class OtherInfo extends FragmentActivity implements TabListener
 	private void setupCustomView() {
         getLeftNavBar().setCustomView(R.layout.custom_view);
         LayoutParams params = new LayoutParams(0);
-        params.width = params.height = nextDimension(0);
-        params.gravity = nextGravity(nextGravity(0, true), false);
+        params.width 	= params.height = nextDimension(0);
+        params.gravity 	= nextGravity(nextGravity(0, true), false);
         applyCustomParams(params);
     }
 	
@@ -145,8 +141,8 @@ public class OtherInfo extends FragmentActivity implements TabListener
         ActionBar bar = getLeftNavBar();
         bar.removeAllTabs();
         
-        String deviceTag = getResources().getString(R.string.title_device_ecg);
-        String ecgInfoTag = getResources().getString(R.string.title_ecg_info);
+        String deviceTag 	= getResources().getString(R.string.title_device_ecg);
+        String ecgInfoTag 	= getResources().getString(R.string.title_ecg_info);
         
         ActionBar.Tab tab = bar.newTab().setText(R.string.title_device_ecg).setIcon(R.drawable.device)
         		.setTag(deviceTag)
@@ -158,19 +154,13 @@ public class OtherInfo extends FragmentActivity implements TabListener
         bar.addTab(tab, 0, true);
     }
 	
-	@Override
-	public void onResume(){
-		super.onStop();
-		Log.d(TAG,"onStop");
-	}
-	
 	private final void init(InfoO infoO)
 	{
-		String otherKey = getResources().getString(R.string.app_other);
-		HashMap table = (HashMap) getIntent().getSerializableExtra(otherKey);
-	    infoO = (InfoO)table.get(otherKey);
+		String otherKey 	= getResources().getString(R.string.app_other);
+		HashMap table 		= (HashMap) getIntent().getSerializableExtra(otherKey);
+	    infoO 				= (InfoO)table.get(otherKey);
 		
-		device = new DeviceForECGFragment(infoO);
+		device 	= new DeviceForECGFragment(infoO);
 		ecgInfo = new ECGInfoFragment(infoO);
 	}
 
@@ -188,36 +178,30 @@ public class OtherInfo extends FragmentActivity implements TabListener
 
 	@Override
 	public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
-		String deviceTag = getResources().getString(R.string.title_device_ecg);
-        String ecgInfoTag = getResources().getString(R.string.title_ecg_info);
+		String deviceTag 	= getResources().getString(R.string.title_device_ecg);
+        String ecgInfoTag 	= getResources().getString(R.string.title_ecg_info);
         
 		if ( tab.getTag().equals(deviceTag) ){
 			if (!isFragmentInStack(R.id.frame_device_info)) {
-				Log.d(TAG,"onTabSelected add device");
 				ft.add(R.id.frame_device_info, device);
 			}
 			else {
-				Log.d(TAG,"onTabSelected show device");
 				ft.show(device);
 			}
 		}	else if ( tab.getTag().equals(ecgInfoTag) ){
 			if (!isFragmentInStack(R.id.frame_ecg_info)){
-				Log.d(TAG,"onTabSelected add ecgInfo");
 				ft.add(R.id.frame_ecg_info, ecgInfo);
 			}
 			else {
-				Log.d(TAG,"onTabSelected show ecgInfo");
 				ft.show(ecgInfo);
 			}
 		}
-
-		Log.d(TAG,"onTabSelected");
 	}
 
 	@Override
 	public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
-		String deviceTag = getResources().getString(R.string.title_device_ecg);
-        String ecgInfoTag = getResources().getString(R.string.title_ecg_info);
+		String deviceTag 	= getResources().getString(R.string.title_device_ecg);
+        String ecgInfoTag 	= getResources().getString(R.string.title_ecg_info);
 
         if ( tab.getTag().equals(deviceTag) ){
         	ft.hide(device);

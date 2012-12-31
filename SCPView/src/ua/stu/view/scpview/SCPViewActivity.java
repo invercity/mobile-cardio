@@ -91,8 +91,8 @@ public class SCPViewActivity extends SherlockFragmentActivity{
     	private String titleOther;
     	
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-        	titlePatient = getResources().getString(R.string.amode_patient);
-        	titleOther = getResources().getString(R.string.amode_other);
+        	titlePatient 	= getResources().getString(R.string.amode_patient);
+        	titleOther 		= getResources().getString(R.string.amode_other);
         	
         	menu.add( titlePatient )
         		.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | 
@@ -151,9 +151,9 @@ public class SCPViewActivity extends SherlockFragmentActivity{
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		String titleFileOpen = getResources().getString(R.string.msg_open_file);
-		String titleCamera = getResources().getString(R.string.msg_camera);
-		String titleInfo = getResources().getString(R.string.msg_info);
+		String titleFileOpen 	= getResources().getString(R.string.msg_open_file);
+		String titleCamera 		= getResources().getString(R.string.msg_camera);
+		String titleInfo 		= getResources().getString(R.string.msg_info);
 		
 		menu.add(titleFileOpen)
         	.setIcon(R.drawable.file_chooser)
@@ -172,9 +172,9 @@ public class SCPViewActivity extends SherlockFragmentActivity{
 	@Override
 	public boolean onOptionsItemSelected (MenuItem item)
 	{
-		String titleFileOpen = getResources().getString(R.string.msg_open_file);
-		String titleCamera = getResources().getString(R.string.msg_camera);
-		String titleInfo = getResources().getString(R.string.msg_info);
+		String titleFileOpen 	= getResources().getString(R.string.msg_open_file);
+		String titleCamera 		= getResources().getString(R.string.msg_camera);
+		String titleInfo 		= getResources().getString(R.string.msg_info);
 				
 		if (item.getTitle().equals( titleCamera ))
 		{	

@@ -65,6 +65,12 @@
     <string name="title_device_ecg">Устройство</string>
     <string name="title_ecg_info">ЭКГ</string>
     
+    <string name="title_private_patient">Пациент</string>
+    <string name="title_pressure_patient">Давления</string>
+    <string name="title_address_patient">Адресс</string>
+    <string name="title_diagnosis_patient">Диагноз</string>
+    <string name="title_history_patient">История</string>
+    
     <string name="amode_patient">Пациент</string>
     <string name="amode_other">Прочее</string>
     

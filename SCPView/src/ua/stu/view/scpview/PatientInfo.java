@@ -16,12 +16,10 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.app.Activity;
-import android.app.ActionBar.LayoutParams;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.Gravity;
 import android.view.Window;
 
 
@@ -76,8 +74,6 @@ public class PatientInfo extends FragmentActivity implements TabListener
 		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		bar.setBackgroundDrawable(new ColorDrawable(Color.DKGRAY));
 		
-		setupCustomView();
-		
 		setupTabs();
 		
 		//don't show title
@@ -86,64 +82,6 @@ public class PatientInfo extends FragmentActivity implements TabListener
 		flipOption(ActionBar.DISPLAY_SHOW_HOME,false);
 
 	}
-	
-	private void setupCustomView() {
-        getLeftNavBar().setCustomView(R.layout.custom_view);
-        LayoutParams params = new LayoutParams(0);
-        params.width 	= params.height = nextDimension(0);
-        params.gravity 	= nextGravity(nextGravity(0, true), false);
-        applyCustomParams(params);
-    }
-	
-	private void applyCustomParams(LayoutParams params) {
-        ActionBar bar = getLeftNavBar();
-        bar.setCustomView(bar.getCustomView(), params);
-    }
-	
-	private static int nextDimension(int dimension) {
-		switch (dimension) {
-		case 40:
-			return 100;
-		case 100:
-			return LayoutParams.WRAP_CONTENT;
-		case LayoutParams.FILL_PARENT:
-		default:
-			return 40;
-		}
-    }
-	
-	private static int nextGravity(int gravity, boolean horizontal) {
-        int hGravity = gravity & Gravity.HORIZONTAL_GRAVITY_MASK;
-        int vGravity = gravity & Gravity.VERTICAL_GRAVITY_MASK;
-		if (horizontal) {
-			switch (hGravity) {
-			case Gravity.LEFT:
-				hGravity = Gravity.CENTER_HORIZONTAL;
-				break;
-			case Gravity.CENTER_HORIZONTAL:
-				hGravity = Gravity.RIGHT;
-				break;
-			case Gravity.RIGHT:
-			default:
-				hGravity = Gravity.LEFT;
-				break;
-			}
-		} else {
-			switch (vGravity) {
-			case Gravity.TOP:
-				vGravity = Gravity.CENTER_VERTICAL;
-				break;
-			case Gravity.CENTER_VERTICAL:
-				vGravity = Gravity.BOTTOM;
-				break;
-			case Gravity.BOTTOM:
-			default:
-				vGravity = Gravity.TOP;
-				break;
-			}
-		}
-        return hGravity | vGravity;
-    }
 	
 	private LeftNavBar getLeftNavBar() {
 		if (mLeftNavBar == null) {
@@ -158,7 +96,8 @@ public class PatientInfo extends FragmentActivity implements TabListener
 	}
 	
 	private void setupTabs() {
-        ActionBar bar = getLeftNavBar();
+        LeftNavBar bar = getLeftNavBar();
+        bar.showOptionsMenu(false);
         bar.removeAllTabs();
         
         String privateTag 	= getResources().getString(R.string.title_private_patient);
@@ -167,19 +106,19 @@ public class PatientInfo extends FragmentActivity implements TabListener
         String diagnosisTag = getResources().getString(R.string.title_diagnosis_patient);
         String historyTag 	= getResources().getString(R.string.title_history_patient);
         
-        ActionBar.Tab tab = bar.newTab().setText(R.string.title_private_patient).setIcon(R.drawable.tab_a)
+        ActionBar.Tab tab = bar.newTab().setText(R.string.title_private_patient).setIcon(R.drawable.patient)
         		.setTag(privateTag)
                 .setTabListener(this);
-        bar.addTab(bar.newTab().setText(R.string.title_pressure_patient).setIcon(R.drawable.tab_a)
+        bar.addTab(bar.newTab().setText(R.string.title_pressure_patient).setIcon(R.drawable.pressure)
         		.setTag(pressureTag)
         		.setTabListener(this));
-        bar.addTab(bar.newTab().setText(R.string.title_address_patient).setIcon(R.drawable.tab_a)
+        bar.addTab(bar.newTab().setText(R.string.title_address_patient).setIcon(R.drawable.address)
         		.setTag(addressTag)
         		.setTabListener(this));
-        bar.addTab(bar.newTab().setText(R.string.title_diagnosis_patient).setIcon(R.drawable.tab_a)
+        bar.addTab(bar.newTab().setText(R.string.title_diagnosis_patient).setIcon(R.drawable.diagnosis)
         		.setTag(diagnosisTag)
         		.setTabListener(this));
-        bar.addTab(bar.newTab().setText(R.string.title_history_patient).setIcon(R.drawable.tab_a)
+        bar.addTab(bar.newTab().setText(R.string.title_history_patient).setIcon(R.drawable.history)
         		.setTag(historyTag)
         		.setTabListener(this));
 

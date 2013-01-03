@@ -30,6 +30,11 @@
     	            android:id="@+id/surname_patient_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/id_patient_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView 
 						android:id="@+id/surname_patient"
 						style="@style/ViewStyleKey"
@@ -46,6 +51,11 @@
     	            android:id="@+id/name_patient_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/surname_patient_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView 
 						android:id="@+id/name_patient"
 						style="@style/ViewStyleKey"
@@ -60,6 +70,11 @@
     	            android:id="@+id/father_patient_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/name_patient_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView 
 						android:id="@+id/father_patient"
 						style="@style/ViewStyleKey"
@@ -74,6 +89,11 @@
     	            android:id="@+id/birthday_patient_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/father_patient_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/birthday_patient_value"
 					    style="@style/EditStyleValue"
@@ -88,6 +108,11 @@
     	            android:id="@+id/age_patient_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/birthday_patient_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/age_patient"
 					    style="@style/ViewStyleKey"
@@ -102,6 +127,11 @@
     	            android:id="@+id/stature_patient_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/age_patient_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/stature_patient"
 					    style="@style/ViewStyleKey"
@@ -116,6 +146,11 @@
     	            android:id="@+id/weight_patient_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/stature_patient_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/weight_patient"
 					    style="@style/ViewStyleKey"
@@ -130,6 +165,11 @@
     	            android:id="@+id/sex_patient_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/weight_patient_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/sex_patient"
 					    style="@style/ViewStyleKey"
@@ -144,6 +184,11 @@
     	            android:id="@+id/race_patient_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/sex_patient_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/race_patient"
 					    style="@style/ViewStyleKey"
@@ -156,4 +201,10 @@
 				</RelativeLayout>
 			</RelativeLayout>
 		</ScrollView>
+		
+    	<View
+			android:layout_width="fill_parent"
+			android:layout_height="1dip"
+			android:background="#FF0000FF"
+		/>
 </LinearLayout>

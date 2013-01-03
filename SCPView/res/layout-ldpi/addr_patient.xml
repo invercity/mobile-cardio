@@ -28,6 +28,11 @@
     	            android:id="@+id/area_patient_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/posta_code_patient_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/area_patient"
 					    style="@style/ViewStyleKey"
@@ -42,6 +47,11 @@
     	            android:id="@+id/zone_patient_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/area_patient_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/zone_patient"
 					    style="@style/ViewStyleKey"
@@ -56,6 +66,11 @@
     	            android:id="@+id/nas_patient_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/zone_patient_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/nas_patient"
 					    style="@style/ViewStyleKey"
@@ -70,6 +85,11 @@
     	            android:id="@+id/street_patient_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/nas_patient_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/street_patient"
 					    style="@style/ViewStyleKey"
@@ -84,6 +104,11 @@
     	            android:id="@+id/house_patient_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/street_patient_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/house_patient"
 					    style="@style/ViewStyleKey"
@@ -98,6 +123,11 @@
     	            android:id="@+id/life_patient_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/house_patient_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/life_patient"
 					    style="@style/ViewStyleKey"
@@ -110,4 +140,9 @@
 				</RelativeLayout>
     	    </RelativeLayout>
     </ScrollView>
+    <View
+		android:layout_width="fill_parent"
+		android:layout_height="1dip"
+		android:background="#FF0000FF"
+	/>
 </LinearLayout>

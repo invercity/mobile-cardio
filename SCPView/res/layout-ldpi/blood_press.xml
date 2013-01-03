@@ -28,6 +28,11 @@
     	            android:id="@+id/dya_press_patient_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@+id/sys_press_patient_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/dya_press_patient"
 					    style="@style/ViewStyleKey"
@@ -39,5 +44,10 @@
 					    android:text="@string/none_patient" />
 				</RelativeLayout>
 		</RelativeLayout>
-	</ScrollView>	
+	</ScrollView>
+	<View
+		android:layout_width="fill_parent"
+		android:layout_height="1dip"
+		android:background="#FF0000FF"
+	/>	
 </LinearLayout>

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
     <ScrollView
     	    android:id="@+id/device_scroll_view"
     	    android:layout_width="fill_parent"
@@ -24,10 +24,16 @@
 					    android:layout_toRightOf="@+id/maker"
 					    android:text="@string/none_patient" />
 				</RelativeLayout>
+				
 				<RelativeLayout
     	            android:id="@+id/org_num_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/maker_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/org_num"
 					    style="@style/ViewStyleKey"
@@ -42,6 +48,11 @@
     	            android:id="@+id/dep_num_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/org_num_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/dep_num"
 					    style="@style/ViewStyleKey"
@@ -56,6 +67,11 @@
     	            android:id="@+id/dev_id_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/dep_num_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/dev_id"
 					    style="@style/ViewStyleKey"
@@ -70,6 +86,11 @@
     	            android:id="@+id/dev_type_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/dev_id_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/dev_type"
 					    style="@style/ViewStyleKey"
@@ -84,6 +105,11 @@
     	            android:id="@+id/model_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/dev_type_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/model"
 					    style="@style/ViewStyleKey"
@@ -98,6 +124,11 @@
     	            android:id="@+id/hz_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/model_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/hz"
 					    style="@style/ViewStyleKey"
@@ -112,6 +143,11 @@
     	            android:id="@+id/soft_version_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/hz_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/soft_version"
 					    style="@style/ViewStyleKey"
@@ -126,6 +162,11 @@
     	            android:id="@+id/serial_num_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/soft_version_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/serial_num"
 					    style="@style/ViewStyleKey"
@@ -140,6 +181,11 @@
     	            android:id="@+id/sys_soft_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/serial_num_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/sys_soft"
 					    style="@style/ViewStyleKey"
@@ -154,6 +200,11 @@
     	            android:id="@+id/soft_scp_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/sys_soft_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/soft_scp"
 					    style="@style/ViewStyleKey"
@@ -168,6 +219,11 @@
     	            android:id="@+id/dev_do_layout"
     	        	style="@style/RelativeStyle"
     	        	android:layout_below="@id/soft_scp_layout">
+					<View
+	    				android:layout_width="fill_parent"
+	    				android:layout_height="1dip"
+	    				android:background="#FF0000FF"
+					/>
 					<TextView
 					    android:id="@+id/dev_do_txt"
 					    style="@style/HeadRealativeStyle"
@@ -185,7 +241,7 @@
 					<CheckBox
 				        android:id="@+id/check_analys_value"
 				        style="@style/CheckStyle"
-				        android:layout_toRightOf="@+id/check_print_value"
+				        android:layout_below="@+id/check_print_value"
 				        android:text="@string/check_analys" />
 					<CheckBox
 				        android:id="@+id/check_save_value"
@@ -195,9 +251,14 @@
 					<CheckBox
 				        android:id="@+id/check_take_value"
 				        style="@style/CheckStyle"
-				        android:layout_toRightOf="@+id/check_analys_value"
+				        android:layout_below="@+id/check_save_value"
 				        android:text="@string/check_take" />
 				</RelativeLayout>
-    	    </RelativeLayout>    
+    	    </RelativeLayout>
 	</ScrollView>
+	<View
+		android:layout_width="fill_parent"
+		android:layout_height="1dip"
+		android:background="#FF0000FF"
+	/>
 </LinearLayout>

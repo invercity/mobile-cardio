@@ -225,6 +225,24 @@ public class LeftNavBar extends ActionBar {
             public void select() {
                 selectTab(this);
             }
+
+			@Override
+			public CharSequence getContentDescription() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public Tab setContentDescription(int resId) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public Tab setContentDescription(CharSequence contentDesc) {
+				// TODO Auto-generated method stub
+				return null;
+			}
         };
     }
 
@@ -501,4 +519,28 @@ public class LeftNavBar extends ActionBar {
     public void setOnClickHomeListener(View.OnClickListener listener) {
         mLeftNav.setOnClickHomeListener(listener);
     }
+
+	@Override
+	public void setIcon(int resId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setIcon(Drawable icon) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setLogo(int resId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setLogo(Drawable logo) {
+		// TODO Auto-generated method stub
+		
+	}
 }

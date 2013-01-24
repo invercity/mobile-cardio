@@ -5,7 +5,6 @@
     android:layout_height="fill_parent"
     android:background="@android:color/white"
     android:orientation="vertical" >
-
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/linearLayout1"
@@ -51,6 +50,7 @@
         android:minHeight="60dp"
         android:orientation="horizontal" 
          android:layout_below="@+id/linearLayout1" >
+
         <TextView
             android:id="@+id/power_text"
             style="@style/ECGViewStyle"
@@ -114,6 +114,8 @@
 
     </LinearLayout>
 
+    
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
@@ -122,6 +124,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/linearLayout3"
         android:orientation="horizontal" >
+
 	<ua.stu.view.scpview.ImageViewer
 		android:id="@+id/ImageViewer"
             android:layout_width="wrap_content"

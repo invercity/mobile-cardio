@@ -26,14 +26,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import 	android.webkit.WebView;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
-
+import 	android.widget.RelativeLayout.LayoutParams;
+import android.widget.LinearLayout;
 public class SCPViewActivity extends SherlockFragmentActivity{
 	
 	SCPViewActivity v = this;
@@ -69,7 +74,8 @@ public class SCPViewActivity extends SherlockFragmentActivity{
 		state = savedInstanceState;
 		graphicView = new GraphicView(this);
 		
-		final android.content.Intent intent = getIntent();
+
+				final android.content.Intent intent = getIntent();
 
 		if (intent != null) {
 			final android.net.Uri data = intent.getData();
@@ -183,8 +189,29 @@ public class SCPViewActivity extends SherlockFragmentActivity{
 					Toast.makeText(SCPViewActivity.this, R.string.no_connection,Toast.LENGTH_SHORT).show();
 				else runScanner();
 			}
-			else Toast.makeText(SCPViewActivity.this, R.string.not_avialable,Toast.LENGTH_SHORT).show();
-		
+			else{ 
+				//CheckBox ch =(CheckBox)findViewById(R.id.check_revert_ecg);
+				//ch.setVisibility(ch.getVisibility()==View.VISIBLE ? View.INVISIBLE : ch.getVisibility()==View.INVISIBLE ? View.VISIBLE : View.VISIBLE);
+				LinearLayout l =(LinearLayout)findViewById(R.id.linearLayout2);
+				l.setVisibility(l.getVisibility()==View.VISIBLE ? View.INVISIBLE : l.getVisibility()==View.INVISIBLE ? View.VISIBLE : View.VISIBLE);
+				
+				//TextView tx =(TextView)findViewById(R.id.zoom);
+			//	tx.setVisibility(tx.getVisibility()==View.VISIBLE ? View.INVISIBLE : tx.getVisibility()==View.INVISIBLE ? View.VISIBLE : View.VISIBLE);
+				Toast.makeText(SCPViewActivity.this, R.string.not_avialable,Toast.LENGTH_SHORT).show();
+				ImageViewer im =(ImageViewer)findViewById(R.id.ImageViewer);
+				LinearLayout l3 =(LinearLayout)findViewById(R.id.linearLayout3);
+				l.setTop(0);
+				
+			//RelativeLayout.LayoutParams params =
+			//		    new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+			//		                                    LayoutParams.WRAP_CONTENT);
+					//params.addRule(RelativeLayout.ALIGN_TOP, R.id.check_revert_ecg);
+				// RelativeLayout.LayoutParams layoutParams =     l3.sett; 
+	                     
+	                  //  layoutParams.setMargins(150, 150, 0, 0);
+	               // l3.setLayoutParams(layoutParams);			
+				//im.setPivotY(0);
+			}
 			
 		}	else if (item.getTitle().equals( titleFileOpen )){
 			runFileChooser(R.style.Theme_Sherlock, ROOT_PATH);

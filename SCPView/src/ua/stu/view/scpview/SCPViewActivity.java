@@ -190,27 +190,8 @@ public class SCPViewActivity extends SherlockFragmentActivity{
 				else runScanner();
 			}
 			else{ 
-				//CheckBox ch =(CheckBox)findViewById(R.id.check_revert_ecg);
-				//ch.setVisibility(ch.getVisibility()==View.VISIBLE ? View.INVISIBLE : ch.getVisibility()==View.INVISIBLE ? View.VISIBLE : View.VISIBLE);
-				LinearLayout l =(LinearLayout)findViewById(R.id.linearLayout2);
-				l.setVisibility(l.getVisibility()==View.VISIBLE ? View.INVISIBLE : l.getVisibility()==View.INVISIBLE ? View.VISIBLE : View.VISIBLE);
-				
-				//TextView tx =(TextView)findViewById(R.id.zoom);
-			//	tx.setVisibility(tx.getVisibility()==View.VISIBLE ? View.INVISIBLE : tx.getVisibility()==View.INVISIBLE ? View.VISIBLE : View.VISIBLE);
 				Toast.makeText(SCPViewActivity.this, R.string.not_avialable,Toast.LENGTH_SHORT).show();
-				ImageViewer im =(ImageViewer)findViewById(R.id.ImageViewer);
-				LinearLayout l3 =(LinearLayout)findViewById(R.id.linearLayout3);
-				l.setTop(0);
 				
-			//RelativeLayout.LayoutParams params =
-			//		    new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
-			//		                                    LayoutParams.WRAP_CONTENT);
-					//params.addRule(RelativeLayout.ALIGN_TOP, R.id.check_revert_ecg);
-				// RelativeLayout.LayoutParams layoutParams =     l3.sett; 
-	                     
-	                  //  layoutParams.setMargins(150, 150, 0, 0);
-	               // l3.setLayoutParams(layoutParams);			
-				//im.setPivotY(0);
 			}
 			
 		}	else if (item.getTitle().equals( titleFileOpen )){

@@ -81,6 +81,11 @@
     <string name="msg_open_file">Open ECG File</string>
 	<string name="msg_camera">QR-code</string>
 	<string name="msg_info">Information</string>
+	
+	<string name="slider_open_file">File</string>
+	<string name="slider_camera">QR-code</string>
+	<string name="slider_patient">Patient</string>
+	<string name="slider_other">Other</string>
 </resources>
 
 

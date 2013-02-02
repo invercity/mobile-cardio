@@ -16,6 +16,7 @@
         android:label="@string/app_name" >
         <activity
             android:name="SCPViewActivity"
+            android:theme="@style/Theme.Sherlock.Fullscreen"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -72,10 +73,12 @@
         </activity>
         <activity android:name="PatientInfo" 
             android:screenOrientation="landscape"
+            android:theme="@style/Theme.Sherlock.Fullscreen"
 			android:configChanges="orientation">  
         </activity>
         <activity android:name="OtherInfo" 
             android:screenOrientation="landscape"
+            android:theme="@style/Theme.Sherlock.Fullscreen"
 			android:configChanges="orientation">
         </activity>
         <activity android:name="group.pals.android.lib.ui.filechooser.FileChooserActivity" >

@@ -81,4 +81,9 @@
     <string name="msg_open_file">Открыть ЭКГ файл</string>
 	<string name="msg_camera">QR-код</string>
 	<string name="msg_info">Инфорамация</string>
+	
+	<string name="slider_open_file">Файл</string>
+	<string name="slider_camera">QR-код</string>
+	<string name="slider_patient">Пациент</string>
+	<string name="slider_other">Прочее</string>
 </resources>

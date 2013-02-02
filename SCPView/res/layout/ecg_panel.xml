@@ -53,5 +53,24 @@
 	    android:layout_alignBottom="@+id/check_revert_ecg"
 	    android:layout_toRightOf="@+id/check_revert_ecg"
 	    android:text="@string/none" />
+	
+	<!-- <it.sephiroth.demo.slider.widget.MultiDirectionSlidingDrawer
+		xmlns:my="http://schemas.android.com/apk/res-auto"
+		android:id="@+id/slider_panel"
+		my:direction="bottomToTop"
+		my:topOffset="100dp"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		my:handle="@+id/slider_handle"
+		my:content="@+id/slider_content">
+		<include
+			android:id="@id/slider_content"
+			layout="@layout/pen_content" />
+		<ImageView
+			android:id="@id/slider_handle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="@drawable/slider_collapse_selected" />
+	</it.sephiroth.demo.slider.widget.MultiDirectionSlidingDrawer>-->
 
 </RelativeLayout>

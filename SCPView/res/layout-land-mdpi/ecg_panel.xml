@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ecg_panel"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/white"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -109,6 +110,7 @@
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linearLayout3"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
@@ -121,4 +123,21 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <it.sephiroth.demo.slider.widget.MultiDirectionSlidingDrawer
+		xmlns:my="http://schemas.android.com/apk/res-auto"
+		android:id="@+id/slider_panel"
+		my:direction="bottomToTop"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		my:handle="@+id/handle"
+		my:content="@+id/slider_content">
+		<include
+			android:id="@id/slider_content"
+			layout="@layout/slider_content" />
+		<ImageView
+			android:id="@id/handle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="@drawable/slider_collapse_selected"/>
+	</it.sephiroth.demo.slider.widget.MultiDirectionSlidingDrawer>
 </RelativeLayout>

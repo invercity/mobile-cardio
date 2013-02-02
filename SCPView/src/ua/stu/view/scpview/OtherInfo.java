@@ -100,8 +100,8 @@ public class OtherInfo extends FragmentActivity implements TabListener
 		HashMap table 		= (HashMap) getIntent().getSerializableExtra(otherKey);
 	    infoO 				= (InfoO)table.get(otherKey);
 		
-		device 	= new DeviceForECGFragment(infoO);
-		ecgInfo = new ECGInfoFragment(infoO);
+		device 				= new DeviceForECGFragment(infoO);
+		ecgInfo 			= new ECGInfoFragment(infoO);
 	}
 
 	private final boolean isFragmentInStack(int id)

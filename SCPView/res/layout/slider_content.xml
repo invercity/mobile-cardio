@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:layout_gravity="bottom"
+	android:background="@android:color/darker_gray">
+	
+    <RadioGroup
+		android:layout_width="fill_parent"
+		android:layout_height="60dp"
+		android:layout_alignParentBottom="true"
+		android:background="@android:color/darker_gray"
+		android:orientation="horizontal"
+	  >
+		<RadioButton
+		  android:id="@+id/slider_file_chooser"
+		  style="@style/slider_panel"
+		  android:drawableTop="@drawable/file_chooser"
+		  android:text="@string/slider_open_file"
+		/>
+		<RadioButton
+		  android:id="@+id/slider_camera"
+		  style="@style/slider_panel"
+		  android:drawableTop="@drawable/camera"
+		  android:text="@string/slider_camera"
+		  android:layout_marginLeft="5dp"
+		/>
+		<RadioButton
+		  android:id="@+id/slider_patient"
+		  style="@style/slider_panel"
+		  android:drawableTop="@drawable/info"
+		  android:text="@string/slider_patient"
+		  android:layout_marginLeft="5dp"
+		/>
+		<RadioButton
+		  android:id="@+id/slider_other"
+		  style="@style/slider_panel"
+		  android:drawableTop="@drawable/info"
+		  android:text="@string/slider_other"
+		  android:layout_marginLeft="5dp"
+		/>
+	</RadioGroup>
+</RelativeLayout>

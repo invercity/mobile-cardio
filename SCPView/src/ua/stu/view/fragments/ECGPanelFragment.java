@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
@@ -113,8 +114,9 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	    return returnedBitmap;
 	}
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
-	{
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){
+		Log.d(TAG,"onCreateView");
+		
 		DisplayMetrics metrics = inflater.getContext().getResources().getDisplayMetrics();
 		setDisplayWidth(metrics.widthPixels);
 		setDisplayHeight(metrics.heightPixels);
@@ -123,7 +125,7 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		zoomText = view.getResources().getString( R.string.zoom );
 		//Fragment doesn't call onDestroy и onCreate
 		setRetainInstance(true);
-		
+
 		init( view );
 		
 		imageViewer=(ImageViewer)view.findViewById(R.id.ImageViewer);		
@@ -146,8 +148,43 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		speedValue.setText(getSpeed() + " mm/c");
 		powerValue.setText(getPower() + " mV/cm");
 		
-	    return view;
-	    
+	    return view;    
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		Log.d(TAG,"onCreate");
+	}
+	
+	@Override
+	public void onStart(){
+		super.onStart();
+		Log.d(TAG,"onStart");
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		Log.d(TAG,"onResume");
+	}
+	
+	@Override
+	public void onPause(){
+		super.onPause();
+		Log.d(TAG,"onPause");
+	}
+	
+	@Override
+	public void onStop(){
+		super.onStop();
+		Log.d(TAG,"onStop");
+	}
+	
+	@Override
+	public void onDestroyView(){
+		super.onDestroyView();
+		Log.d(TAG,"onDestroyView");
 	}
 	
 	@Override

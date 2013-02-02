@@ -56,8 +56,11 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		Log.d(TAG,"onCreate");
+		
         setContentView(R.layout.main);
-
+        
 		state 		= savedInstanceState;
 		graphicView = new GraphicView(this);
 
@@ -96,16 +99,40 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	@Override
 	public void onResume() {
 		super.onResume();
-
+		Log.d(TAG,"onResume");
 		try {
 			h = new DataHandler(ecgFilePath);
 		} catch (Exception e) {
 			Log.e(TAG, e.toString());
 		}
-
+		
 		initECGPanel(h);
 	}
 
+	@Override
+	public void onStart(){
+		super.onStart();
+		Log.d(TAG,"onStart");
+	}
+	
+	@Override
+	public void onPause(){
+		super.onPause();
+		Log.d(TAG,"onPause");
+	}
+	
+	@Override
+	public void onStop(){
+		super.onStart();
+		Log.d(TAG,"onStop");
+	}
+	
+	@Override
+	public void onRestart(){
+		super.onRestart();
+		Log.d(TAG,"onRestart");
+	}
+	
 	@Override
 	public void eventClickSliderContent(int resID) {
 		switch ( resID ) {
@@ -139,7 +166,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 		ecgPanel = new ECGPanelFragment( graphicView );
 		
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add( R.id.ecg_panel_fragment, ecgPanel );
+        ft.replace( R.id.ecg_panel_fragment, ecgPanel );
         ft.commit();
 	}
 	

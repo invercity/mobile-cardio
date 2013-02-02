@@ -130,5 +130,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
+    
+    <it.sephiroth.demo.slider.widget.MultiDirectionSlidingDrawer
+		xmlns:my="http://schemas.android.com/apk/res-auto"
+		android:id="@+id/slider_panel"
+		my:direction="bottomToTop"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		my:handle="@+id/handle"
+		my:content="@+id/slider_content">
+		<include
+			android:id="@id/slider_content"
+			layout="@layout/slider_content" />
+		<ImageView
+			android:id="@id/handle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="@drawable/slider_collapse_selected"/>
+	</it.sephiroth.demo.slider.widget.MultiDirectionSlidingDrawer>
 
 </RelativeLayout>

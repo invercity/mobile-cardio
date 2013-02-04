@@ -411,5 +411,7 @@ public class GraphicView extends AwtView {
 		this.invert = invert;
 	}
 	
-
+	public boolean isNotNull(){
+		return h == null ? false : true;
+	}
 }

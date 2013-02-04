@@ -114,9 +114,7 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	    return returnedBitmap;
 	}
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){
-		Log.d(TAG,"onCreateView");
-		
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){	
 		DisplayMetrics metrics = inflater.getContext().getResources().getDisplayMetrics();
 		setDisplayWidth(metrics.widthPixels);
 		setDisplayHeight(metrics.heightPixels);
@@ -125,9 +123,9 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		zoomText = view.getResources().getString( R.string.zoom );
 		//Fragment doesn't call onDestroy и onCreate
 		setRetainInstance(true);
-
-		init( view );
 		
+		init( view );
+
 		imageViewer=(ImageViewer)view.findViewById(R.id.ImageViewer);		
 		graphicView.setXScale(speed);
 		graphicView.setYScale(1);		
@@ -152,58 +150,22 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	}
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
-		Log.d(TAG,"onCreate");
-	}
-	
-	@Override
-	public void onStart(){
-		super.onStart();
-		Log.d(TAG,"onStart");
-	}
-	
-	@Override
-	public void onResume(){
-		super.onResume();
-		Log.d(TAG,"onResume");
-	}
-	
-	@Override
-	public void onPause(){
-		super.onPause();
-		Log.d(TAG,"onPause");
-	}
-	
-	@Override
-	public void onStop(){
-		super.onStop();
-		Log.d(TAG,"onStop");
-	}
-	
-	@Override
-	public void onDestroyView(){
-		super.onDestroyView();
-		Log.d(TAG,"onDestroyView");
-	}
-	
-	@Override
-	public void onClick(View view) {
+	public void onClick( View view ) {
 		switch ( view.getId() ){			
 		case R.id.check_revert_ecg:
-			revertECG(view);
+			revertECG( view );
 			break;
 		case R.id.slider_camera:
-			eventClick.eventClickSliderContent(R.id.slider_camera);
+			eventClick.eventClickSliderContent( R.id.slider_camera );
 			break;
 		case R.id.slider_file_chooser:
-			eventClick.eventClickSliderContent(R.id.slider_file_chooser);
+			eventClick.eventClickSliderContent( R.id.slider_file_chooser );
 			break;
 		case R.id.slider_patient:
-			eventClick.eventClickSliderContent(R.id.slider_patient);
+			eventClick.eventClickSliderContent( R.id.slider_patient );
 			break;
 		case R.id.slider_other:
-			eventClick.eventClickSliderContent(R.id.slider_other);
+			eventClick.eventClickSliderContent( R.id.slider_other );
 			break;
 		//in future, when all panel will sliding	
 		/*default:
@@ -220,8 +182,8 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		zoom 				= ( TextView )view.findViewById( R.id.zoom );
 		invert 				= ( CheckBox )view.findViewById( R.id.check_revert_ecg );
 		
-		camera.setOnClickListener(this);
-		fileChooser.setOnClickListener(this);
+		camera.setOnClickListener( this );
+		fileChooser.setOnClickListener( this );
 		
 		sliderSpeed = ( SeekBar )view.findViewById( R.id.speed );
 		sliderSpeed.setMax( MAX_SPEED - 1 );
@@ -243,10 +205,22 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		patient		= ( RadioButton )view.findViewById( R.id.slider_patient );
 		other		= ( RadioButton )view.findViewById( R.id.slider_other );
 		
-		camera.setOnClickListener(this);
-		fileChooser.setOnClickListener(this);
-		patient.setOnClickListener(this);
-		other.setOnClickListener(this);
+		camera.setOnClickListener( this );
+		fileChooser.setOnClickListener( this );
+		patient.setOnClickListener( this );
+		other.setOnClickListener( this );
+		
+		if ( graphicView.isNotNull() ){
+			contentClicable( true );
+		}
+		else {
+			contentClicable( false );
+		}
+	}
+	
+	private final void contentClicable( boolean isClick ) {
+		patient.setClickable(isClick);
+		other.setClickable(isClick);
 	}
 	
 	private final void initSliderPanel( View view ) {

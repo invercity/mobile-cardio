@@ -57,8 +57,6 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		Log.d(TAG,"onCreate");
-		
         setContentView(R.layout.main);
         
 		state 		= savedInstanceState;
@@ -99,7 +97,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	@Override
 	public void onResume() {
 		super.onResume();
-		Log.d(TAG,"onResume");
+
 		try {
 			h = new DataHandler(ecgFilePath);
 		} catch (Exception e) {
@@ -107,30 +105,6 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 		}
 		
 		initECGPanel(h);
-	}
-
-	@Override
-	public void onStart(){
-		super.onStart();
-		Log.d(TAG,"onStart");
-	}
-	
-	@Override
-	public void onPause(){
-		super.onPause();
-		Log.d(TAG,"onPause");
-	}
-	
-	@Override
-	public void onStop(){
-		super.onStart();
-		Log.d(TAG,"onStop");
-	}
-	
-	@Override
-	public void onRestart(){
-		super.onRestart();
-		Log.d(TAG,"onRestart");
 	}
 	
 	@Override
@@ -297,7 +271,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 		}
 	}
 	
-	private final void transferOtherData(){
+	private final void transferOtherData(){		
 		Hashtable<String, InfoO> otherTable = new Hashtable<String, InfoO>();
 		InfoO infoO = new InfoO(h.getOInfo().getAllOInfo());
 		String otherKey = getResources().getString(R.string.app_other);

@@ -66,8 +66,6 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	 */
 	private static int MAX_POWER = 16;
 	
-	private boolean isSliderExpand = false;
-	
 	private int speed=25;
 	private int power=1;
 	
@@ -281,6 +279,10 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		
 	}
 
+	public MultiDirectionSlidingDrawer getSliderPanel(){
+		return sliderPanel;
+	}
+	
 	public int getSpeed() {
 		return speed;
 	}
@@ -320,16 +322,4 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
              zoom.setText(zoomText+imageViewer.getScaleFactor()+" %");	
 		}
 	}
-	
-	private void expandSliderPanel(){
-		if ( isSliderExpand ){
-			sliderPanel.animateClose();
-			isSliderExpand = false;	
-		}
-		else {
-			sliderPanel.animateOpen();
-			isSliderExpand = true;
-		}
-	}
-
 }

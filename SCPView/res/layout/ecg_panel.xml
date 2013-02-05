@@ -54,7 +54,7 @@
 	    android:layout_toRightOf="@+id/check_revert_ecg"
 	    android:text="@string/none" />
 	
-	<!-- <it.sephiroth.demo.slider.widget.MultiDirectionSlidingDrawer
+	<it.sephiroth.demo.slider.widget.MultiDirectionSlidingDrawer
 		xmlns:my="http://schemas.android.com/apk/res-auto"
 		android:id="@+id/slider_panel"
 		my:direction="bottomToTop"
@@ -65,12 +65,11 @@
 		my:content="@+id/slider_content">
 		<include
 			android:id="@id/slider_content"
-			layout="@layout/pen_content" />
+			layout="@layout/slider_content" />
 		<ImageView
 			android:id="@id/slider_handle"
 			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:background="@drawable/slider_collapse_selected" />
-	</it.sephiroth.demo.slider.widget.MultiDirectionSlidingDrawer>-->
+			android:layout_height="wrap_content" />
+	</it.sephiroth.demo.slider.widget.MultiDirectionSlidingDrawer>
 
 </RelativeLayout>

@@ -137,7 +137,6 @@
 		<ImageView
 			android:id="@id/handle"
 			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:background="@drawable/slider_collapse_selected"/>
+			android:layout_height="wrap_content"/>
 	</it.sephiroth.demo.slider.widget.MultiDirectionSlidingDrawer>
 </RelativeLayout>

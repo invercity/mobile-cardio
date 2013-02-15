@@ -24,21 +24,24 @@
 		  style="@style/slider_panel"
 		  android:drawableTop="@drawable/camera"
 		  android:text="@string/slider_camera"
-		  android:layout_marginLeft="5dp"
 		/>
 		<RadioButton
 		  android:id="@+id/slider_patient"
 		  style="@style/slider_panel"
-		  android:drawableTop="@drawable/info"
+		  android:drawableTop="@drawable/patient_slider"
 		  android:text="@string/slider_patient"
-		  android:layout_marginLeft="5dp"
 		/>
 		<RadioButton
 		  android:id="@+id/slider_other"
 		  style="@style/slider_panel"
 		  android:drawableTop="@drawable/info"
 		  android:text="@string/slider_other"
-		  android:layout_marginLeft="5dp"
+		/>
+		<RadioButton
+		  android:id="@+id/slider_ecg_revert"
+		  style="@style/slider_panel"
+		  android:drawableTop="@drawable/revert_ecg"
+		  android:text="@string/revert_ecg"
 		/>
 	</RadioGroup>
 </RelativeLayout>

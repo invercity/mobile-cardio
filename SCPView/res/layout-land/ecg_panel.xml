@@ -74,12 +74,6 @@
         android:layout_below="@+id/linearLayout1"
         android:orientation="horizontal" >
 
-        <CheckBox
-            android:id="@+id/check_revert_ecg"
-            style="@style/CheckStyleTrue"
-            android:text="@string/revert_ecg"
-            android:textColor="@android:color/darker_gray" />
-
         <TextView
             android:id="@+id/zoom"
             style="@style/ECGValueStyle"

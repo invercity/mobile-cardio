@@ -36,19 +36,12 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:checked">false</item>
         <item name="android:clickable">false</item>
-        <item name="android:button">@xml/custom_checkbox</item>
     </style>
     <style name="CheckStyleSelected" parent="@style/ObjectStyle">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:button">@xml/custom_checkbox</item>
     </style>
-    <style name="CheckStyleTrue" parent="@style/ObjectStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:clickable">true</item>
-        <item name="android:button">@xml/custom_checkbox</item>
-    </style>
+
     <style name="ECGViewStyle" parent="@style/ObjectStyle">
         <item name="android:layout_width">80dip</item>
         <item name="android:layout_height">wrap_content</item>

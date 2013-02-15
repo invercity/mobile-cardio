@@ -130,13 +130,16 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 			}
 			break;
 		case R.id.slider_file_chooser:
-			runFileChooser(R.style.Theme_Sherlock, ROOT_PATH);
+			runFileChooser( R.style.Theme_Sherlock, ROOT_PATH );
 			break;
 		case R.id.slider_patient:
 			transferPatientData();
 			break;
 		case R.id.slider_other:
 			transferOtherData();
+			break;
+		case R.id.slider_ecg_revert:
+			ecgPanel.revertECG( ecgPanel.getView() );
 			break;
 		}	
 	}

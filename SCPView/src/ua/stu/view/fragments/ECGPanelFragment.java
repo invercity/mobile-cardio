@@ -75,12 +75,12 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	private TextView speedValue;
 	private TextView powerValue;
 
-	private static int SLIDER_SCREEN_PART = 7;
+	private static int SLIDER_SCREEN_PART = 10;
 	private MultiDirectionSlidingDrawer sliderPanel;
 	
 	private GraphicView graphicView;
 	private ImageViewer imageViewer;
-	private CheckBox invert;
+
 	OnClickListener checkBoxListener;
 	OnTouchListener graphicViewScaleListener;
 
@@ -91,6 +91,8 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	private RadioButton fileChooser;
 	private RadioButton patient;
 	private RadioButton other;
+	private RadioButton ecgRevert;
+	private boolean 	isRevert = false;
 
 	public ECGPanelFragment(){
 		
@@ -150,8 +152,8 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	@Override
 	public void onClick( View view ) {
 		switch ( view.getId() ){			
-		case R.id.check_revert_ecg:
-			revertECG( view );
+		case R.id.slider_ecg_revert:
+			eventClick.eventClickSliderContent( R.id.slider_ecg_revert );
 			break;
 		case R.id.slider_camera:
 			eventClick.eventClickSliderContent( R.id.slider_camera );
@@ -178,7 +180,6 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		speedValue 			= ( TextView )view.findViewById( R.id.speed_value );
 		powerValue 			= ( TextView )view.findViewById( R.id.power_value );
 		zoom 				= ( TextView )view.findViewById( R.id.zoom );
-		invert 				= ( CheckBox )view.findViewById( R.id.check_revert_ecg );
 		
 		camera.setOnClickListener( this );
 		fileChooser.setOnClickListener( this );
@@ -194,7 +195,6 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		sliderPower.setProgress( getPower() - 1 );
 		sliderSpeed.incrementProgressBy( 1 );
 		sliderPower.setOnSeekBarChangeListener( this );
-		invert.setOnClickListener( this );
 	}
 	
 	private final void initSliderContent( View view ){
@@ -202,11 +202,13 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		fileChooser = ( RadioButton )view.findViewById( R.id.slider_file_chooser );
 		patient		= ( RadioButton )view.findViewById( R.id.slider_patient );
 		other		= ( RadioButton )view.findViewById( R.id.slider_other );
+		ecgRevert	= ( RadioButton )view.findViewById( R.id.slider_ecg_revert );
 		
 		camera.setOnClickListener( this );
 		fileChooser.setOnClickListener( this );
 		patient.setOnClickListener( this );
 		other.setOnClickListener( this );
+		ecgRevert.setOnClickListener( this );
 		
 		if ( graphicView.isNotNull() ){
 			contentClicable( true );
@@ -217,8 +219,9 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	}
 	
 	private final void contentClicable( boolean isClick ) {
-		patient.setClickable(isClick);
-		other.setClickable(isClick);
+		patient.setClickable( isClick );
+		other.setClickable( isClick );
+		ecgRevert.setClickable( isClick );
 	}
 	
 	private final void initSliderPanel( View view ) {
@@ -305,21 +308,23 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		
 	}
 	
-	private void revertECG (View view){
+	public void revertECG (View view){
 		String zoomText = view.getResources().getString(R.string.zoom);
-		if (invert.isChecked()){
-            graphicView.setInvert(true);
-            graphicView.invalidate();
-            imageViewer.loadImage(getBitmapFromView(graphicView));	
-            imageViewer.invalidate();
-            zoom.setText(zoomText+imageViewer.getScaleFactor()+" %");	
+		if ( !isRevert ){
+			isRevert = true;
+			graphicView.setInvert(true);
+			graphicView.invalidate();
+			imageViewer.loadImage(getBitmapFromView(graphicView));	
+			imageViewer.invalidate();
+			zoom.setText(zoomText+imageViewer.getScaleFactor()+" %");	
 		}
 		else {
-			 graphicView.setInvert(false);
-			 graphicView.invalidate();
-             imageViewer.loadImage(getBitmapFromView(graphicView));	
-             imageViewer.invalidate();
-             zoom.setText(zoomText+imageViewer.getScaleFactor()+" %");	
+			isRevert = false;
+			graphicView.setInvert(false);
+			graphicView.invalidate();
+			imageViewer.loadImage(getBitmapFromView(graphicView));	
+			imageViewer.invalidate();
+			zoom.setText(zoomText+imageViewer.getScaleFactor()+" %");	
 		}
 	}
 }

@@ -69,23 +69,13 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	private int speed=25;
 	private int power=1;
 	
-	private SeekBar sliderSpeed;
-	private SeekBar sliderPower;
 	
-	private TextView speedValue;
-	private TextView powerValue;
 
 	private static int SLIDER_SCREEN_PART = 7;
 	private MultiDirectionSlidingDrawer sliderPanel;
 	
 	private GraphicView graphicView;
-	private ImageViewer imageViewer;
-	private CheckBox invert;
-	OnClickListener checkBoxListener;
-	OnTouchListener graphicViewScaleListener;
-
-	private TextView zoom;
-	private String zoomText;
+	private ImageViewer imageViewer;	
 	
 	private RadioButton camera;
 	private RadioButton fileChooser;
@@ -118,7 +108,7 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		setDisplayHeight(metrics.heightPixels);
 		
 		View view = inflater.inflate( R.layout.ecg_panel, null );
-		zoomText = view.getResources().getString( R.string.zoom );
+
 		//Fragment doesn't call onDestroy и onCreate
 		setRetainInstance(true);
 		
@@ -128,21 +118,8 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		graphicView.setXScale(speed);
 		graphicView.setYScale(1);		
 		imageViewer.loadImage(getBitmapFromView(graphicView));
-		zoom.setText(zoomText+imageViewer.getScaleFactor()+" %");	
-		graphicViewScaleListener =new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				String zoomText = v.getResources().getString(R.string.zoom);
-				zoom.setText(zoomText+imageViewer.getScaleFactor()+" %");				
-				return false;
-			
-			}
-		};		
-		imageViewer.setOnTouchListener(graphicViewScaleListener);
-	    //temporary
-		speedValue.setText(getSpeed() + " mm/c");
-		powerValue.setText(getPower() + " mV/cm");
+		
+	
 		
 	    return view;    
 	}
@@ -150,9 +127,6 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	@Override
 	public void onClick( View view ) {
 		switch ( view.getId() ){			
-		case R.id.check_revert_ecg:
-			revertECG( view );
-			break;
 		case R.id.slider_camera:
 			eventClick.eventClickSliderContent( R.id.slider_camera );
 			break;
@@ -175,26 +149,12 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 	private final void init ( View view ) {
 		initSliderPanel( view );
 
-		speedValue 			= ( TextView )view.findViewById( R.id.speed_value );
-		powerValue 			= ( TextView )view.findViewById( R.id.power_value );
-		zoom 				= ( TextView )view.findViewById( R.id.zoom );
-		invert 				= ( CheckBox )view.findViewById( R.id.check_revert_ecg );
+		
 		
 		camera.setOnClickListener( this );
 		fileChooser.setOnClickListener( this );
 		
-		sliderSpeed = ( SeekBar )view.findViewById( R.id.speed );
-		sliderSpeed.setMax( MAX_SPEED - 1 );
-		sliderSpeed.setProgress( getSpeed() -1 );
-		sliderSpeed.incrementProgressBy( 1 );
-		sliderSpeed.setOnSeekBarChangeListener( this );
 		
-		sliderPower = ( SeekBar )view.findViewById( R.id.power );
-		sliderPower.setMax( MAX_POWER -1 );
-		sliderPower.setProgress( getPower() - 1 );
-		sliderSpeed.incrementProgressBy( 1 );
-		sliderPower.setOnSeekBarChangeListener( this );
-		invert.setOnClickListener( this );
 	}
 	
 	private final void initSliderContent( View view ){
@@ -245,34 +205,7 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		this.displayHeight = displayHeight;
 	}
 
-	
-	@Override
-	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) 
-	{	
-		float step = progress + 4;
-		if (fromUser)
-		{
-			switch(seekBar.getId())
-			{
-			case R.id.speed:
-				speedValue.setText((progress+1) + " mm/c");
-				graphicView.setXScale(progress);
-				graphicView.invalidate();
-				imageViewer.loadImage(getBitmapFromView(graphicView));
-				imageViewer.invalidate();
-				zoom.setText(zoomText+imageViewer.getScaleFactor()+" %");	
-				break;
-			case R.id.power:
-				powerValue.setText(step/CORRECTION_POWER+" mV/cm");	
-				graphicView.setYScale(step/CORRECTION_POWER);
-				graphicView.invalidate();
-				imageViewer.loadImage(getBitmapFromView(graphicView));
-				imageViewer.invalidate();
-				zoom.setText(zoomText+imageViewer.getScaleFactor()+" %");	
-				break;
-			}
-		}
-	}
+
 	
 	public void onStartTrackingTouch(SeekBar arg0) {
 		// TODO Auto-generated method stub
@@ -304,22 +237,13 @@ public class ECGPanelFragment extends Fragment implements OnSeekBarChangeListene
 		// TODO Auto-generated method stub
 		
 	}
-	
-	private void revertECG (View view){
-		String zoomText = view.getResources().getString(R.string.zoom);
-		if (invert.isChecked()){
-            graphicView.setInvert(true);
-            graphicView.invalidate();
-            imageViewer.loadImage(getBitmapFromView(graphicView));	
-            imageViewer.invalidate();
-            zoom.setText(zoomText+imageViewer.getScaleFactor()+" %");	
-		}
-		else {
-			 graphicView.setInvert(false);
-			 graphicView.invalidate();
-             imageViewer.loadImage(getBitmapFromView(graphicView));	
-             imageViewer.invalidate();
-             zoom.setText(zoomText+imageViewer.getScaleFactor()+" %");	
-		}
+
+	@Override
+	public void onProgressChanged(SeekBar seekBar, int progress,
+			boolean fromUser) {
+		// TODO Auto-generated method stub
+		
 	}
+	
+	
 }

@@ -4,72 +4,29 @@
     android:layout_height="match_parent"
     android:orientation="vertical" 
     android:background="@android:color/white">
-    <TextView
-		android:id="@+id/speed_text"
-		style="@style/ECGViewStyle"
-		android:text="@string/speed" />
-    <SeekBar
-        android:id="@+id/speed"
-        style="@style/ECGSeekStyle"
-		android:layout_toRightOf="@+id/speed_text"/>
-    <TextView
-		android:id="@+id/speed_value"
-		style="@style/ECGValueStyle"
-		android:layout_toRightOf="@+id/speed"
-		android:text="@string/none" />
-    <TextView
-		android:id="@+id/power_text"
-		style="@style/ECGViewStyle"
-		android:text="@string/power"
-		android:layout_below="@+id/speed" />
-    <SeekBar
-        android:id="@+id/power"
-		style="@style/ECGSeekStyle"
-		android:layout_toRightOf="@+id/power_text"
-		android:layout_below="@+id/speed"/>
-    <TextView
-		android:id="@+id/power_value"
-		style="@style/ECGValueStyle"
-		android:layout_toRightOf="@+id/power"
-		android:layout_below="@+id/speed"
-		android:text="@string/none" />
-    <CheckBox
-		android:id="@+id/check_revert_ecg"
-		style="@style/CheckStyleTrue"
-		android:layout_below="@+id/power"
-		android:text="@string/revert_ecg"/>
+ 
     
 	<ua.stu.view.scpview.ImageViewer
 		android:id="@+id/ImageViewer"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
-		android:layout_below="@+id/check_revert_ecg" />
-
-
-	<TextView
-	    android:id="@+id/zoom"
-	    style="@style/ECGValueStyle"
-	    android:layout_alignBaseline="@+id/check_revert_ecg"
-	    android:layout_alignBottom="@+id/check_revert_ecg"
-	    android:layout_toRightOf="@+id/check_revert_ecg"
-	    android:text="@string/none" />
+	/>
 	
 	<it.sephiroth.demo.slider.widget.MultiDirectionSlidingDrawer
 		xmlns:my="http://schemas.android.com/apk/res-auto"
 		android:id="@+id/slider_panel"
 		my:direction="bottomToTop"
-		my:topOffset="100dp"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		my:handle="@+id/slider_handle"
+		my:handle="@+id/handle"
 		my:content="@+id/slider_content">
 		<include
 			android:id="@id/slider_content"
 			layout="@layout/slider_content" />
 		<ImageView
-			android:id="@id/slider_handle"
+			android:id="@id/handle"
 			android:layout_width="wrap_content"
-			android:layout_height="wrap_content" />
+			android:layout_height="wrap_content"/>
 	</it.sephiroth.demo.slider.widget.MultiDirectionSlidingDrawer>
 
 </RelativeLayout>

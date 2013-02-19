@@ -3,7 +3,7 @@
     <string name="app_name">SCPView</string>
     <string name="app_patient">PatientInfo</string>
     <string name="app_other">OtherInfo</string>
-    <string name="app_file_path">FilePath</string>   
+    <string name="app_file_path">FilePath</string>
 
     <string name="patient">Patient Information</string> 
     <string name="patient_info">PatientInfo</string>

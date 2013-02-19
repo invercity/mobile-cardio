@@ -114,6 +114,13 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	}
 	
 	@Override
+	public void onStop() {
+		super.onStop();
+		//when activity is restarting expandble slider must hide
+		isSliderExpand = false;
+	}
+	
+	@Override
 	public void eventClickSliderContent(int resID) {
 		switch ( resID ) {
 		case R.id.slider_camera:
@@ -146,6 +153,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event)  {
+		Log.d(TAG,"Click "+keyCode);
 		if ( keyCode == KeyEvent.KEYCODE_MENU ){
 			expandSliderPanel();
 		}
@@ -177,16 +185,16 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		// save the current ecg file path
-		String filePathKey = getResources().getString(R.string.app_file_path);
+		String filePathKey 		= getResources().getString(R.string.app_file_path);
 		outState.putString(filePathKey, ecgFilePath);
 	}
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		// restore the current ecg file path
-		String filePathKey = getResources().getString(R.string.app_file_path);	
-		ecgFilePath = savedInstanceState.getString(filePathKey);
+		// restore the current ecg file path and status of expandble slider
+		String filePathKey 	= getResources().getString(R.string.app_file_path);
+		ecgFilePath 		= savedInstanceState.getString(filePathKey);
 	}
 
 	@Override

@@ -54,7 +54,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	private String ecgFilePath = "";
 
 	private Bundle state;
-	private GraphicView graphicView;
+	//private GraphicView graphicView;
 	
 	private boolean isSliderExpand = false;
 
@@ -66,7 +66,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
         setContentView(R.layout.main);
         
 		state 		= savedInstanceState;
-		graphicView = new GraphicView(this);
+		//graphicView = new GraphicView(this);
 
 		final android.content.Intent intent = getIntent();
 
@@ -173,8 +173,8 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	}
 	
 	private final void initECGPanel( DataHandler h ){
-		graphicView.setH( h );
-		ecgPanel = new ECGPanelFragment( graphicView );
+		//graphicView.setH( h );
+		ecgPanel = new ECGPanelFragment( h );
 		
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace( R.id.ecg_panel_fragment, ecgPanel );

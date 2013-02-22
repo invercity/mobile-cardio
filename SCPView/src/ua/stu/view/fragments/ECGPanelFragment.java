@@ -1,8 +1,14 @@
 package ua.stu.view.fragments;
+import javax.activation.DataHandler;
+
 import it.sephiroth.demo.slider.widget.*;
+import ua.stu.view.scpview.DrawChanels;
+import ua.stu.view.scpview.DrawGraphPaper;
+import ua.stu.view.scpview.GestureListener;
 import ua.stu.view.scpview.GraphicView;
 import ua.stu.view.scpview.ImageViewer;
 import ua.stu.view.scpview.R;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -25,6 +31,9 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
+
+
+@SuppressLint("ValidFragment")
 public class ECGPanelFragment extends Fragment implements OnClickListener {
 	
 	public interface OnClickSliderContentListener {
@@ -65,7 +74,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	 */
 	private static int MAX_POWER = 16;
 	
-	private int speed=25;
+	private float speed=50;
 	private int power=1;
 	
 	
@@ -74,7 +83,11 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	private MultiDirectionSlidingDrawer sliderPanel;
 	
 	private GraphicView graphicView;
-	private ImageViewer imageViewer;
+	private TextView statustext;
+	private DrawGraphPaper graphPaper;
+	private DrawChanels chanels;
+	private ua.stu.scplib.data.DataHandler dataHandler;
+	//private ImageViewer imageViewer;
 
 	OnClickListener checkBoxListener;
 	OnTouchListener graphicViewScaleListener;
@@ -87,11 +100,11 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	private boolean 	isRevert = false;
 
 	public ECGPanelFragment(){
-		
+
 	}
 	
-	public ECGPanelFragment(GraphicView graphicView){
-		this.graphicView=graphicView;
+	public ECGPanelFragment(ua.stu.scplib.data.DataHandler h){
+		this.dataHandler=h;
 	}
 	public static Bitmap getBitmapFromView(GraphicView view) {
 	    Bitmap returnedBitmap = Bitmap.createBitmap(view.getSW(), view.getSH(),Bitmap.Config.ARGB_8888);
@@ -115,17 +128,43 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 
 		//Fragment doesn't call onDestroy и onCreate
 		setRetainInstance(true);
-		
-		init( view );
-
-		imageViewer=(ImageViewer)view.findViewById(R.id.ImageViewer);		
-		graphicView.setXScale(speed);
-		graphicView.setYScale(1);		
-		imageViewer.loadImage(getBitmapFromView(graphicView));
-		
+		graphicView=(GraphicView)view.findViewById(R.id.GraphicView);
+		statustext=(TextView)view.findViewById(R.id.StatusText);
+		graphPaper=(DrawGraphPaper)view.findViewById(R.id.DrawGraphPaper);
+		chanels=(DrawChanels)view.findViewById(R.id.drawChanels);
+		GestureListener gl =new GestureListener(graphicView, chanels);
+		chanels.initscale(gl);
+		graphicView.initscale(gl);
 	
 		
+		
+		init( view );
+		//сеиеры должны быть находится только в таком порядке
+		graphicView.setDrawChanels(chanels);
+		graphicView.setTvStatus(statustext);	
+		graphicView.setH(dataHandler);
+		
+		graphicView.setXScale(speed);
+		graphicView.setYScale((float) 10);			
+		//цветовая схема "Красно-черная"
+		//setColorThem(Color.RED, Color.BLACK, Color.BLUE);
+		//цветовая схема "Сине-серая"
+		setColorThem(Color.rgb(173, 216, 230), Color.rgb(76, 76, 76), Color.BLACK);
+		
 	    return view;    
+	}
+	/**
+	 * Метода для установления цветовой схемы
+	 * @param cGraphPaper - цвет миллеметровки
+	 * @param cGraphic - цвет сигнала
+	 * @param cChar - цвет надписей
+	 */
+	private void setColorThem(int cGraphPaper, int cGraphic, int cChar){
+		graphicView.setGraphicColor(new and.awt.Color(cGraphic));
+		graphPaper.setColorLinesAndDot(cGraphPaper);		
+		statustext.setTextColor(cChar);
+		chanels.setChanelNameColor(new and.awt.Color(cChar));
+		chanels.setGraphicColor(new and.awt.Color(cGraphic));
 	}
 	
 	@Override
@@ -169,7 +208,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		other.setOnClickListener( this );
 		ecgRevert.setOnClickListener( this );
 		
-		if ( graphicView.isNotNull() ){
+		if ( dataHandler!= null){
 			contentClicable( true );
 		}
 		else {
@@ -218,7 +257,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		return sliderPanel;
 	}
 	
-	public int getSpeed() {
+	public float getSpeed() {
 		return speed;
 	}
 
@@ -240,15 +279,15 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 			isRevert = true;
 			graphicView.setInvert(true);
 			graphicView.invalidate();
-			imageViewer.loadImage(getBitmapFromView(graphicView));	
-			imageViewer.invalidate();	
+			//imageViewer.loadImage(getBitmapFromView(graphicView));	
+			//imageViewer.invalidate();	
 		}
 		else {
 			isRevert = false;
 			graphicView.setInvert(false);
 			graphicView.invalidate();
-			imageViewer.loadImage(getBitmapFromView(graphicView));	
-			imageViewer.invalidate();	
+			//imageViewer.loadImage(getBitmapFromView(graphicView));	
+			//imageViewer.invalidate();	
 		}
 	}
 }

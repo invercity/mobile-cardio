@@ -5,25 +5,6 @@
     android:background="@android:color/white"
     android:orientation="vertical" >
 
-    <it.sephiroth.demo.slider.widget.MultiDirectionSlidingDrawer
-        xmlns:my="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/slider_panel"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        my:content="@+id/slider_content"
-        my:direction="bottomToTop"
-        my:handle="@+id/handle" >
-
-        <include
-            android:id="@id/slider_content"
-            layout="@layout/slider_content" />
-
-        <ImageView
-            android:id="@id/handle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </it.sephiroth.demo.slider.widget.MultiDirectionSlidingDrawer>
-
     <ua.stu.view.scpview.DrawGraphPaper
         android:id="@+id/DrawGraphPaper"
         android:layout_width="fill_parent"
@@ -50,5 +31,24 @@
         android:layout_alignParentTop="true"
         android:textColorHint="@android:color/black"
         android:textSize="25sp" />
+
+    <it.sephiroth.demo.slider.widget.MultiDirectionSlidingDrawer
+        xmlns:my="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/slider_panel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        my:content="@+id/slider_content"
+        my:direction="bottomToTop"
+        my:handle="@+id/handle" >
+
+        <include
+            android:id="@id/slider_content"
+            layout="@layout/slider_content" />
+
+        <ImageView
+            android:id="@id/handle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </it.sephiroth.demo.slider.widget.MultiDirectionSlidingDrawer>
 
 </RelativeLayout>

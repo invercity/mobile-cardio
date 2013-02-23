@@ -145,7 +145,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		graphicView.setH(dataHandler);
 		
 		graphicView.setXScale(speed);
-		graphicView.setYScale((float) 10);			
+		graphicView.setYScale((float) 2.5);			
 		//цветовая схема "Красно-черная"
 		//setColorThem(Color.RED, Color.BLACK, Color.BLUE);
 		//цветовая схема "Сине-серая"

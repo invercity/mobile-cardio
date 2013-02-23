@@ -123,7 +123,7 @@ public class GraphicView extends AwtView {
 		if (gestureDetector.onTouchEvent(event)) return true;
 		return true;
     }
-
+	
 	/*
 	 * Initializing
 	 */
@@ -149,8 +149,8 @@ public class GraphicView extends AwtView {
 		if (h == null) return;
 		init();
 		font=new Font("Ubuntu",0,(int) (14));
-		g2.setColor(Color.RED);
-			g2.drawRect(0, 0, getWidth(), getHeight());	
+		//g2.setColor(Color.RED);
+		//	g2.drawRect(0, 0, getWidth(), getHeight());	
 		float widthOfTileInPixels = getW()/nTilesPerRow;
 		float heightOfTileInPixels = getH()/nTilesPerColumn;
 		
@@ -190,13 +190,11 @@ public class GraphicView extends AwtView {
 		GeneralPath thePath = new GeneralPath();
 		for (int row=0;row<nTilesPerColumn && channel<g.getNumberOfChannels();++row) {
 			float drawingOffsetX = xTitlesOffset;
-
 			for (int col=0;col<nTilesPerRow && channel<g.getNumberOfChannels();++col) {
 				float yOffset = drawingOffsetY + interceptY;
-				short[] samplesForThisChannel = g.getSamples()[g.getDisplaySequence()[channel]];				
 				
-				int i = timeOffsetInSamples;
-				
+				short[] samplesForThisChannel = g.getSamples()[g.getDisplaySequence()[channel]];			
+				int i = timeOffsetInSamples;				
 				float rescaleY = g.getAmplitudeScalingFactorInMilliVolts()[g.getDisplaySequence()[channel]]*yPixelsInMillivolts;
 				//float fromXValue = drawingOffsetX;
 				//для того что-бы графики начинались с 0 

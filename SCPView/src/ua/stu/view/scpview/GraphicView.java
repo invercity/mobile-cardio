@@ -150,7 +150,34 @@ public class GraphicView extends AwtView {
 				postInvalidate();
 			}
 	    }
-  
+		@Override
+		protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight)
+		{
+/*			int scrollX = (getSW() < width ? -(width - getSW()) / 2 : getSW() / 2);
+			int scrollY = (getSH() < height ? -(height - getSH()) / 2 : getSH() / 2);
+			scrollTo(scrollX, scrollY);*/
+		}
+
+	    public class MyGestureListener extends SimpleOnGestureListener
+	    {
+	    	@Override
+			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
+			{
+				scrollBy((int)distanceX, (int)distanceY);
+				return true;
+			}
+	        @Override
+			public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
+			{
+							
+				scroller.fling(getScrollX(), getScrollY(), -(int)velocityX, -(int)velocityY, 0,getSW() - getWidth(), 0, getSH() - getHeight());
+				awakenScrollBars(scroller.getDuration());
+
+				return true;
+			}
+
+	    }
+
 
 
 		
@@ -180,8 +207,8 @@ public class GraphicView extends AwtView {
 		if (h == null) return;
 		init();
 		font=new Font("Ubuntu",0,(int) (14));
-		//g2.setColor(Color.RED);
-		//	g2.drawRect(0, 0, getWidth(), getHeight());	
+		g2.setColor(Color.RED);
+			g2.drawRect(0, 0, getWidth(), getHeight());	
 		float widthOfTileInPixels = getW()/nTilesPerRow;
 		float heightOfTileInPixels = getH()/nTilesPerColumn;
 		

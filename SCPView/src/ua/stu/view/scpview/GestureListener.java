@@ -3,31 +3,39 @@ package ua.stu.view.scpview;
 import net.pbdavey.awt.AwtView;
 import android.view.MotionEvent;
 import android.view.GestureDetector.SimpleOnGestureListener;
-
+/**
+ * Класс для совмесного управления скролом
+ * @author ivan
+ *
+ */
 public class GestureListener extends SimpleOnGestureListener{
-	private AwtView v=null;
-	private AwtView v1=null;
-	public  GestureListener(AwtView v,AwtView v1){
-		this.v=v;
-		this.v1=v1;
+	private GraphicView graphic=null;
+	private DrawChanels chanels=null;
+	/**
+	 * 
+	 * @param v - graphic
+	 * @param v1 - chanels
+	 */
+	public  GestureListener(GraphicView v,DrawChanels v1){
+		this.graphic=v;
+		this.chanels=v1;
 	}
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
-	{
-	
-		
-	 v.scrollBy((int)distanceX, (int)distanceY);
-	
-	 v1.scrollBy((int)0, (int)distanceY);
-		return true;
-	}
-    @Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
-	{
-			
-		scroller.fling( v1.getScrollX(),  v1.getScrollY(), -(int)velocityX, -(int)velocityY, 0,v1.getWidth() -  v1.getWidth(), 0, v1.getHeight() -  v1.getHeight());
-		 v1.awakenScrollBars(scroller.getDuration());
-
+	{	
+			System.out.println("graphic.getScrollX()="+graphic.getScrollX());	
+			System.out.println("graphic.getScrollY()="+graphic.getScrollY());
+		if (graphic.getScrollX()>=0 && distanceX>=0){		
+	 graphic.scrollBy((int)distanceX, (int)distanceY);	
+	 graphic.setTime(distanceX);
+	 chanels.scrollBy((int)0, (int)distanceY);
+		}else if (graphic.getScrollX()>=0 && distanceX<0) {			
+			 graphic.scrollBy((int)distanceX, (int)distanceY);	
+			graphic.setTime(distanceX);
+			 chanels.scrollBy((int)0, (int)distanceY);
+		} else {
+			graphic.scrollTo(0, graphic.getScrollY());
+		}
 		return true;
 	}
 }

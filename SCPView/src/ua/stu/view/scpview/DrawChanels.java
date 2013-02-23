@@ -52,9 +52,9 @@ public class DrawChanels extends AwtView{
 	// any info?
 
 	// scrolling
-	private GraphicView graphics;
 	private  GestureDetector gestureDetector;	
 	private  Scroller scroller;
+
 	@Override
     public boolean onTouchEvent(MotionEvent event)
     {
@@ -68,9 +68,6 @@ public class DrawChanels extends AwtView{
 		return true;
     }
 
-	
-
-	
 			
 	private boolean invert=false;
 	public void initscale(GestureListener mg){
@@ -189,7 +186,7 @@ public class DrawChanels extends AwtView{
 	public void setChanelNameColor(Color c){
 	this.channelNameColor=c;	
 	}
-	public void setGraphics(GraphicView graphics){
-		this.graphics=graphics;
+	public Scroller getScroller() {
+		return scroller;
 	}
 }

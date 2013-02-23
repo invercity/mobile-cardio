@@ -46,7 +46,7 @@ public class Section4 extends Section {
 		lengthOfReferenceBeat0DataInMilliSeconds=i.readUnsigned16();
 		bytesRead+=2;
 		sectionBytesRemaining-=2;
-						
+				//		System.out.println(lengthOfReferenceBeat0DataInMilliSeconds);
 		sampleNumberOfQRSOfFiducial=i.readUnsigned16();
 		bytesRead+=2;
 		sectionBytesRemaining-=2;

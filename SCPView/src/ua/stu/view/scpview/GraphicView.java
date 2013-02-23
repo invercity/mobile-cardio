@@ -66,7 +66,9 @@ public class GraphicView extends AwtView {
 	//переменны для вывода в строку состояния
 	private double speed=0;
 	private double gain=0;
-	private double time=0;
+	private int time=0;
+
+
 	private TextView tvStatus=null;
 
 	private boolean invert=false;
@@ -79,6 +81,7 @@ public class GraphicView extends AwtView {
 		private Scroller scroller;
 		
 
+	
 		public void initscale(GestureListener mg){
 			gestureDetector = new GestureDetector(getContext(),mg);
 			scroller = new Scroller(getContext());
@@ -120,67 +123,6 @@ public class GraphicView extends AwtView {
 		if (gestureDetector.onTouchEvent(event)) return true;
 		return true;
     }
-
-	 @Override
-	    protected int computeHorizontalScrollRange()
-	    {
-	        return getSW();
-	    }
-
-	    @Override
-	    protected int computeVerticalScrollRange()
-	    {
-	        return getSH();
-	    }
-	    @Override
-	    public void computeScroll()
-	    {
-			if (scroller.computeScrollOffset())
-			{
-				int oldX = getScrollX();
-				int oldY = getScrollY();
-				int x = scroller.getCurrX();
-				int y = scroller.getCurrY();
-				scrollTo(x, y);
-				if (oldX != getScrollX() || oldY != getScrollY())
-				{
-					onScrollChanged(getScrollX(), getScrollY(), oldX, oldY);
-				}
-
-				postInvalidate();
-			}
-	    }
-		@Override
-		protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight)
-		{
-/*			int scrollX = (getSW() < width ? -(width - getSW()) / 2 : getSW() / 2);
-			int scrollY = (getSH() < height ? -(height - getSH()) / 2 : getSH() / 2);
-			scrollTo(scrollX, scrollY);*/
-		}
-
-	    public class MyGestureListener extends SimpleOnGestureListener
-	    {
-	    	@Override
-			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
-			{
-				scrollBy((int)distanceX, (int)distanceY);
-				return true;
-			}
-	        @Override
-			public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
-			{
-							
-				scroller.fling(getScrollX(), getScrollY(), -(int)velocityX, -(int)velocityY, 0,getSW() - getWidth(), 0, getSH() - getHeight());
-				awakenScrollBars(scroller.getDuration());
-
-				return true;
-			}
-
-	    }
-
-
-
-		
 
 	/*
 	 * Initializing
@@ -233,6 +175,8 @@ public class GraphicView extends AwtView {
 		int timeOffsetInSamples = (int)(timeOffsetInMilliSeconds/g.getSamplingIntervalInMilliSeconds());
 		int widthOfTileInSamples = (int)(widthOfTileInMilliSeconds/g.getSamplingIntervalInMilliSeconds());
 		int usableSamples = g.getNumberOfSamplesPerChannel()-timeOffsetInSamples;
+	
+		
 		if (usableSamples <= 0) {
 			//usableSamples=0;
 			return;
@@ -396,7 +340,7 @@ public class GraphicView extends AwtView {
 		this.gain=santimetersPerMillivolt;		
 		}	
 		if (tvStatus!=null && this.h!=null)
-			tvStatus.setText(time+" sec from start "+speed+" mm/sec. "+gain+" mV/mm");
+			tvStatus.setText(time+" from start "+speed+" mm/sec. "+gain+" mV/mm");
 	}
 		
 	public void setXScaleGrid(float millimetersPerSecond) {
@@ -414,7 +358,7 @@ public class GraphicView extends AwtView {
 		this.SW=(int) ((int)millimetersPerSecond*(32.65)+50);	
 		this.speed=millimetersPerSecond;
 		if (tvStatus!=null && this.h!=null)
-		tvStatus.setText(time+" sec from start "+speed+" mm/sec. "+gain+" mV/mm");
+		tvStatus.setText(time+" from start "+speed+" mm/sec. "+gain+" mV/mm");
 	
 	}
 	public void setInvert(boolean invert) {
@@ -434,8 +378,18 @@ public class GraphicView extends AwtView {
 	public void setGraphicColor(Color c){
 		this.curveColor=c;
 	}
-
-
+	
+	public Scroller getScroller() {
+		return scroller;
+	}
+	
+	public void setTime(float distanse) {
+		if(h!=null){
+		this.time += (int)distanse*(((g.getNumberOfSamplesPerChannel())*2.05/*подстроечный коефициент взят с потолка */)/getW());
+		if (tvStatus!=null && this.h!=null)
+			tvStatus.setText(this.time+" from start "+speed+" mm/sec. "+gain+" mV/mm");
+		}
+	}
 
 
 	

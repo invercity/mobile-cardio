@@ -378,6 +378,12 @@ public class SCPECG {
 			sections.put(new Integer(sectionHeader.getSectionIDNumber()),section);
 		}
 		Section0 section0 = (Section0)(sections.get(new Integer(0)));
+		/*System.out.println(sections.get(new Integer(1)).toString());
+		System.out.println(sections.get(new Integer(2)).toString());
+		System.out.println(sections.get(new Integer(3)).toString());
+		System.out.println(sections.get(new Integer(4)).toString());
+		System.out.println(sections.get(new Integer(5)).toString());
+		System.out.println(sections.get(new Integer(6)).toString());*/
 		System.err.print(section0.validateAgainstOtherSections(sections));
 		decompressReferenceBeatData();
 		decompressRhythmData();

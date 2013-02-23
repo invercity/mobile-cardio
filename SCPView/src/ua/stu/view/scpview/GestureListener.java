@@ -21,13 +21,13 @@ public class GestureListener extends SimpleOnGestureListener{
 	 v1.scrollBy((int)0, (int)distanceY);
 		return true;
 	}
-    @Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
-	{
-			
-		scroller.fling( v1.getScrollX(),  v1.getScrollY(), -(int)velocityX, -(int)velocityY, 0,v1.getWidth() -  v1.getWidth(), 0, v1.getHeight() -  v1.getHeight());
-		 v1.awakenScrollBars(scroller.getDuration());
-
-		return true;
-	}
+//    @Override
+//	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
+//	{
+//			
+//		scroller.fling( v1.getScrollX(),  v1.getScrollY(), -(int)velocityX, -(int)velocityY, 0,v1.getWidth() -  v1.getWidth(), 0, v1.getHeight() -  v1.getHeight());
+//		 v1.awakenScrollBars(scroller.getDuration());
+//
+//		return true;
+//	}
 }

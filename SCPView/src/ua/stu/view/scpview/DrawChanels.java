@@ -1,17 +1,13 @@
 package ua.stu.view.scpview;
 
 import ua.stu.scplib.attribute.GraphicAttributeBase;
-import ua.stu.scplib.data.DataHandler;
-
 import and.awt.BasicStroke;
 import and.awt.Color;
-import and.awt.geom.Line2D;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.widget.Scroller;
 import net.pbdavey.awt.AwtView;
 import net.pbdavey.awt.Font;
@@ -37,7 +33,8 @@ public class DrawChanels extends AwtView{
 	private int sizeScreen = 126;
 	//set of graphic attributes
 	private GraphicAttributeBase g=null;
-	
+	// array for channel offsets
+	private float offsets[] = null;
 	//the number of tiles to display per column
 	private int nTilesPerColumn = 12;
 	//the number of tiles to display per row (if 1, then nTilesPerColumn should == numberOfChannels)
@@ -93,19 +90,18 @@ public class DrawChanels extends AwtView{
 
 	@Override
 	public void paint(Graphics2D g2) {
-		//g2.drawRect(0, 0, getWidth(), getHeight());	
-		if (g==null) return;
-		int channelNameXOffset = 10;		
-		int channelNameYOffset = 0;
-		font=new Font("Ubuntu",0,(int) (14));		
+
+		if (g==null || offsets==null) return;
+		// start x channel name offset
+		int channelNameXOffset = 10;
+		// start y channel name offset
+		font=new Font("Ubuntu",0,(14));		
 		float widthOfTileInPixels = W/nTilesPerRow;
 		float heightOfTileInPixels = H/nTilesPerColumn;		
-		float drawingOffsetY = 0;
 		int channel=0;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);	
 		float tile = yPixelsInMillivolts*duim/sizeScreen;
-		float yIdealTiles = 4*tile - (int)(tile/2);
-		drawingOffsetY = 0;		
+		float yIdealTiles = 4*tile - (int)(tile/2);	
 		for (int row=0;row<nTilesPerColumn;++row) {
 			float drawingOffsetX = 0;
 			for (int col=0;col<nTilesPerRow;++col) {
@@ -117,52 +113,52 @@ public class DrawChanels extends AwtView{
 						g2.setStroke(new BasicStroke());
 						g2.setColor(channelNameColor);
 						g2.setFont(font);
-						g2.drawString(channelName,drawingOffsetX+channelNameXOffset,drawingOffsetY+channelNameYOffset+25);
+						g2.drawString(channelName,drawingOffsetX+channelNameXOffset,offsets[row]);
 						g2.setColor(curveColor);
 						// drawing ideal signal
 						g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/8)
-								,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels)
+								,(int)(offsets[row])
 								,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-								,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels));
+								,(int)(offsets[row]));
 						if (!invert) {
 							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels)
+									,(int)(offsets[row])
 									,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels - yIdealTiles));
+									,(int)(offsets[row] - yIdealTiles));
 							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels - yIdealTiles)
+									,(int)(offsets[row] - yIdealTiles)
 									,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels - yIdealTiles));
+									,(int)(offsets[row] - yIdealTiles));
 							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels - yIdealTiles)
+									,(int)(offsets[row] - yIdealTiles)
 									,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels));
+									,(int)(offsets[row]));
 						}
 						else {
 							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels)
+									,(int)(offsets[row])
 									,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels + yIdealTiles));
+									,(int)(offsets[row] + yIdealTiles));
 							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels + yIdealTiles)
+									,(int)(offsets[row] + yIdealTiles)
 									,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels + yIdealTiles));
+									,(int)(offsets[row] + yIdealTiles));
 							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels + yIdealTiles)
+									,(int)(offsets[row] + yIdealTiles)
 									,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-									,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels));
+									,(int)(offsets[row]));
 						}
 						g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-								,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels)
+								,(int)(offsets[row])
 								,(int)(channelNameXOffset*4 + 5*heightOfTileInPixels/8)
-								,(int)(heightOfTileInPixels/2 + channel*heightOfTileInPixels));
+								,(int)(offsets[row]));
 					}
+					// ideal signal end
 				}
 				
 				drawingOffsetX+=widthOfTileInPixels;
 				++channel;
 			}
-			drawingOffsetY+=heightOfTileInPixels;
 		}
 		
 	}
@@ -187,5 +183,9 @@ public class DrawChanels extends AwtView{
 	}
 	public Scroller getScroller() {
 		return scroller;
+	}
+	
+	public void setOffsets(float[] arr) {
+		offsets = arr.clone();
 	}
 }

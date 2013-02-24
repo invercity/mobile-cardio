@@ -8,16 +8,11 @@ import and.awt.BasicStroke;
 import and.awt.Color;
 
 import and.awt.geom.GeneralPath;
-import and.awt.geom.Line2D;
-import and.awt.geom.Rectangle2D;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector.OnScaleGestureListener;
 import android.widget.Scroller;
 import android.widget.TextView;
 import net.pbdavey.awt.AwtView;
@@ -53,15 +48,13 @@ public class GraphicView extends AwtView {
 	//how much of the sample data to skip, specified in milliseconds from the start of the samples
 	private float timeOffsetInMilliSeconds;
 	//offset for graphic
-	private float xTitlesOffset =2* sizeScreen/3;
-	// how many pixels per mV use for grid
-	private float xPixelsGrid;
-	// how many pixels per mS use for grid
-	private float yPixelsGrid;
+	//private float xTitlesOffset =2* sizeScreen/3;
 	// color map
 	Color curveColor = Color.blue;
 	// basic font
 	Font font = null;
+	// array for channel offsets
+	private float offsets[] = new float[12];
 	// any info?
 	//переменны для вывода в строку состояния
 	private double speed=0;
@@ -76,27 +69,24 @@ public class GraphicView extends AwtView {
 	 * Scrolling
 	 */
 	// scrolling
-		private  GestureDetector gestureDetector;	
+	private  GestureDetector gestureDetector;	
 
-		private Scroller scroller;
+	private Scroller scroller;
 		
-
+	public void initscale(GestureListener mg){
+		gestureDetector = new GestureDetector(getContext(),mg);
+		scroller = new Scroller(getContext());
+	}
 	
-		public void initscale(GestureListener mg){
-			gestureDetector = new GestureDetector(getContext(),mg);
-			scroller = new Scroller(getContext());
-
-	
-		}
 	public GraphicView(Context context) {
 
 		super(context);
 		// init scrollbars
         setHorizontalScrollBarEnabled(true);
         setVerticalScrollBarEnabled(true);
-		   TypedArray a = context.obtainStyledAttributes(R.styleable.View);
-	        initializeScrollbars(a);
-	        a.recycle();
+		TypedArray a = context.obtainStyledAttributes(R.styleable.View);
+	    initializeScrollbars(a);
+	    a.recycle();
 	}
 	
 	
@@ -108,7 +98,7 @@ public class GraphicView extends AwtView {
         TypedArray a = context.obtainStyledAttributes(R.styleable.View);
         initializeScrollbars(a);
         a.recycle();
-        
+
 	}
 	
 	@Override
@@ -128,13 +118,11 @@ public class GraphicView extends AwtView {
 	 * Initializing
 	 */
 
+	@Override
 	public void init() {
 		if (h!=null) {
 			g = h.getGraphic();
-		  if (drawChanels!=null)
-			 drawChanels.setGraphicAttributeBase(g);
-			setYScaleGrid(5);
-			setXScaleGrid((float) (12.5));			
+			if (drawChanels!=null) drawChanels.setGraphicAttributeBase(g);	
 		}
 	}
 
@@ -144,77 +132,71 @@ public class GraphicView extends AwtView {
 	
 	@Override
 	public void paint(Graphics2D g2) {
-
 		// check DataHandler
 		if (h == null) return;
 		init();
-		font=new Font("Ubuntu",0,(int) (14));
-		//g2.setColor(Color.RED);
-		//	g2.drawRect(0, 0, getWidth(), getHeight());	
+		font=new Font("Ubuntu",0,(14));
 		float widthOfTileInPixels = getW()/nTilesPerRow;
-		float heightOfTileInPixels = getH()/nTilesPerColumn;
-		
-		
 		float widthOfTileInMilliSeconds = widthOfTileInPixels/xPixelsInMilliseconds;
-		
-		float drawingOffsetY = 0;
-		int channel=0;
-	
-	
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);	// ugly without
-
+		
 		g2.setColor(curveColor);
 		//setForeground(curveColor);
 		g2.setStroke(new BasicStroke((float) 0.7));
-		float interceptY = heightOfTileInPixels/2;
-		//System.out.println("SamplingIntervalInMilliSeconds");
-		//System.out.println(g.getSamplingIntervalInMilliSeconds());
-		//System.out.println("timeOffsetInMilliSeconds");
-		//System.out.println(timeOffsetInMilliSeconds);
+
 		float widthOfSampleInPixels=g.getSamplingIntervalInMilliSeconds()*xPixelsInMilliseconds;
 		int timeOffsetInSamples = (int)(timeOffsetInMilliSeconds/g.getSamplingIntervalInMilliSeconds());
 		int widthOfTileInSamples = (int)(widthOfTileInMilliSeconds/g.getSamplingIntervalInMilliSeconds());
 		int usableSamples = g.getNumberOfSamplesPerChannel()-timeOffsetInSamples;
-	
+
+		if (usableSamples <= 0) {/*usableSamples=0;*/return;}
 		
-		if (usableSamples <= 0) {
-			//usableSamples=0;
-			return;
-		}
 		else if (usableSamples > widthOfTileInSamples) {
 			usableSamples=widthOfTileInSamples-1;
 		}
-
-	drawingOffsetY = 0;
-	 channel = 0;
+		//bound between channels
+		float drawingOffsetY = 0;
+		//offset for channel middle line
+		float currentYChallelOffset = 0;
+		float maxY,minY;
+		int channel = 0;
 		GeneralPath thePath = new GeneralPath();
+		// main cycle
 		for (int row=0;row<nTilesPerColumn && channel<g.getNumberOfChannels();++row) {
-			float drawingOffsetX = xTitlesOffset;
+			//getting the maximum and minimum values of Y offset
+			maxY = 0;
+			minY = 0;
+			int k = timeOffsetInSamples + 1;
+			float curY = 0;
+			short[] currenSamplesForThisChannel = g.getSamples()[g.getDisplaySequence()[channel]];
+			float currentRescaleY = g.getAmplitudeScalingFactorInMilliVolts()[g.getDisplaySequence()[channel]]*yPixelsInMillivolts;
+			for (int j=1;j<usableSamples;++j) {
+				if (invert) curY = currenSamplesForThisChannel[k]*currentRescaleY;
+				else curY = - currenSamplesForThisChannel[k]*currentRescaleY;
+				if (curY<minY) minY = curY;
+				if (curY>maxY) maxY = curY;
+				k++;
+			}
+			// Values were found
+			// Calculating offset Y for current channel
+			currentYChallelOffset = drawingOffsetY - minY;
 			for (int col=0;col<nTilesPerRow && channel<g.getNumberOfChannels();++col) {
-				float yOffset = drawingOffsetY + interceptY;
-				
 				short[] samplesForThisChannel = g.getSamples()[g.getDisplaySequence()[channel]];			
-				int i = timeOffsetInSamples;				
+				int i = timeOffsetInSamples;
+				// YScale attribute
 				float rescaleY = g.getAmplitudeScalingFactorInMilliVolts()[g.getDisplaySequence()[channel]]*yPixelsInMillivolts;
-				//float fromXValue = drawingOffsetX;
-				//для того что-бы графики начинались с 0 
 				float fromXValue = 0;
-				
 				float fromYValue;
-				if (invert)
-				 fromYValue = yOffset + samplesForThisChannel[i]*rescaleY;
-				else
-			  fromYValue = yOffset - samplesForThisChannel[i]*rescaleY;	
+				if (invert) fromYValue = currentYChallelOffset + samplesForThisChannel[i]*rescaleY;
+				else fromYValue = currentYChallelOffset - samplesForThisChannel[i]*rescaleY;
 				thePath.reset();
 				thePath.moveTo(fromXValue,fromYValue);
 				++i;
 				for (int j=1;j<usableSamples;++j) {
 					float toXValue = fromXValue + widthOfSampleInPixels;
 					float toYValue;
-					if (invert)
-					 toYValue = yOffset + samplesForThisChannel[i]*rescaleY;
-					else 
-					 toYValue = yOffset - samplesForThisChannel[i]*rescaleY;					
+					if (invert) toYValue = currentYChallelOffset + samplesForThisChannel[i]*rescaleY;
+					else toYValue = currentYChallelOffset - samplesForThisChannel[i]*rescaleY;					
 					i++;
 					if ((int)fromXValue != (int)toXValue || (int)fromYValue != (int)toYValue) {
 						thePath.lineTo(toXValue,toYValue);
@@ -223,12 +205,17 @@ public class GraphicView extends AwtView {
 					fromYValue=toYValue;
 				}
 				g2.draw(thePath);
-				drawingOffsetX+=widthOfTileInPixels;
 				++channel;
 			}
-			drawingOffsetY+=heightOfTileInPixels;
+			// calculating bound between channels
+			drawingOffsetY = (currentYChallelOffset + maxY);
+			// set each value in offset array
+			offsets[row] = currentYChallelOffset;
 		}
-		
+		currentYChallelOffset = 0;
+		// update offsets for channels, and redraw them
+		if (drawChanels!=null) drawChanels.setOffsets(offsets);
+		drawChanels.invalidate();
 		return;
 	}
 
@@ -304,14 +291,14 @@ public class GraphicView extends AwtView {
 		SH =sH;
 	}
 	public int getSW() {
-		return  (int) (SW);
+		return  (SW);
 	}
 
 	public int getSH() {
-		return (int) (SH);
+		return (SH);
 	}
 	public int getW() {
-		return (int) (W);
+		return (W);
 	}
 
 	public void setW(int w) {
@@ -340,15 +327,6 @@ public class GraphicView extends AwtView {
 		if (tvStatus!=null && this.h!=null)
 			tvStatus.setText(time+" from start "+speed+" mm/sec. "+gain+" mV/mm");
 	}
-		
-	public void setXScaleGrid(float millimetersPerSecond) {
-		this.xPixelsGrid = millimetersPerSecond/(1000*duim/sizeScreen);	
-	}
-		
-	public void setYScaleGrid(float millimetersPerMillivolt) {
-		this.yPixelsGrid = millimetersPerMillivolt/(duim/sizeScreen);
-	}
-
 	
 	public void setXScale(float millimetersPerSecond) {
 		this.xPixelsInMilliseconds = (float)( (millimetersPerSecond*(3.15/5)/(1000*duim/sizeScreen)));

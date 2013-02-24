@@ -144,10 +144,11 @@ public class GraphicView extends AwtView {
 	
 	@Override
 	public void paint(Graphics2D g2) {
-
+		
 		// check DataHandler
 		if (h == null) return;
 		init();
+	
 		font=new Font("Ubuntu",0,(int) (14));
 		//g2.setColor(Color.RED);
 		//	g2.drawRect(0, 0, getWidth(), getHeight());	

@@ -131,6 +131,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		graphicView=(GraphicView)view.findViewById(R.id.GraphicView);
 		statustext=(TextView)view.findViewById(R.id.StatusText);
 		graphPaper=(DrawGraphPaper)view.findViewById(R.id.DrawGraphPaper);
+		
 		chanels=(DrawChanels)view.findViewById(R.id.drawChanels);
 		GestureListener gl =new GestureListener(graphicView, chanels);
 		chanels.initscale(gl);

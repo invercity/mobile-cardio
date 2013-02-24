@@ -95,8 +95,7 @@ public class DrawChanels extends AwtView{
 	public void paint(Graphics2D g2) {
 		//g2.drawRect(0, 0, getWidth(), getHeight());	
 		if (g==null) return;
-		int channelNameXOffset = 10;
-		
+		int channelNameXOffset = 10;		
 		int channelNameYOffset = 0;
 		font=new Font("Ubuntu",0,(int) (14));		
 		float widthOfTileInPixels = W/nTilesPerRow;

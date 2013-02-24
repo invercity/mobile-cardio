@@ -157,10 +157,14 @@ public class GraphicView extends AwtView {
 		//bound between channels
 		float drawingOffsetY = 0;
 		//offset for channel middle line
-		float currentYChallelOffset = 0;
+		float currentYChannelOffset = 0;
 		float maxY,minY;
 		int channel = 0;
 		GeneralPath thePath = new GeneralPath();
+		//calculating the ideal title offset
+		float tile = yPixelsInMillivolts*duim/sizeScreen;
+		float yIdealTiles = 4*tile - (int)(tile/2);
+		float beforeYChannelOffset = 0;
 		// main cycle
 		for (int row=0;row<nTilesPerColumn && channel<g.getNumberOfChannels();++row) {
 			//getting the maximum and minimum values of Y offset
@@ -179,7 +183,11 @@ public class GraphicView extends AwtView {
 			}
 			// Values were found
 			// Calculating offset Y for current channel
-			currentYChallelOffset = drawingOffsetY - minY;
+			currentYChannelOffset = drawingOffsetY - minY;
+			// check if ideal signal signal y offset larger than current y offset
+			if (currentYChannelOffset < yIdealTiles + beforeYChannelOffset + 5) 
+				// make it equal ideal signal offset + 5 pixels 
+				currentYChannelOffset = beforeYChannelOffset + yIdealTiles + 5;
 			for (int col=0;col<nTilesPerRow && channel<g.getNumberOfChannels();++col) {
 				short[] samplesForThisChannel = g.getSamples()[g.getDisplaySequence()[channel]];			
 				int i = timeOffsetInSamples;
@@ -187,16 +195,16 @@ public class GraphicView extends AwtView {
 				float rescaleY = g.getAmplitudeScalingFactorInMilliVolts()[g.getDisplaySequence()[channel]]*yPixelsInMillivolts;
 				float fromXValue = 0;
 				float fromYValue;
-				if (invert) fromYValue = currentYChallelOffset + samplesForThisChannel[i]*rescaleY;
-				else fromYValue = currentYChallelOffset - samplesForThisChannel[i]*rescaleY;
+				if (invert) fromYValue = currentYChannelOffset + samplesForThisChannel[i]*rescaleY;
+				else fromYValue = currentYChannelOffset - samplesForThisChannel[i]*rescaleY;
 				thePath.reset();
 				thePath.moveTo(fromXValue,fromYValue);
 				++i;
 				for (int j=1;j<usableSamples;++j) {
 					float toXValue = fromXValue + widthOfSampleInPixels;
 					float toYValue;
-					if (invert) toYValue = currentYChallelOffset + samplesForThisChannel[i]*rescaleY;
-					else toYValue = currentYChallelOffset - samplesForThisChannel[i]*rescaleY;					
+					if (invert) toYValue = currentYChannelOffset + samplesForThisChannel[i]*rescaleY;
+					else toYValue = currentYChannelOffset - samplesForThisChannel[i]*rescaleY;					
 					i++;
 					if ((int)fromXValue != (int)toXValue || (int)fromYValue != (int)toYValue) {
 						thePath.lineTo(toXValue,toYValue);
@@ -208,14 +216,19 @@ public class GraphicView extends AwtView {
 				++channel;
 			}
 			// calculating bound between channels
-			drawingOffsetY = (currentYChallelOffset + maxY);
+			drawingOffsetY = (currentYChannelOffset + maxY);
 			// set each value in offset array
-			offsets[row] = currentYChallelOffset;
+			offsets[row] = currentYChannelOffset;
+			// save current offset for next calculation
+			beforeYChannelOffset = currentYChannelOffset;
 		}
-		currentYChallelOffset = 0;
+		currentYChannelOffset = 0;
+		beforeYChannelOffset = 0;
 		// update offsets for channels, and redraw them
-		if (drawChanels!=null) drawChanels.setOffsets(offsets);
-		drawChanels.invalidate();
+		if (drawChanels!=null) {
+			drawChanels.setOffsets(offsets);
+			drawChanels.invalidate();
+		}
 		return;
 	}
 

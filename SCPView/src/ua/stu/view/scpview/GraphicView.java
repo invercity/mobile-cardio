@@ -1,6 +1,8 @@
 package ua.stu.view.scpview;
 
 
+import java.util.ArrayList;
+
 import ua.stu.scplib.attribute.GraphicAttribute;
 import ua.stu.scplib.attribute.GraphicAttributeBase;
 import ua.stu.scplib.data.DataHandler;
@@ -11,6 +13,8 @@ import and.awt.geom.GeneralPath;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.FloatMath;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.Scroller;
@@ -19,6 +23,8 @@ import net.pbdavey.awt.AwtView;
 import net.pbdavey.awt.Font;
 import net.pbdavey.awt.Graphics2D;
 import net.pbdavey.awt.RenderingHints;
+
+import static java.util.Arrays.asList;
 
 public class GraphicView extends AwtView {
 	// object which holds all required data for drawing
@@ -101,18 +107,147 @@ public class GraphicView extends AwtView {
 
 	}
 	
+	private boolean inTouch 		= false;
+	private boolean inMultiTouch 	= false;
+	private float x0,y0,x1,y1;
+	private float startDistance;
+	private float ySantimetersPerMillivolt;
+	private float xMillimetersPerSecond;
+	
+	private static float[] SPEEDS 		= {12.5f,25f,50f,100f};
+	private static float[] VOLTS 			= {2.5f,5f,10f,20f};
+	private static float TOUCH_SENSITIVE 	= 2f;
+	private static int UP 	= 1;
+	private static int DOWN	= 2;
+	private static int NONE	= -1;
+	
+	private int indexX;
+	private int indexY;
+	
+	
 	@Override
     public boolean onTouchEvent(MotionEvent event)
     {
 		// check for tap and cancel fling
-		if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN)
-		{
+		int actionMask = event.getActionMasked();
+		switch (actionMask) {
+		case MotionEvent.ACTION_DOWN:
+			inTouch = true;
 			if (!scroller.isFinished()) scroller.abortAnimation();
-		}	
+			break;
+		case MotionEvent.ACTION_POINTER_DOWN:
+			inMultiTouch = true;
+			startDistance = calculate( event );
+			break;
+		case MotionEvent.ACTION_UP:
+			inTouch = false;
+			break;
+		case MotionEvent.ACTION_POINTER_UP:
+			inMultiTouch = false;
+			break;
+		case MotionEvent.ACTION_MOVE:
+			if ( inTouch && inMultiTouch )
+				multiTouchHandler( event );
+				inMultiTouch = false;
+			break;
+		}
 		// check for scroll gesture
 		if (gestureDetector.onTouchEvent(event)) return true;
 		return true;
     }
+	
+	private void multiTouchHandler( MotionEvent event ) {
+		float distance = calculate( event );
+		int mode;
+		if ( distance >= startDistance ) {
+			mode = UP;
+		}
+		else {
+			mode = DOWN;
+		}
+		
+		if ( Math.abs(x0/x1) < TOUCH_SENSITIVE ) {
+			reDrawY( distance, mode );
+		}
+		else if ( Math.abs(y0/y1) < TOUCH_SENSITIVE ) {
+			reDrawX( distance, mode );
+		}
+	}
+	
+	private float calculate ( MotionEvent event ) {
+		x0 = event.getX(0);
+		y0 = event.getY(0);
+		x1 = event.getX(1);
+		y1 = event.getY(1);
+		
+		float dx = x1 - x0;
+		float dy = y1 - y0;
+		
+		float distance = FloatMath.sqrt(dx * dx + dy * dy);
+		return distance;
+	}
+	
+	private float nextY ( int mode ) {
+		float out = NONE;
+		if ( mode == UP ) {
+			for (int i = 0; i < VOLTS.length; i++) {
+				if ( VOLTS[i] > ySantimetersPerMillivolt ) {
+					out = VOLTS[i];
+					indexY = i;
+					break;
+				}
+			}
+		}
+		else if ( mode == DOWN ) {
+			if ( indexY != NONE ) {
+				out = VOLTS[indexY];
+				indexY--;
+			}
+			else {
+				out = VOLTS[0];
+			}
+		}
+		return out;
+	}
+	
+	private float nextX ( int mode ) {
+		float out = NONE;
+		if ( mode == UP ) {
+			for (int i = 0; i < VOLTS.length; i++) {
+				if ( SPEEDS[i] > xMillimetersPerSecond ) {
+					out = SPEEDS[i];
+					indexX = i;
+					break;
+				}
+			}
+		}
+		else if ( mode == DOWN ) {
+			if ( indexX != NONE ) {
+				out = SPEEDS[indexX - 1];
+				indexX--;
+			}
+			else {
+				out = SPEEDS[0];
+			}
+		}
+		return out;
+	}
+	
+	private void reDrawY( float distance, int mode ) {
+		float nextY = nextY(mode);
+		if ( nextY != NONE ) {
+			this.setYScale((float)( nextY ));
+			invalidate();
+		}
+	}
+	
+	private void reDrawX( float distance, int mode ) {
+		float nextX = nextX(mode);
+		if ( nextX != NONE ) {
+			this.setXScale((float)( nextX ));
+			invalidate();
+		}
+	}
 	
 	/*
 	 * Initializing
@@ -330,6 +465,7 @@ public class GraphicView extends AwtView {
 	}
 	
 	public void setYScale(float santimetersPerMillivolt) {
+		ySantimetersPerMillivolt = santimetersPerMillivolt;
 		float millimetersPerMillivolt=santimetersPerMillivolt/10;
 		this.yPixelsInMillivolts = (7/millimetersPerMillivolt/(duim/sizeScreen));
 		if (drawChanels!=null){
@@ -342,6 +478,7 @@ public class GraphicView extends AwtView {
 	}
 	
 	public void setXScale(float millimetersPerSecond) {
+		xMillimetersPerSecond = millimetersPerSecond;
 		this.xPixelsInMilliseconds = (float)( (millimetersPerSecond*(3.15/5)/(1000*duim/sizeScreen)));
 		this.W=(int) (millimetersPerSecond*32);
 		this.SW=(int) ((int)millimetersPerSecond*(32.65)+50);	

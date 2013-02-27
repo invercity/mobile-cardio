@@ -148,6 +148,9 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 		case R.id.slider_ecg_revert:
 			ecgPanel.revertECG( ecgPanel.getView() );
 			break;
+		case R.id.slider_settings:
+			Log.d(TAG,"slider settings click");
+			break;
 		}	
 	}
 	

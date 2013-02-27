@@ -1,34 +1,30 @@
 package ua.stu.view.fragments;
-import javax.activation.DataHandler;
 
 import it.sephiroth.demo.slider.widget.*;
 import ua.stu.view.scpview.DrawChanels;
 import ua.stu.view.scpview.DrawGraphPaper;
 import ua.stu.view.scpview.GestureListener;
 import ua.stu.view.scpview.GraphicView;
-import ua.stu.view.scpview.ImageViewer;
 import ua.stu.view.scpview.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
-import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 
@@ -79,7 +75,8 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	
 	
 
-	private static int SLIDER_SCREEN_PART = 10;
+	private static int SLIDER_SCREEN_PART_HORIZONTAL 	= 10;
+	private static int SLIDER_SCREEN_PART_VERTICAL 	= 15;
 	private MultiDirectionSlidingDrawer sliderPanel;
 	
 	private GraphicView graphicView;
@@ -97,6 +94,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	private RadioButton patient;
 	private RadioButton other;
 	private RadioButton ecgRevert;
+	private RadioButton settings;
 	private boolean 	isRevert = false;
 
 	public ECGPanelFragment(){
@@ -185,14 +183,15 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		case R.id.slider_other:
 			eventClick.eventClickSliderContent( R.id.slider_other );
 			break;
+		case R.id.slider_settings:
+			Log.d(TAG,"slider settings click");
+			eventClick.eventClickSliderContent( R.id.slider_settings );
+			break;
 		}
 	}
 	
 	private final void init ( View view ) {
 		initSliderPanel( view );
-		
-		camera.setOnClickListener( this );
-		fileChooser.setOnClickListener( this );
 	}
 	
 	private final void initSliderContent( View view ){
@@ -201,14 +200,16 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		patient		= ( RadioButton )view.findViewById( R.id.slider_patient );
 		other		= ( RadioButton )view.findViewById( R.id.slider_other );
 		ecgRevert	= ( RadioButton )view.findViewById( R.id.slider_ecg_revert );
+		settings	= ( RadioButton )view.findViewById( R.id.slider_settings );
 		
 		camera.setOnClickListener( this );
 		fileChooser.setOnClickListener( this );
 		patient.setOnClickListener( this );
 		other.setOnClickListener( this );
 		ecgRevert.setOnClickListener( this );
+		settings.setOnClickListener( this );
 		
-		if ( dataHandler!= null){
+		if ( dataHandler != null ){
 			contentClicable( true );
 		}
 		else {
@@ -224,9 +225,15 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	
 	private final void initSliderPanel( View view ) {
 		initSliderContent( view );
-
 		sliderPanel		= ( MultiDirectionSlidingDrawer )view.findViewById( R.id.slider_panel );
-		int topOffset 	= displayHeight - displayHeight / SLIDER_SCREEN_PART;
+
+		int orientation = view.getResources().getConfiguration().orientation;
+		int topOffset = displayHeight - displayHeight/SLIDER_SCREEN_PART_HORIZONTAL;
+		if ( orientation == Configuration.ORIENTATION_PORTRAIT ) {
+			Log.d(TAG,"ORIENTATION_PORTRAIT");
+			topOffset 	= displayHeight - displayHeight/SLIDER_SCREEN_PART_VERTICAL;
+		}
+			
 		sliderPanel.setTopOffset( topOffset );
 	}
 	

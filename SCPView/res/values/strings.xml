@@ -34,7 +34,7 @@
     <string name="medical_history_patient">Medical history</string>
     <string name="speed">Speed:</string>
     <string name="power">Gain:</string>
-    <string name="revert_ecg">Reverse ECG</string>
+    <string name="revert_ecg">Invert</string>
 	<string name="maker">Manufacturer:</string>
 	<string name="org_num">Number of the organization:</string>
 	<string name="dep_num">Department number:</string>
@@ -86,6 +86,7 @@
 	<string name="slider_camera">QR-code</string>
 	<string name="slider_patient">Patient</string>
 	<string name="slider_other">Other</string>
+	<string name="slider_settings">Settings</string>
 </resources>
 
 

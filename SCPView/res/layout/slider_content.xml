@@ -43,5 +43,11 @@
 		  android:drawableTop="@drawable/revert_ecg"
 		  android:text="@string/revert_ecg"
 		/>
+		<RadioButton
+		  android:id="@+id/slider_settings"
+		  style="@style/slider_panel"
+		  android:drawableTop="@drawable/settings"
+		  android:text="@string/slider_settings"
+		/>
 	</RadioGroup>
 </RelativeLayout>

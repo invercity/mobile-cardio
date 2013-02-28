@@ -113,7 +113,8 @@ public class GraphicView extends AwtView {
 		if (gestureDetector.onTouchEvent(event)) return true;
 		return true;
     }
-	
+
+
 	/*
 	 * Initializing
 	 */

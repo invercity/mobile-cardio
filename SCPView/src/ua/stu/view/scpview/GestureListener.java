@@ -31,6 +31,10 @@ public class GestureListener extends SimpleOnGestureListener {
 			float distanceY)
 
 	{
+		System.out.println("getMeasuredWidth()"+graphic.getMeasuredWidth());
+		System.out.println("getMleft"+graphic.getLeft());
+		System.out.println("getVerticalScrollbarWidth()"+graphic.getVerticalScrollbarWidth());	
+		System.out.println("----------------------------------");
 		graphic.scrollBy((int) distanceX, (int) distanceY);
 		graphic.setTime(distanceX);
 		chanels.scrollBy((int) 0, (int) distanceY);

@@ -157,7 +157,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	 * @param cGraphic - цвет сигнала
 	 * @param cChar - цвет надписей
 	 */
-	private void setColorThem(int cGraphPaper, int cGraphic, int cChar){
+	public void setColorThem(int cGraphPaper, int cGraphic, int cChar){
 		graphicView.setGraphicColor(new and.awt.Color(cGraphic));
 		graphPaper.setColorLinesAndDot(cGraphPaper);		
 		statustext.setTextColor(cChar);

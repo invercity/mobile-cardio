@@ -87,4 +87,9 @@
 	<string name="slider_patient">Пациент</string>
 	<string name="slider_other">Прочее</string>
 	<string name="slider_settings">Настройки</string>
+	
+	<string name="settings_colors_title">Цвет</string>
+	<string name="settings_colors_summary">цветовые схемы приложения</string>
+	<string name="settings_colors_graph_paper">Миллиметровка:</string>
+	<string name="settings_save">Сохранить</string>
 </resources>

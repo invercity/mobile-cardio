@@ -13,6 +13,8 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 public class GestureListener extends SimpleOnGestureListener {
 	private GraphicView graphic = null;
 	private DrawChanels chanels = null;
+	private float currentdistX = 0;
+	private float currentdistY = 0;
 
 	/**
 	 * 
@@ -31,13 +33,30 @@ public class GestureListener extends SimpleOnGestureListener {
 			float distanceY)
 
 	{
-		System.out.println("getMeasuredWidth()"+graphic.getMeasuredWidth());
-		System.out.println("getMleft"+graphic.getLeft());
-		System.out.println("getVerticalScrollbarWidth()"+graphic.getVerticalScrollbarWidth());	
-		System.out.println("----------------------------------");
-		graphic.scrollBy((int) distanceX, (int) distanceY);
-		graphic.setTime(distanceX);
-		chanels.scrollBy((int) 0, (int) distanceY);
+		/**
+		 * обработчик для того чтобы скролл не полз вниз
+		 */
+		if (currentdistY + distanceY >= 0) {
+			currentdistY += distanceY;
+			chanels.scrollBy((int) 0, (int) distanceY);
+			graphic.scrollBy((int) 0, (int) distanceY);
+		} else {
+			chanels.scrollBy((int) 0, (int) ((-1) * currentdistY));
+			graphic.scrollBy((int) 0, (int) ((-1) * currentdistY));
+			currentdistY = 0;
+		}
+		/**
+		 * обработчик для того чтобы скролл не полз вправо для графика
+		 */
+		if (currentdistX + distanceX >= 0) {
+			currentdistX += distanceX;
+			graphic.scrollBy((int) distanceX, (int) 0);
+			graphic.setTime(distanceX);
+		} else {
+			graphic.scrollBy((int) ((-1) * currentdistX), (int) 0);
+			graphic.setTimeInNull();
+			currentdistX = 0;
+		}
 		return true;
 	}
 }

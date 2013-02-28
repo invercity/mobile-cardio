@@ -90,6 +90,7 @@ public class DrawChanels extends AwtView{
 
 	@Override
 	public void paint(Graphics2D g2) {
+
 		if (g==null || offsets==null) return;
 		// start x channel name offset
 		int channelNameXOffset = 10;

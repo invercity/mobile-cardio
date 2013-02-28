@@ -129,6 +129,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		graphicView=(GraphicView)view.findViewById(R.id.GraphicView);
 		statustext=(TextView)view.findViewById(R.id.StatusText);
 		graphPaper=(DrawGraphPaper)view.findViewById(R.id.DrawGraphPaper);
+		
 		chanels=(DrawChanels)view.findViewById(R.id.drawChanels);
 		GestureListener gl =new GestureListener(graphicView, chanels);
 		chanels.initscale(gl);
@@ -143,7 +144,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		graphicView.setH(dataHandler);
 		
 		graphicView.setXScale(speed);
-		graphicView.setYScale((float) 2.5);			
+		graphicView.setYScale((float) 10);			
 		//цветовая схема "Красно-черная"
 		//setColorThem(Color.RED, Color.BLACK, Color.BLUE);
 		//цветовая схема "Сине-серая"

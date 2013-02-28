@@ -106,7 +106,7 @@ public class DrawGraphPaper extends View {
 		canvas.drawLines(mPts, paint);
 
 		MakeDots((float) 0.1, W, H);
-		paint.setStrokeWidth(2);
+		paint.setStrokeWidth(2);	
 		canvas.drawPoints(mPts, paint);
 	}
 
@@ -122,12 +122,9 @@ public class DrawGraphPaper extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
 		GetMetrics();
-		long Start = System.currentTimeMillis();
-		DrawBackGround(canvas, Width, Height);
-		mPaint.setColor((0x6F0000F0));
-		mPaint.setTextSize(23);
-		Start = System.currentTimeMillis() - Start;
+		DrawBackGround(canvas, Width, Height);		
 	}
 
 	public int getColorLinesAndDot() {

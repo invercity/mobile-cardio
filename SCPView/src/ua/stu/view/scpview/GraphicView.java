@@ -136,7 +136,7 @@ public class GraphicView extends AwtView {
 			if (!scroller.isFinished()) scroller.abortAnimation();
 			break;
 		case MotionEvent.ACTION_POINTER_DOWN:
-			inMultiTouch = true;
+			inMultiTouch = true;		
 			startDistance = calculate( event );
 			break;
 		case MotionEvent.ACTION_UP:
@@ -155,6 +155,7 @@ public class GraphicView extends AwtView {
 		if (gestureDetector.onTouchEvent(event)) return true;
 		return true;
     }
+
 	
 	private void multiTouchHandler( MotionEvent event ) {
 		float distance = calculate( event );
@@ -249,6 +250,7 @@ public class GraphicView extends AwtView {
 		}
 	}
 	
+
 	/*
 	 * Initializing
 	 */
@@ -515,6 +517,13 @@ public class GraphicView extends AwtView {
 		if (tvStatus!=null && this.h!=null)
 			tvStatus.setText(this.time+" from start "+speed+" mm/sec. "+gain+" mV/mm");
 		}
+	}	
+	public void setTimeInNull() {
+			if(h!=null){
+			this.time = 0;
+			if (tvStatus!=null && this.h!=null)
+				tvStatus.setText(this.time+" from start "+speed+" mm/sec. "+gain+" mV/mm");
+			}
 	}
 
 

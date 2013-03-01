@@ -148,9 +148,9 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		graphicView.setXScale(speed);
 		graphicView.setYScale((float) 10);			
 		//цветовая схема "Красно-черная"
-		//setColorThem(Color.RED, Color.BLACK, Color.BLUE);
+		setColorThem(Color.RED, Color.BLACK, Color.BLUE);
 		//цветовая схема "Сине-серая"
-		setColorThem(Color.rgb(173, 216, 230), Color.rgb(76, 76, 76), Color.BLACK);
+		//setColorThem(Color.rgb(173, 216, 230), Color.rgb(76, 76, 76), Color.BLACK);
 		
 	    return view;    
 	}
@@ -161,11 +161,12 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	 * @param cChar - цвет надписей
 	 */
 	private void setColorThem(int cGraphPaper, int cGraphic, int cChar){
-		graphicView.setGraphicColor(new and.awt.Color(cGraphic));
-		graphPaper.setColorLinesAndDot(cGraphPaper);		
+		graphicView.setGraphicColor(new and.awt.Color(cGraphic));		
+		graphPaper.setColorLinesAndDot(cGraphPaper);			
 		statustext.setTextColor(cChar);
 		chanels.setChanelNameColor(new and.awt.Color(cChar));
 		chanels.setGraphicColor(new and.awt.Color(cGraphic));
+		
 	}
 	
 	@Override

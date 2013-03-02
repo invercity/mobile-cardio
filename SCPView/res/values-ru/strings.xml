@@ -34,7 +34,7 @@
     <string name="medical_history_patient">История болезни</string>
     <string name="speed">Скорость:</string>
     <string name="power">Усиление:</string>
-    <string name="revert_ecg">Инвертировать ЕКГ</string>
+    <string name="revert_ecg">Инвертировать</string>
 	<string name="maker">Производитель:</string>
 	<string name="org_num">Номер организации:</string>
 	<string name="dep_num">Номер отдела:</string>
@@ -86,4 +86,12 @@
 	<string name="slider_camera">QR-код</string>
 	<string name="slider_patient">Пациент</string>
 	<string name="slider_other">Прочее</string>
+	<string name="slider_settings">Настройки</string>
+	
+	<string name="settings_colors_title">Цвет</string>
+	<string name="settings_colors_summary">цветовые схемы приложения</string>
+	<string name="settings_colors_graphic">График:</string>
+		<string name="settings_colors_character">Надписи:</string>
+			<string name="settings_colors_graph_paper">Миллиметровка:</string>
+	<string name="settings_save">Сохранить</string>
 </resources>

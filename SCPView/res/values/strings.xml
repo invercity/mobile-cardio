@@ -4,7 +4,9 @@
     <string name="app_patient">PatientInfo</string>
     <string name="app_other">OtherInfo</string>
     <string name="app_file_path">FilePath</string>
-
+    <string name="app_settings_colorGp">GraphPaperColor</string>
+    <string name="app_settings_colorCh">Character</string>
+        <string name="app_settings_colorG">Graphic</string>
     <string name="patient">Patient Information</string> 
     <string name="patient_info">PatientInfo</string>
     <string name="id_patient">Patient ID:</string>
@@ -34,7 +36,7 @@
     <string name="medical_history_patient">Medical history</string>
     <string name="speed">Speed:</string>
     <string name="power">Gain:</string>
-    <string name="revert_ecg">Reverse ECG</string>
+    <string name="revert_ecg">Invert</string>
 	<string name="maker">Manufacturer:</string>
 	<string name="org_num">Number of the organization:</string>
 	<string name="dep_num">Department number:</string>
@@ -86,6 +88,14 @@
 	<string name="slider_camera">QR-code</string>
 	<string name="slider_patient">Patient</string>
 	<string name="slider_other">Other</string>
+	<string name="slider_settings">Settings</string>
+	
+	<string name="settings_colors_title">Color</string>
+	<string name="settings_colors_summary">color application schemes</string>
+	<string name="settings_colors_graph_paper">Graph paper:</string>
+	<string name="settings_colors_graphic">Graphic:</string>
+		<string name="settings_colors_character">Titles:</string>
+	<string name="settings_save">Save</string>
 </resources>
 
 

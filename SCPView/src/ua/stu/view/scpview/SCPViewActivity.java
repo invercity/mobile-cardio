@@ -13,12 +13,11 @@ import ua.stu.view.fragments.ECGPanelFragment;
 import ua.stu.view.fragments.ECGPanelFragment.OnClickSliderContentListener;
 import ua.stu.view.temporary.InfoO;
 import ua.stu.view.temporary.InfoP;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -27,8 +26,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnKeyListener;
 import android.widget.Toast;
 
 public class SCPViewActivity extends FragmentActivity implements OnClickSliderContentListener {
@@ -38,6 +35,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	private SCPViewActivity v = this;
 	private static final int REQUEST_CHOOSE_FILE = 0;
 	private static final int REQUEST_SCAN_QRCODE = 1;
+	private static final int REQUEST_SETTINGS		= 2;
 	public 	static final String SCAN = "la.droid.qr.scan";
 	public 	static final String RESULT = "la.droid.qr.result";
 	
@@ -52,12 +50,12 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	private DataHandler h;
 
 	private String ecgFilePath = "";
-
+	public static final String PREFS_NAME = "ScpViewFile";
+	android.content.SharedPreferences settings ;
 	private Bundle state;
 	//private GraphicView graphicView;
 	
 	private boolean isSliderExpand = false;
-
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -148,6 +146,9 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 		case R.id.slider_ecg_revert:
 			ecgPanel.revertECG( ecgPanel.getView() );
 			break;
+		case R.id.slider_settings:
+			runSettings();
+			break;
 		}	
 	}
 	
@@ -174,7 +175,8 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	
 	private final void initECGPanel( DataHandler h ){
 		//graphicView.setH( h );
-		ecgPanel = new ECGPanelFragment( h );
+		settings = getSharedPreferences(PREFS_NAME, 0);
+		ecgPanel = new ECGPanelFragment( h ,settings);
 		
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace( R.id.ecg_panel_fragment, ecgPanel );
@@ -199,6 +201,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.d(TAG, "onActivityResult");
 		switch (requestCode) {
 		case REQUEST_CHOOSE_FILE:
 			if (resultCode == RESULT_OK) {
@@ -227,6 +230,24 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 					String result = data.getExtras().getString(RESULT);
 					Loader l = new Loader();
 					ecgFilePath = ROOT_PATH + l.load(result,ROOT_PATH);
+			}
+			break;
+		case REQUEST_SETTINGS:
+			if (resultCode == RESULT_OK) {
+				String settingsColorP 	= getResources().getString( R.string.app_settings_colorGp );
+				int colorGraphPaper  	= data.getExtras().getInt( settingsColorP );
+				String settingsColorCh 	= getResources().getString( R.string.app_settings_colorCh );
+				int colorCh  	= data.getExtras().getInt( settingsColorCh );
+				String settingsColorGr 	= getResources().getString( R.string.app_settings_colorG );
+				int colorGr  	= data.getExtras().getInt( settingsColorGr );
+				android.content.SharedPreferences.Editor editor = settings.edit();
+				editor.putInt("cGraphPaper", colorGraphPaper);
+				editor.putInt("cGraphic", colorGr);
+				editor.putInt("cChar", colorCh);
+				editor.commit();
+				  
+				//ecgPanel.setColorThem(Color.rgb(173, 216, 230), Color.rgb(76, 76, 76), Color.BLACK);
+				
 			}
 			break;
 		}
@@ -292,6 +313,15 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 		intent.putExtra(FileChooserActivity._Rootpath,
 				(Parcelable) new LocalFile(rootPath));
 		startActivityForResult(intent, REQUEST_CHOOSE_FILE);
+	}
+	
+	private final void runSettings() {
+		try {
+			Intent intent = new Intent(getApplicationContext(), Settings.class);
+			startActivityForResult(intent, REQUEST_SETTINGS);
+		} catch (Exception e) {
+			Log.e("Error in ", e.toString());
+		}
 	}
 	
 	private final void transferPatientData(){

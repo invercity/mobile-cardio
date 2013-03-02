@@ -62,5 +62,8 @@
 
         <service android:name="group.pals.android.lib.ui.filechooser.services.LocalFileProvider" >
         </service>
+        <activity android:name="Settings"
+            android:theme="@style/Theme.Sherlock.Fullscreen">
+        </activity>
     </application>
 </manifest>

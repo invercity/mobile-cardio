@@ -8,7 +8,6 @@ import java.util.Hashtable;
 import java.util.List;
 
 import ua.stu.scplib.data.DataHandler;
-import ua.stu.scplib.tools.Loader;
 import ua.stu.view.fragments.ECGPanelFragment;
 import ua.stu.view.fragments.ECGPanelFragment.OnClickSliderContentListener;
 import ua.stu.view.temporary.InfoO;
@@ -17,7 +16,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -35,14 +33,12 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	private SCPViewActivity v = this;
 	private static final int REQUEST_CHOOSE_FILE = 0;
 	private static final int REQUEST_SCAN_QRCODE = 1;
-	private static final int REQUEST_SETTINGS		= 2;
+	private static final int REQUEST_SETTINGS = 2;
+	private static final int REQUEST_GET_FILE = 3;
 	public 	static final String SCAN = "la.droid.qr.scan";
 	public 	static final String RESULT = "la.droid.qr.result";
-	
-	/**
-	 * this is test flag, allows to use QR code scanner
-	 */
-	private boolean SCANNER_ENABLED = false;
+	public static final String URL = "ua.stu.view.URL";
+	public static final String FILE = "ua.stu.view.file";
 	
 	private static final String ROOT_PATH = "/mnt/sdcard";
 
@@ -53,18 +49,18 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	public static final String PREFS_NAME = "ScpViewFile";
 	android.content.SharedPreferences settings ;
 	private Bundle state;
-	//private GraphicView graphicView;
+	// choose action dialog 
+	private AlertDialog dialog;
 	
 	private boolean isSliderExpand = false;
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
         setContentView(R.layout.main);
-        
-		state 		= savedInstanceState;
-		//graphicView = new GraphicView(this);
+		state = savedInstanceState;
 
 		final android.content.Intent intent = getIntent();
 
@@ -114,7 +110,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	@Override
 	public void onStop() {
 		super.onStop();
-		//when activity is restarting expandble slider must hide
+		//when activity is restarting expandable slider must hide
 		isSliderExpand = false;
 	}
 	
@@ -122,17 +118,12 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	public void eventClickSliderContent(int resID) {
 		switch ( resID ) {
 		case R.id.slider_camera:
-			if (SCANNER_ENABLED) {
 				if (!isOnline()){
 					Toast.makeText(SCPViewActivity.this, R.string.no_connection,Toast.LENGTH_SHORT).show();
 				}
 				else {
 					runScanner();
 				}
-			}
-			else { 
-				Toast.makeText(SCPViewActivity.this, R.string.not_avialable,Toast.LENGTH_SHORT).show();
-			}
 			break;
 		case R.id.slider_file_chooser:
 			runFileChooser( R.style.Theme_Sherlock, ROOT_PATH );
@@ -174,7 +165,6 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	}
 	
 	private final void initECGPanel( DataHandler h ){
-		//graphicView.setH( h );
 		settings = getSharedPreferences(PREFS_NAME, 0);
 		ecgPanel = new ECGPanelFragment( h ,settings);
 		
@@ -187,16 +177,16 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		// save the current ecg file path
-		String filePathKey 		= getResources().getString(R.string.app_file_path);
+		String filePathKey = getResources().getString(R.string.app_file_path);
 		outState.putString(filePathKey, ecgFilePath);
 	}
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		// restore the current ecg file path and status of expandble slider
-		String filePathKey 	= getResources().getString(R.string.app_file_path);
-		ecgFilePath 		= savedInstanceState.getString(filePathKey);
+		// restore the current ecg file path and status of expandable slider
+		String filePathKey = getResources().getString(R.string.app_file_path);
+		ecgFilePath = savedInstanceState.getString(filePathKey);
 	}
 
 	@Override
@@ -226,10 +216,11 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 			break;
 		case REQUEST_SCAN_QRCODE:
 			if (resultCode == RESULT_OK) {
-			        // this part (Loader class) still not working on Android
-					String result = data.getExtras().getString(RESULT);
-					Loader l = new Loader();
-					ecgFilePath = ROOT_PATH + l.load(result,ROOT_PATH);
+				String result = data.getExtras().getString(RESULT);
+				final Context context = this;
+				Intent intent = new Intent(context, WebViewActivity.class);
+				intent.putExtra(URL,result);
+			    startActivityForResult(intent, REQUEST_GET_FILE);
 			}
 			break;
 		case REQUEST_SETTINGS:
@@ -245,9 +236,14 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 				editor.putInt("cGraphic", colorGr);
 				editor.putInt("cChar", colorCh);
 				editor.commit();
-				  
 				//ecgPanel.setColorThem(Color.rgb(173, 216, 230), Color.rgb(76, 76, 76), Color.BLACK);
-				
+			}
+			break;
+			// retrieve file name after downloading, and open this file
+		case REQUEST_GET_FILE:
+			if (resultCode == RESULT_OK) {
+				ecgFilePath = data.getExtras().getString(FILE);
+				dialog.hide();
 			}
 			break;
 		}
@@ -279,12 +275,9 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
             		break;
             	}
             	case 1: {
-            		if (SCANNER_ENABLED) {
-            			if (!isOnline()) 
-            				Toast.makeText(SCPViewActivity.this, R.string.no_connection,Toast.LENGTH_SHORT).show();
-            			else runScanner();
-            		}
-            		else Toast.makeText(SCPViewActivity.this, R.string.not_avialable,Toast.LENGTH_SHORT).show();
+            		if (!isOnline()) 
+            			Toast.makeText(SCPViewActivity.this, R.string.no_connection,Toast.LENGTH_SHORT).show();
+            		else runScanner();
             		break;
             	}
             	case 2: {
@@ -294,7 +287,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
             	}
             }
         });
-	    AlertDialog dialog = builder.create();
+	    dialog = builder.create();
 	    dialog.show();
 	}
 	

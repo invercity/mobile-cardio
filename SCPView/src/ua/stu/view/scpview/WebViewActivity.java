@@ -33,7 +33,7 @@ public class WebViewActivity extends Activity{
 			     // wait while file will be download
 			     while (d.working());
 			     Intent intent = new Intent();
-			     System.out.println("path = " + path);
+			     System.out.println("modified path =" + path);
 			     intent.putExtra(SCPViewActivity.FILE,path);
 			     setResult(RESULT_OK, intent);
 			     finish();
@@ -58,12 +58,18 @@ public class WebViewActivity extends Activity{
 	            URL url = new URL(sUrl[0]);
 	            URLConnection connection = url.openConnection();
 	            connection.connect();
-	            // create new file of rewrite existing one
-	            path = "/mnt/sdcard/" + "file.scp";
-	            File nf = new File(path);
-	            if (!nf.exists()) nf.createNewFile();
+	            int indx = 1;
+	            path = "/mnt/sdcard/file_";
+			    File f = new File(path + String.valueOf(indx));
+			    while (f.exists()) {
+			    	 indx++;
+			    	 f = new File(path + String.valueOf(indx));
+			    }
+			    path+=String.valueOf(indx);
+			    path+=".scp";
+	            f.createNewFile();
 	            InputStream input = new BufferedInputStream(url.openStream());
-	            OutputStream output = new FileOutputStream(nf,false);
+	            OutputStream output = new FileOutputStream(f,false);
 
 	            byte data[] = new byte[1024];
 	            int count;

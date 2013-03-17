@@ -4,50 +4,62 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:layout_gravity="bottom"
-	android:background="@android:color/darker_gray">
+	android:background="@android:color/white">
 	
     <RadioGroup
 		android:layout_width="fill_parent"
-		android:layout_height="60dp"
+		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
-		android:background="@android:color/darker_gray"
-		android:orientation="horizontal"
-	  >
+		android:background="@android:color/black"
+		android:orientation="horizontal">
+
 		<RadioButton
 		  android:id="@+id/slider_file_chooser"
 		  style="@style/slider_panel"
-		  android:drawableTop="@drawable/file_chooser"
+		  android:background="@drawable/slider_background_selector"
+		  android:drawableTop="@drawable/file_chooser_default"
 		  android:text="@string/slider_open_file"
 		/>
+
 		<RadioButton
 		  android:id="@+id/slider_camera"
 		  style="@style/slider_panel"
-		  android:drawableTop="@drawable/camera"
+		  android:background="@drawable/slider_background_selector"
+		  android:drawableTop="@drawable/camera_default"
 		  android:text="@string/slider_camera"
 		/>
+
 		<RadioButton
 		  android:id="@+id/slider_patient"
 		  style="@style/slider_panel"
-		  android:drawableTop="@drawable/patient_slider"
+		  android:background="@drawable/slider_background_selector"
+		  android:drawableTop="@drawable/patient_slider_default"
 		  android:text="@string/slider_patient"
 		/>
+
 		<RadioButton
 		  android:id="@+id/slider_other"
 		  style="@style/slider_panel"
-		  android:drawableTop="@drawable/info"
+		  android:background="@drawable/slider_background_selector"
+		  android:drawableTop="@drawable/info_default"
 		  android:text="@string/slider_other"
 		/>
+
 		<RadioButton
 		  android:id="@+id/slider_ecg_revert"
 		  style="@style/slider_panel"
-		  android:drawableTop="@drawable/revert_ecg"
+		  android:background="@drawable/slider_background_selector"
+		  android:drawableTop="@drawable/revert_ecg_default"
 		  android:text="@string/revert_ecg"
 		/>
+
 		<RadioButton
 		  android:id="@+id/slider_settings"
 		  style="@style/slider_panel"
-		  android:drawableTop="@drawable/settings"
+		  android:background="@drawable/slider_background_selector"
+		  android:drawableTop="@drawable/settings_default"
 		  android:text="@string/slider_settings"
 		/>
+
 	</RadioGroup>
 </RelativeLayout>

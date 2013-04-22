@@ -1,8 +1,6 @@
 package ua.stu.view.scpview;
 
 
-import java.util.ArrayList;
-
 import ua.stu.scplib.attribute.GraphicAttribute;
 import ua.stu.scplib.attribute.GraphicAttributeBase;
 import ua.stu.scplib.data.DataHandler;
@@ -24,8 +22,6 @@ import net.pbdavey.awt.AwtView;
 import net.pbdavey.awt.Font;
 import net.pbdavey.awt.Graphics2D;
 import net.pbdavey.awt.RenderingHints;
-
-import static java.util.Arrays.asList;
 
 @SuppressLint("FloatMath")
 public class GraphicView extends AwtView {
@@ -108,24 +104,19 @@ public class GraphicView extends AwtView {
         a.recycle();
 
 	}
-
-	private float ySantimetersPerMillivolt;
-	private float xMillimetersPerSecond;
 	
-	private static float[] SPEEDS 		= {12.5f,25f,50f,100f};
-	private static float[] VOLTS 			= {2.5f,5f,10f,20f};
-
-	private static int UP 	= 1;
-	private static int DOWN	= 2;
+	private static double[] SPEEDS 		= {12.5,25,50,100};
+	private static double[] VOLTS 		= {2.5,5,10,20};
 	
-	//ISSUE: add a dynamical search the index of current X & Y
-	private int indexX = 1;
-	private int indexY = 2;
+	private int indexX;
+	private int indexY;
 	
-	private static final int NONE = 0;
+	private static final int NONE = -1;
 	private static final int DRAG = 1;
 	private static final int ZOOM = 2;
-	private static final int EndZOOM = 3;
+	private static final int EndZOOM = 3;	
+	private static final int UP 	= 5;
+	private static final int DOWN	= 6;
 	
 	private float oldDist;
 	private int mode;
@@ -171,16 +162,16 @@ public class GraphicView extends AwtView {
 	
 	private boolean ZoomIt(float Zoom){
 		if(Zoom>1.2){
-			float y = nextY(DOWN);
-			float x = nextX(UP);
+			double y = nextY(DOWN);
+			double x = nextX(UP);
 			
 			reDrawY(y);
 			reDrawX(x);
 			return true;
 		}
 		else if(Zoom<0.8){
-			float x = nextX(DOWN);
-			float y = nextY(UP);
+			double x = nextX(DOWN);
+			double y = nextY(UP);
 
 			reDrawX(x);
 			reDrawY(y);
@@ -195,13 +186,13 @@ public class GraphicView extends AwtView {
 		   return FloatMath.sqrt(x * x + y * y);
 	}
 	
-	private float nextY ( int mode ) {
-		float out = NONE;
+	private double nextY ( int mode ) {
+		double out = NONE;
+		indexY = getIndexY(gain);
 		if ( mode == UP ) {
 			for (int i = 0; i < VOLTS.length; i++) {
-				if ( VOLTS[i] > ySantimetersPerMillivolt ) {
+				if ( VOLTS[i] > gain ) {
 					out = VOLTS[i];
-					indexX = i;
 					break;
 				}
 			}
@@ -209,7 +200,6 @@ public class GraphicView extends AwtView {
 		else if ( mode == DOWN ) {
 			if ( (indexY - 1) != NONE ) {
 				out = VOLTS[indexY - 1];
-				indexY--;
 			}
 			else {
 				out = VOLTS[0];
@@ -218,13 +208,13 @@ public class GraphicView extends AwtView {
 		return out;
 	}
 	
-	private float nextX ( int mode ) {
-		float out = NONE;
+	private double nextX ( int mode ) {
+		double out = NONE;
+		indexX = getIndexX(speed);
 		if ( mode == UP ) {
 			for (int i = 0; i < VOLTS.length; i++) {
-				if ( SPEEDS[i] > xMillimetersPerSecond ) {
+				if ( SPEEDS[i] > speed ) {
 					out = SPEEDS[i];
-					indexX = i;
 					break;
 				}
 			}
@@ -232,7 +222,6 @@ public class GraphicView extends AwtView {
 		else if ( mode == DOWN ) {
 			if ( (indexX - 1) != NONE ) {
 				out = SPEEDS[indexX - 1];
-				indexX--;
 			}
 			else {
 				out = SPEEDS[0];
@@ -241,32 +230,32 @@ public class GraphicView extends AwtView {
 		return out;
 	}
 	
-	private void reDrawY( float y ) {
+	private void reDrawY( double y ) {
 		if ( y != NONE ) {
 			this.setYScale((float)( y ));
 		}
 	}
 	
-	private void reDrawX( float x ) {
+	private void reDrawX( double x ) {
 		if ( x != NONE ) {
 			this.setXScale((float)( x ));
 		}
 	}
 	
-	private int getIndexX( float value ) {
+	private int getIndexX( double value ) {
 		int index = NONE;
-		for (int i = 0; i < VOLTS.length; i++) {
-			if ( VOLTS[i] == value ) {
+		for (int i = 0; i < SPEEDS.length; i++) {
+			if ( SPEEDS[i] == value ) {
 				index = i;
 			}
 		}
 		return index;
 	}
 
-	private int getIndexY( float value ) {
+	private int getIndexY( double value ) {
 		int index = NONE;
-		for (int i = 0; i < SPEEDS.length; i++) {
-			if ( SPEEDS[i] == value ) {
+		for (int i = 0; i < VOLTS.length; i++) {
+			if ( VOLTS[i] == value ) {
 				index = i;
 			}
 		}
@@ -491,7 +480,6 @@ public class GraphicView extends AwtView {
 	}
 	
 	public void setYScale(float santimetersPerMillivolt) {
-		ySantimetersPerMillivolt = santimetersPerMillivolt;
 		float millimetersPerMillivolt=santimetersPerMillivolt/10;
 		this.yPixelsInMillivolts = (7/millimetersPerMillivolt/(duim/sizeScreen));
 		if (drawChanels!=null){
@@ -504,7 +492,6 @@ public class GraphicView extends AwtView {
 	}
 	
 	public void setXScale(float millimetersPerSecond) {
-		xMillimetersPerSecond = millimetersPerSecond;
 		this.xPixelsInMilliseconds = (float)( (millimetersPerSecond*(3.15/5)/(1000*duim/sizeScreen)));
 		this.W=(int) (millimetersPerSecond*32);
 		this.SW=(int) ((int)millimetersPerSecond*(32.65)+50);	

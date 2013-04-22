@@ -10,6 +10,7 @@ import and.awt.BasicStroke;
 import and.awt.Color;
 
 import and.awt.geom.GeneralPath;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -26,6 +27,7 @@ import net.pbdavey.awt.RenderingHints;
 
 import static java.util.Arrays.asList;
 
+@SuppressLint("FloatMath")
 public class GraphicView extends AwtView {
 	// object which holds all required data for drawing
 	private DataHandler h = null;
@@ -106,86 +108,91 @@ public class GraphicView extends AwtView {
         a.recycle();
 
 	}
-	
-	private boolean inTouch 		= false;
-	private boolean inMultiTouch 	= false;
-	private float x0,y0,x1,y1;
-	private float startDistance;
+
 	private float ySantimetersPerMillivolt;
 	private float xMillimetersPerSecond;
 	
 	private static float[] SPEEDS 		= {12.5f,25f,50f,100f};
 	private static float[] VOLTS 			= {2.5f,5f,10f,20f};
-	private static float TOUCH_SENSITIVE 	= 1.5f;
+
 	private static int UP 	= 1;
 	private static int DOWN	= 2;
-	private static int NONE	= -1;
 	
+	//ISSUE: add a dynamical search the index of current X & Y
 	private int indexX = 1;
-	private int indexY = 0;
+	private int indexY = 2;
 	
+	private static final int NONE = 0;
+	private static final int DRAG = 1;
+	private static final int ZOOM = 2;
+	private static final int EndZOOM = 3;
+	
+	private float oldDist;
+	private int mode;
 	
 	@Override
-    public boolean onTouchEvent(MotionEvent event)
-    {
-		// check for tap and cancel fling
+	public boolean dispatchTouchEvent (MotionEvent event) {
 		int actionMask = event.getActionMasked();
 		switch (actionMask) {
-		case MotionEvent.ACTION_DOWN:
-			inTouch = true;
-			if (!scroller.isFinished()) scroller.abortAnimation();
-			break;
 		case MotionEvent.ACTION_POINTER_DOWN:
-			inMultiTouch = true;		
-			startDistance = calculate( event );
+			oldDist = spacing(event);
+			if (oldDist > 10f) {
+				mode = ZOOM;
+			}
+			break;
+		case MotionEvent.ACTION_DOWN:
+			mode = DRAG;
 			break;
 		case MotionEvent.ACTION_UP:
-			inTouch = false;
-			break;
 		case MotionEvent.ACTION_POINTER_UP:
-			inMultiTouch = false;
+			mode = NONE;
 			break;
 		case MotionEvent.ACTION_MOVE:
-			if ( inTouch && inMultiTouch )
-				multiTouchHandler( event );
-				inMultiTouch = false;
+			if (mode == DRAG) {
+				if (!scroller.isFinished()) scroller.abortAnimation();
+			}
+			else if (mode == ZOOM) {
+				float newDist = spacing(event);
+				if (newDist > 10f) {
+					float scale = newDist / oldDist;
+					if(this.ZoomIt(scale)){
+						invalidate();
+						mode=EndZOOM;
+					}
+				}
 			break;
+			}
 		}
-		// check for scroll gesture
-		if (gestureDetector.onTouchEvent(event)) return true;
+		if( (mode ==DRAG)||(mode==NONE) )
+			gestureDetector.onTouchEvent(event);
 		return true;
-    }
-
-	
-	private void multiTouchHandler( MotionEvent event ) {
-		float distance = calculate( event );
-		int mode;
-		if ( distance >= startDistance ) {
-			mode = UP;
-		}
-		else {
-			mode = DOWN;
-		}
 		
-		if ( Math.abs(x0/x1) < TOUCH_SENSITIVE ) {
-			reDrawY( distance, mode );
-		}
-		else if ( Math.abs(y0/y1) < TOUCH_SENSITIVE ) {
-			reDrawX( distance, mode );
-		}
 	}
 	
-	private float calculate ( MotionEvent event ) {
-		x0 = event.getX(0);
-		y0 = event.getY(0);
-		x1 = event.getX(1);
-		y1 = event.getY(1);
-		
-		float dx = x1 - x0;
-		float dy = y1 - y0;
-		
-		float distance = FloatMath.sqrt(dx * dx + dy * dy);
-		return distance;
+	private boolean ZoomIt(float Zoom){
+		if(Zoom>1.2){
+			float y = nextY(DOWN);
+			float x = nextX(UP);
+			
+			reDrawY(y);
+			reDrawX(x);
+			return true;
+		}
+		else if(Zoom<0.8){
+			float x = nextX(DOWN);
+			float y = nextY(UP);
+
+			reDrawX(x);
+			reDrawY(y);
+			return true;
+		}
+		return false;
+	}
+	
+	private float spacing(MotionEvent event) {
+		   float x = event.getX(0) - event.getX(1);
+		   float y = event.getY(0) - event.getY(1);
+		   return FloatMath.sqrt(x * x + y * y);
 	}
 	
 	private float nextY ( int mode ) {
@@ -194,7 +201,7 @@ public class GraphicView extends AwtView {
 			for (int i = 0; i < VOLTS.length; i++) {
 				if ( VOLTS[i] > ySantimetersPerMillivolt ) {
 					out = VOLTS[i];
-					indexY = i;
+					indexX = i;
 					break;
 				}
 			}
@@ -234,23 +241,38 @@ public class GraphicView extends AwtView {
 		return out;
 	}
 	
-	private void reDrawY( float distance, int mode ) {
-		float nextY = nextY(mode);
-		if ( nextY != NONE ) {
-			this.setYScale((float)( nextY ));
-			invalidate();
+	private void reDrawY( float y ) {
+		if ( y != NONE ) {
+			this.setYScale((float)( y ));
 		}
 	}
 	
-	private void reDrawX( float distance, int mode ) {
-		float nextX = nextX(mode);
-		if ( nextX != NONE ) {
-			this.setXScale((float)( nextX ));
-			invalidate();
+	private void reDrawX( float x ) {
+		if ( x != NONE ) {
+			this.setXScale((float)( x ));
 		}
 	}
 	
+	private int getIndexX( float value ) {
+		int index = NONE;
+		for (int i = 0; i < VOLTS.length; i++) {
+			if ( VOLTS[i] == value ) {
+				index = i;
+			}
+		}
+		return index;
+	}
 
+	private int getIndexY( float value ) {
+		int index = NONE;
+		for (int i = 0; i < SPEEDS.length; i++) {
+			if ( SPEEDS[i] == value ) {
+				index = i;
+			}
+		}
+		return index;
+	}
+	
 	/*
 	 * Initializing
 	 */
@@ -402,6 +424,7 @@ public class GraphicView extends AwtView {
 	}
 
 	public void setyPixelsInMillivolts(int yPixelsInMillivolts) {
+		Log.d("setyPixelsInMillivolts",Integer.toString(yPixelsInMillivolts));
 		this.yPixelsInMillivolts = yPixelsInMillivolts;
 		if (drawChanels!=null){
 			drawChanels.setyPixelsInMillivolts(yPixelsInMillivolts);
@@ -414,6 +437,7 @@ public class GraphicView extends AwtView {
 	}
 
 	public void setxPixelsInMilliseconds(int xPixelsInMilliseconds) {
+		Log.d("setxPixelsInMilliseconds",Integer.toString(xPixelsInMilliseconds));
 		this.xPixelsInMilliseconds = xPixelsInMilliseconds;
 	}
 

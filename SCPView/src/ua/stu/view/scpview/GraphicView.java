@@ -524,7 +524,11 @@ public class GraphicView extends AwtView {
 	
 	public void setTime(float distanse) {
 		if(h!=null){
-		this.time += (int)distanse*(((g.getNumberOfSamplesPerChannel())*2.05/*подстроечный коефициент взят с потолка */)/getW());
+			if(g.isFlNonsection2()){
+		this.time += (int)distanse*(((g.getNumberOfSamplesPerChannel())*2.05/*подстроечный коефициент взят с потолка */)/getW())*2;
+			}else{
+				this.time += (int)distanse*(((g.getNumberOfSamplesPerChannel())*2.05/*подстроечный коефициент взят с потолка */)/getW());
+			}
 		if (tvStatus!=null && this.h!=null)
 			tvStatus.setText(this.time+" from start "+speed+" mm/sec. "+gain+" mV/mm");
 		}

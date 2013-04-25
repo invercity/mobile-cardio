@@ -15,7 +15,12 @@ public abstract class GraphicAttributeBase {
 	protected float[] amplitudeScalingFactorInMilliVolts;
 	protected String[] channelNames;
 	protected String title;
+	protected boolean flNonsection2=false;
 	protected int displaySequence[];	// an array of indexes into samples (etc.) sorted into desired sequential display order
+
+	public boolean isFlNonsection2() {
+		return flNonsection2;
+	}
 
 	/**
 	 * <p>Use the default encoded order.</p>

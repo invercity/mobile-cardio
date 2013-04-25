@@ -172,6 +172,7 @@ public class SCPECG {
 		int    amplitudeValueMultiplier = section6 == null ?    0 : section6.getAmplitudeValueMultiplier();
 		int          differenceDataUsed = section6 == null ?    0 : section6.getDifferenceDataUsed();
 		byte[][]     compressedLeadData = section6 == null ? null : section6.getCompressedLeadData();
+		short[][] leadData = section6 == null ? null : section6.getLeadData();
 		int      bimodalCompressionUsed = section6 == null ?    0 : section6.getBimodalCompressionUsed();
 		int sampleTimeIntervalForRhythm = section6 == null ?    0 : section6.getSampleTimeInterval();
 
@@ -222,7 +223,7 @@ public class SCPECG {
 						if (within) {
 							if (section2!=null)	value = decoder.decode();
 							else {
-								value = compressedLeadData[lead][sample-1];
+								value = leadData[lead][sample-1];
 								value*=amplitudeValueMultiplier/1000;
 							}
 							decimationOffsetCount = 0;
@@ -231,7 +232,7 @@ public class SCPECG {
 							if (samplingRateDecimationFactor <= 1) {	// should never happen, but if we didn't check, division by zero
 								if (section2!=null)	value = decoder.decode();
 								else {
-									value = compressedLeadData[lead][sample-1];
+									value = leadData[lead][sample-1];
 									value*=amplitudeValueMultiplier/1000;
 								}
 							}
@@ -251,7 +252,7 @@ public class SCPECG {
 								if (interpolationOffset == 0) {
 									if (section2!=null)	currentDecimatedValue = decoder.decode();
 									else {
-										currentDecimatedValue = compressedLeadData[lead][sample-1];
+										currentDecimatedValue = leadData[lead][sample-1];
 										currentDecimatedValue*=amplitudeValueMultiplier/1000;
 									}
 									

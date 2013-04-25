@@ -80,7 +80,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	 */
 	private static int MAX_POWER = 16;
 	
-	private float speed=25;
+	private float speed=50;
 	private int power=1;
 	
 	

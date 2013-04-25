@@ -130,6 +130,8 @@ public class GraphicAttribute extends GraphicAttributeBase {
 	public GraphicAttribute(BinaryInputStream i,boolean deriveAdditionalLeads) throws IOException {
 		super();
 		SCPECG scpecg = new SCPECG(i,false/*verbose*/);
+		if(scpecg.getSection2()==null)
+			flNonsection2=true;
 		doCommonConstructorStuff(scpecg,deriveAdditionalLeads);
 	}
 	

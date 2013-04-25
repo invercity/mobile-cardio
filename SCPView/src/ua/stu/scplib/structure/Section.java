@@ -117,8 +117,14 @@ public class Section {
 			case 5:
 			case 6:		{
 						Section3 section3 = (Section3)(sections.get(new Integer(3)));
+						Section2 section2 = (Section2)(sections.get(new Integer(2)));
 						int       numberOfleads = section3 == null ?    0 : section3.getNumberOfLeads();
-						section = new Section5Or6(sectionHeader,numberOfleads);
+						if(section2==null){
+						section = new Section5Or6(sectionHeader,numberOfleads,false);
+						}
+						else{
+							section = new Section5Or6(sectionHeader,numberOfleads,true);			
+						}
 					}
 					break;
 /*			case 7:		section = new Section7(sectionHeader);

@@ -58,26 +58,18 @@ public class WebViewActivity extends Activity{
 	            URL url = new URL(sUrl[0]);
 	            URLConnection connection = url.openConnection();
 	            connection.connect();
-	            int indx = 1;
-	            path = "/mnt/sdcard/file_";
-			    File f = new File(path + String.valueOf(indx));
-			    while (f.exists()) {
-			    	 indx++;
-			    	 f = new File(path + String.valueOf(indx));
-			    }
-			    path+=String.valueOf(indx);
-			    path+=".scp";
-	            f.createNewFile();
+	            path = "/tmp/mcardio.scp";
+			    File f = new File(path);
+	            if (!f.exists()) f.createNewFile();
 	            InputStream input = new BufferedInputStream(url.openStream());
 	            OutputStream output = new FileOutputStream(f,false);
-
 	            byte data[] = new byte[1024];
 	            int count;
 	            while ((count = input.read(data)) != -1) output.write(data, 0, count);
 	            output.flush();
 	            output.close();
 	            input.close();
-	            System.out.println("path wile working: " + path);
+	            //System.out.println("path wile working: " + path);
 	            working = false;
 	        } catch (Exception e) {
 	        }

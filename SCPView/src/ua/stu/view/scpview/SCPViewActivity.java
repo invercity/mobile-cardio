@@ -24,6 +24,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 public class SCPViewActivity extends FragmentActivity implements OnClickSliderContentListener {
@@ -68,6 +69,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 			final android.net.Uri data = intent.getData();
 			if (data != null) {
 				ecgFilePath = data.getEncodedPath();
+				System.out.println(mimePype("MIME" + ecgFilePath));
 				// file loading comes here.
 			} // if
 		} // if
@@ -76,8 +78,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 		}
 	}
 
-//don't delete
-/*	public String get_mime_by_filename(String filename) {
+	public String mimePype(String filename) {
 		String ext;
 		String type;
 
@@ -92,7 +93,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 		}
 		// return "application/octet-stream";
 		return "no type";
-	}*/
+	}
 
 	@Override
 	public void onResume() {

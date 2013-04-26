@@ -11,5 +11,4 @@
           android:state_pressed="true"
 		  android:drawable="@drawable/revert_ecg_selected" />
     <item android:drawable="@drawable/revert_ecg_default" />
-
 </selector>

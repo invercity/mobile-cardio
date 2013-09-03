@@ -91,7 +91,19 @@
 	<string name="settings_colors_title">Цвет</string>
 	<string name="settings_colors_summary">цветовые схемы приложения</string>
 	<string name="settings_colors_graphic">График:</string>
-		<string name="settings_colors_character">Надписи:</string>
-			<string name="settings_colors_graph_paper">Миллиметровка:</string>
+	<string name="settings_colors_character">Надписи:</string>
+	<string name="settings_colors_graph_paper">Миллиметровка:</string>
 	<string name="settings_save">Сохранить</string>
+	
+	<string name="settings_colors_scheme">Цветовая схема</string>
+	<string name="settings_colors_ecg">основные цвета ЕКГ диаграммы</string>
+	
+	<string-array name="settings_colors_theme">
+		<item>Красно - Черная</item>
+		<item>Серо - Синяя</item>
+	</string-array>
+	<string-array name="settings_colors_theme_values">
+		<item>1</item>
+		<item>2</item>
+	</string-array>
 </resources>

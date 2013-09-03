@@ -6,7 +6,11 @@
     <string name="app_file_path">FilePath</string>
     <string name="app_settings_colorGp">GraphPaperColor</string>
     <string name="app_settings_colorCh">Character</string>
-        <string name="app_settings_colorG">Graphic</string>
+    <string name="app_settings_colorG">Graphic</string>
+    <string name="app_settings_colors">settings_colors_theme</string>
+    
+    <string name="app_settings_file">scp_view_settings</string>
+    
     <string name="patient">Patient Information</string> 
     <string name="patient_info">PatientInfo</string>
     <string name="id_patient">Patient ID:</string>
@@ -94,8 +98,20 @@
 	<string name="settings_colors_summary">color application scheme</string>
 	<string name="settings_colors_graph_paper">Graph paper:</string>
 	<string name="settings_colors_graphic">Graphic:</string>
-		<string name="settings_colors_character">Titles:</string>
+	<string name="settings_colors_character">Titles:</string>
 	<string name="settings_save">Save</string>
+	
+	<string name="settings_colors_scheme">Colors Scheme</string>
+	<string name="settings_colors_ecg">main colors on ecg</string>
+	
+	<string-array name="settings_colors_theme">
+		<item>Red - Black</item>
+		<item>Gray - Blue</item>
+	</string-array>
+	<string-array name="settings_colors_theme_values">
+		<item>1</item>
+		<item>2</item>
+	</string-array>
 </resources>
 
 

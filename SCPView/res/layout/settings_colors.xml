@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
  	xmlns:android="http://schemas.android.com/apk/res/android">
- 		
-    <yuku.ambilwarna.widget.AmbilWarnaPreference
-		android:key="settings_color_graph_paper"
-		android:defaultValue="0xff6699cc" 
-		android:title="@string/settings_colors_graph_paper" />
-        <yuku.ambilwarna.widget.AmbilWarnaPreference
-		android:key="settings_color_character"
-		android:defaultValue="0xff6699cc" 
-		android:title="@string/settings_colors_character" />
-        <yuku.ambilwarna.widget.AmbilWarnaPreference
-		android:key="settings_color_graphic"
-		android:defaultValue="0xff6699cc" 
-		android:title="@string/settings_colors_graphic" />
+ 	
+    <ListPreference
+	 android:entries="@array/settings_colors_theme"
+	 android:entryValues="@array/settings_colors_theme_values"
+	 android:key="@string/app_settings_colors"
+	 android:summary="@string/settings_colors_ecg"
+	 android:title="@string/settings_colors_scheme">
+	</ListPreference>
 
 </PreferenceScreen>

@@ -20,6 +20,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -34,7 +35,6 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	private SCPViewActivity v = this;
 	private static final int REQUEST_CHOOSE_FILE = 0;
 	private static final int REQUEST_SCAN_QRCODE = 1;
-	private static final int REQUEST_SETTINGS = 2;
 	private static final int REQUEST_GET_FILE = 3;
 	public 	static final String SCAN = "la.droid.qr.scan";
 	public 	static final String RESULT = "la.droid.qr.result";
@@ -166,14 +166,14 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	}
 	
 	private final void initECGPanel( DataHandler h ){
-		settings = getSharedPreferences(PREFS_NAME, 0);
+		settings = getSharedPreferences(getResources().getString( R.string.app_settings_file ), MODE_PRIVATE);
 		ecgPanel = new ECGPanelFragment( h ,settings);
 		
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace( R.id.ecg_panel_fragment, ecgPanel );
-        ft.commit();
+        ft.commitAllowingStateLoss();
 	}
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -222,22 +222,6 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 				Intent intent = new Intent(context, WebViewActivity.class);
 				intent.putExtra(URL,result);
 			    startActivityForResult(intent, REQUEST_GET_FILE);
-			}
-			break;
-		case REQUEST_SETTINGS:
-			if (resultCode == RESULT_OK) {
-				String settingsColorP 	= getResources().getString( R.string.app_settings_colorGp );
-				int colorGraphPaper  	= data.getExtras().getInt( settingsColorP );
-				String settingsColorCh 	= getResources().getString( R.string.app_settings_colorCh );
-				int colorCh  	= data.getExtras().getInt( settingsColorCh );
-				String settingsColorGr 	= getResources().getString( R.string.app_settings_colorG );
-				int colorGr  	= data.getExtras().getInt( settingsColorGr );
-				android.content.SharedPreferences.Editor editor = settings.edit();
-				editor.putInt("cGraphPaper", colorGraphPaper);
-				editor.putInt("cGraphic", colorGr);
-				editor.putInt("cChar", colorCh);
-				editor.commit();
-				//ecgPanel.setColorThem(Color.rgb(173, 216, 230), Color.rgb(76, 76, 76), Color.BLACK);
 			}
 			break;
 			// retrieve file name after downloading, and open this file
@@ -312,7 +296,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	private final void runSettings() {
 		try {
 			Intent intent = new Intent(getApplicationContext(), Settings.class);
-			startActivityForResult(intent, REQUEST_SETTINGS);
+			startActivity(intent);
 		} catch (Exception e) {
 			Log.e("Error in ", e.toString());
 		}

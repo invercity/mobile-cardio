@@ -8,6 +8,7 @@
     <string name="app_settings_colorCh">Character</string>
     <string name="app_settings_colorG">Graphic</string>
     <string name="app_settings_colors">settings_colors_theme</string>
+    <string name="app_settings_mode">settings_mode</string>
     
     <string name="app_settings_file">scp_view_settings</string>
     
@@ -112,6 +113,19 @@
 		<item>1</item>
 		<item>2</item>
 	</string-array>
+	
+	<string name="settings_mode_title">Mode</string>
+	<string name="settings_mode_summary">application modes</string>
+	<string-array name="settings_mode">
+		<item>File manager</item>
+		<item>QR-code</item>
+	</string-array>
+	<string-array name="settings_mode_values">
+		<item>1</item>
+		<item>2</item>
+	</string-array>
+	<string name="settings_mode_qrcode">qr-code</string>
+	<string name="settings_mode_filemanager">file-manager</string>
 </resources>
 
 

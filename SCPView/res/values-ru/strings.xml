@@ -102,8 +102,11 @@
 		<item>Красно - Черная</item>
 		<item>Серо - Синяя</item>
 	</string-array>
-	<string-array name="settings_colors_theme_values">
-		<item>1</item>
-		<item>2</item>
+	
+	<string name="settings_mode_title">Режим</string>
+	<string name="settings_mode_summary">режимы приложения</string>
+	<string-array name="settings_mode">
+		<item>Файловый менеджер</item>
+		<item>QR-код</item>
 	</string-array>
 </resources>

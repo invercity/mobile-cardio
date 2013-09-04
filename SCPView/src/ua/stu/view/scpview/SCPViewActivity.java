@@ -169,6 +169,16 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 		settings = getSharedPreferences(getResources().getString( R.string.app_settings_file ), MODE_PRIVATE);
 		ecgPanel = new ECGPanelFragment( h ,settings);
 		
+		if(settings.getBoolean(getResources().getString(R.string.settings_mode_qrcode), false)){
+			Log.d(TAG, "QR-code mode");
+		}
+		else if(settings.getBoolean(getResources().getString(R.string.settings_mode_filemanager), false)){
+			Log.d(TAG, "File manager mode");
+		}
+		else {
+			Log.d(TAG, "Bad");
+		}
+		
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace( R.id.ecg_panel_fragment, ecgPanel );
         ft.commitAllowingStateLoss();

@@ -117,11 +117,11 @@
 	<string name="settings_mode_title">Mode</string>
 	<string name="settings_mode_summary">application modes</string>
 	<string-array name="settings_mode">
-		<item>File manager</item>
+		<item selected="true">File manager</item>
 		<item>QR-code</item>
 	</string-array>
 	<string-array name="settings_mode_values">
-		<item>1</item>
+		<item selected="true">1</item>
 		<item>2</item>
 	</string-array>
 	<string name="settings_mode_qrcode">qr-code</string>

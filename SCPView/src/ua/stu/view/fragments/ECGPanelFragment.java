@@ -161,7 +161,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		graphicView.setYScale((float) 10);			
 		pSettings.getInt("cGraphPaper", Color.rgb(173, 216, 230));
 		
-		System.out.println("oll="+pSettings.getAll());
+		//System.out.println("oll="+pSettings.getAll());
 		setColorThem(pSettings.getInt(getResources().getString( R.string.app_settings_colorGp ), Color.rgb(173, 216, 230)),
 				pSettings.getInt(getResources().getString( R.string.app_settings_colorG ), Color.rgb(76, 76, 76)),
 						pSettings.getInt(getResources().getString( R.string.app_settings_colorCh ), Color.BLACK));

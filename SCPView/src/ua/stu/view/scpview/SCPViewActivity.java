@@ -69,12 +69,16 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 			final android.net.Uri data = intent.getData();
 			if (data != null) {
 				ecgFilePath = data.getEncodedPath();
-				System.out.println(mimePype("MIME" + ecgFilePath));
+				//System.out.println(mimePype("MIME" + ecgFilePath));
 				// file loading comes here.
 			} // if
 		} // if
 		if ( (state == null) && (ecgFilePath == "") ) {
-			runActionDialog();
+			//runActionDialog();
+			settings = getSharedPreferences(getResources().getString( R.string.app_settings_file ), MODE_PRIVATE);
+			boolean qr = settings.getBoolean(getResources().getString(R.string.settings_mode_qrcode), false);
+			if (qr) runScanner();
+			else runFileChooser(R.style.Theme_Sherlock, ROOT_PATH);
 		}
 	}
 
@@ -242,9 +246,10 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 			}
 			break;
 		}
-
-		if ( ecgFilePath.equals("") )
-			runActionDialog();
+		
+		// this option was excluded on September 13, 2013
+		//if ( ecgFilePath.equals(""))
+			//runActionDialog();
 	}
 	
 	public boolean isOnline() {

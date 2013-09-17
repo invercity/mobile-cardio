@@ -33,7 +33,6 @@ public class WebViewActivity extends Activity{
 			     // wait while file will be download
 			     while (d.working());
 			     Intent intent = new Intent();
-			     System.out.println("modified path =" + path);
 			     intent.putExtra(SCPViewActivity.FILE,path);
 			     setResult(RESULT_OK, intent);
 			     finish();
@@ -43,6 +42,7 @@ public class WebViewActivity extends Activity{
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			String url = extras.getString(SCPViewActivity.URL);
+			path = extras.getString(SCPViewActivity.ROOT);
 			webView.loadUrl(url);
 		}
 		
@@ -58,8 +58,7 @@ public class WebViewActivity extends Activity{
 	            URL url = new URL(sUrl[0]);
 	            URLConnection connection = url.openConnection();
 	            connection.connect();
-	            path = "/tmp/mcardio.scp";
-			    File f = new File(path);
+			    File f = new File(path + '/' + url.getFile());
 	            if (!f.exists()) f.createNewFile();
 	            InputStream input = new BufferedInputStream(url.openStream());
 	            OutputStream output = new FileOutputStream(f,false);
@@ -69,7 +68,6 @@ public class WebViewActivity extends Activity{
 	            output.flush();
 	            output.close();
 	            input.close();
-	            //System.out.println("path wile working: " + path);
 	            working = false;
 	        } catch (Exception e) {
 	        }

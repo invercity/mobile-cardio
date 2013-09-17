@@ -142,6 +142,7 @@ public class Settings extends PreferenceActivity implements OnClickListener{
 						.getSerializableExtra(FileChooserActivity._Results);
 				
 				ecgFilePath = files.get(0).getPath();
+				System.out.println(ecgFilePath);
 				saveFilePathsSettings(ecgFilePath);
 			}
 			break;

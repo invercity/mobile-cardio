@@ -40,8 +40,9 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	public 	static final String RESULT = "la.droid.qr.result";
 	public static final String URL = "ua.stu.view.URL";
 	public static final String FILE = "ua.stu.view.file";
+	public static final String ROOT = "ua.stu.view.root";
 	
-	public static final String ROOT_PATH = "/mnt/sdcard";
+	public static String ROOT_PATH = null;
 
 	private ECGPanelFragment ecgPanel;
 	private DataHandler h;
@@ -62,22 +63,20 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 		
         setContentView(R.layout.main);
 		state = savedInstanceState;
-
+		// get settings
+		settings = getSharedPreferences(getResources().getString( R.string.app_settings_file ), MODE_PRIVATE);
+		// get work directory from settings
+		ROOT_PATH = settings.getString(getResources().getString(R.string.app_settings_file_paths_ecg), "/mnt/sdcard");
 		final android.content.Intent intent = getIntent();
 
 		if (intent != null) {
 			final android.net.Uri data = intent.getData();
-			if (data != null) {
-				ecgFilePath = data.getEncodedPath();
-				//System.out.println(mimePype("MIME" + ecgFilePath));
-				// file loading comes here.
-			} // if
+			if (data != null) ecgFilePath = data.getEncodedPath();
 		} // if
 		if ( (state == null) && (ecgFilePath == "") ) {
 			//runActionDialog();
-			settings = getSharedPreferences(getResources().getString( R.string.app_settings_file ), MODE_PRIVATE);
-			boolean qr = settings.getBoolean(getResources().getString(R.string.settings_mode_qrcode), false);
-			if (qr) runScanner();
+			// check app mode
+			if (settings.getBoolean(getResources().getString(R.string.settings_mode_qrcode), false)) runScanner();
 			else runFileChooser(R.style.Theme_Sherlock, ROOT_PATH, IFileProvider.FilterMode.FilesOnly);
 		}
 	}
@@ -240,6 +239,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 				final Context context = this;
 				Intent intent = new Intent(context, WebViewActivity.class);
 				intent.putExtra(URL,result);
+				intent.putExtra(ROOT, ROOT_PATH);
 			    startActivityForResult(intent, REQUEST_GET_FILE);
 			}
 			break;

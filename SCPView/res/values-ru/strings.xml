@@ -109,4 +109,8 @@
 		<item>Файловый менеджер</item>
 		<item>QR-код</item>
 	</string-array>
+	
+	<string name="settings_file_paths_title">Путь к файлам</string>
+	<string name="settings_file_paths_summary">путь к файлам приложения</string>
+	<string name="settings_file_paths_title_detail">папка с ЭКГ-файлами</string>
 </resources>

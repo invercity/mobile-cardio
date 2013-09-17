@@ -33,7 +33,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	private static final String TAG = "SCPViewActivity";
 	
 	private SCPViewActivity v = this;
-	private static final int REQUEST_CHOOSE_FILE = 0;
+	public static final int REQUEST_CHOOSE_FILE = 0;
 	private static final int REQUEST_SCAN_QRCODE = 1;
 	private static final int REQUEST_GET_FILE = 3;
 	public 	static final String SCAN = "la.droid.qr.scan";
@@ -41,7 +41,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	public static final String URL = "ua.stu.view.URL";
 	public static final String FILE = "ua.stu.view.file";
 	
-	private static final String ROOT_PATH = "/mnt/sdcard";
+	public static final String ROOT_PATH = "/mnt/sdcard";
 
 	private ECGPanelFragment ecgPanel;
 	private DataHandler h;
@@ -78,7 +78,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 			settings = getSharedPreferences(getResources().getString( R.string.app_settings_file ), MODE_PRIVATE);
 			boolean qr = settings.getBoolean(getResources().getString(R.string.settings_mode_qrcode), false);
 			if (qr) runScanner();
-			else runFileChooser(R.style.Theme_Sherlock, ROOT_PATH);
+			else runFileChooser(R.style.Theme_Sherlock, ROOT_PATH, IFileProvider.FilterMode.FilesOnly);
 		}
 	}
 
@@ -131,7 +131,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 				}
 			break;
 		case R.id.slider_file_chooser:
-			runFileChooser( R.style.Theme_Sherlock, ROOT_PATH );
+			runFileChooser( R.style.Theme_Sherlock, ROOT_PATH, IFileProvider.FilterMode.FilesOnly );
 			break;
 		case R.id.slider_patient:
 			transferPatientData();
@@ -172,6 +172,9 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	private final void initECGPanel( DataHandler h ){
 		settings = getSharedPreferences(getResources().getString( R.string.app_settings_file ), MODE_PRIVATE);
 		ecgPanel = new ECGPanelFragment( h ,settings);
+		
+		String ecgFilePath = settings.getString(getResources().getString( R.string.app_settings_file_paths_ecg ), ROOT_PATH);
+		Log.d(TAG, ecgFilePath);
 		
 		if(settings.getBoolean(getResources().getString(R.string.settings_mode_qrcode), false)){
 			Log.d(TAG, "QR-code mode");
@@ -226,6 +229,8 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 				List<LocalFile> files = (List<LocalFile>) data
 						.getSerializableExtra(FileChooserActivity._Results);
 
+				Log.d(TAG, files.get(0).getPath());
+				
 				ecgFilePath = files.get(0).getPath();
 			}
 			break;
@@ -271,7 +276,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
             public void onClick(DialogInterface dialog, int which) { 
             	switch (which) {
             	case 0: {
-            		runFileChooser(R.style.Theme_Sherlock, ROOT_PATH);
+            		runFileChooser(R.style.Theme_Sherlock, ROOT_PATH, IFileProvider.FilterMode.FilesOnly);
             		break;
             	}
             	case 1: {
@@ -296,7 +301,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 		startActivityForResult(intent, REQUEST_SCAN_QRCODE);
 	}
 
-	private final void runFileChooser(int style, String rootPath) {
+	private final void runFileChooser(int style, String rootPath, IFileProvider.FilterMode mode) {
 		Intent intent = new Intent(getBaseContext(), FileChooserActivity.class);
 		/*
 		 * by default, if not specified, default rootpath is sdcard, if sdcard
@@ -305,6 +310,8 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 		intent.putExtra(FileChooserActivity._Theme, style);
 		intent.putExtra(FileChooserActivity._Rootpath,
 				(Parcelable) new LocalFile(rootPath));
+		intent.putExtra(FileChooserActivity._FilterMode,
+				mode);
 		startActivityForResult(intent, REQUEST_CHOOSE_FILE);
 	}
 	

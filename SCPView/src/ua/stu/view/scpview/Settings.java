@@ -1,21 +1,29 @@
 package ua.stu.view.scpview;
 
+import group.pals.android.lib.ui.filechooser.FileChooserActivity;
+import group.pals.android.lib.ui.filechooser.io.localfile.LocalFile;
+import group.pals.android.lib.ui.filechooser.services.IFileProvider;
+import group.pals.android.lib.ui.filechooser.services.IFileProvider.FilterMode;
+
 import java.util.List;
 
-import android.content.Context;
+import ua.stu.view.fragments.SettingsFilePathsFragment;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.preference.ListPreference;
+import android.os.Parcelable;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class Settings extends PreferenceActivity implements OnClickListener {
+public class Settings extends PreferenceActivity implements OnClickListener{
 	
 	private final static String TAG = "Settings"; 
 	private Button save;
@@ -25,6 +33,8 @@ public class Settings extends PreferenceActivity implements OnClickListener {
 	private SharedPreferences preferences_default;
 	//preference on MainActivity context
 	private SharedPreferences preferences;
+	
+	private String ecgFilePath;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -100,5 +110,55 @@ public class Settings extends PreferenceActivity implements OnClickListener {
 			ed.putBoolean(getResources().getString(R.string.settings_mode_filemanager),false);
 		}
 		ed.commit();
+	}
+	
+	private void saveFilePathsSettings(String ecgFilePath) {
+		String settingsFilePathsECGKey = getResources().getString(R.string.app_settings_file_paths_ecg);
+		Editor ed = preferences.edit();
+		ed.putString(settingsFilePathsECGKey, ecgFilePath);
+		ed.commit();
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.d(TAG, "onActivityResult");
+		switch (requestCode) {
+		case SCPViewActivity.REQUEST_CHOOSE_FILE:
+			if (resultCode == RESULT_OK) {
+				/*
+				 * you can use two flags included in data
+				 */
+				IFileProvider.FilterMode filterMode = (IFileProvider.FilterMode) data
+						.getSerializableExtra(FileChooserActivity._FilterMode);
+				boolean saveDialog = data.getBooleanExtra(
+						FileChooserActivity._SaveDialog, false);
+
+				/*
+				 * a list of files will always return, if selection mode is
+				 * single, the list contains one file
+				 */
+				@SuppressWarnings("unchecked")
+				List<LocalFile> files = (List<LocalFile>) data
+						.getSerializableExtra(FileChooserActivity._Results);
+				
+				ecgFilePath = files.get(0).getPath();
+				saveFilePathsSettings(ecgFilePath);
+			}
+			break;
+		}
+	}
+	
+	public final void runFileChooser(int style, String rootPath, IFileProvider.FilterMode mode) {
+		Intent intent = new Intent(getBaseContext(), FileChooserActivity.class);
+		/*
+		 * by default, if not specified, default rootpath is sdcard, if sdcard
+		 * is not available, "/" will be used
+		 */
+		intent.putExtra(FileChooserActivity._Theme, style);
+		intent.putExtra(FileChooserActivity._Rootpath,
+				(Parcelable) new LocalFile(rootPath));
+		intent.putExtra(FileChooserActivity._FilterMode,
+				mode);
+		startActivityForResult(intent, SCPViewActivity.REQUEST_CHOOSE_FILE);
 	}
 }

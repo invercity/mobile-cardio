@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+ 	xmlns:android="http://schemas.android.com/apk/res/android">
+ 	
+    <Preference
+	 android:key="@string/app_settings_file_paths"
+	 android:title="@string/settings_file_paths_title_detail">
+	</Preference>
+
+</PreferenceScreen>

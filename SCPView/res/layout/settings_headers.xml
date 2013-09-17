@@ -14,4 +14,11 @@
 		 android:summary="@string/settings_mode_summary"
 		 android:title="@string/settings_mode_title">
 	</header>
+	
+	<header
+		 android:fragment="ua.stu.view.fragments.SettingsFilePathsFragment"
+		 android:icon="@drawable/file_chooser_default"
+		 android:summary="@string/settings_file_paths_summary"
+		 android:title="@string/settings_file_paths_title">
+	</header>
 </preference-headers>

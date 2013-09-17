@@ -11,6 +11,8 @@
     <string name="app_settings_mode">settings_mode</string>
     
     <string name="app_settings_file">scp_view_settings</string>
+    <string name="app_settings_file_paths">settings_file_paths</string>
+    <string name="app_settings_file_paths_ecg">settings_file_paths_ecg</string>
     
     <string name="patient">Patient Information</string> 
     <string name="patient_info">PatientInfo</string>
@@ -126,6 +128,10 @@
 	</string-array>
 	<string name="settings_mode_qrcode">qr-code</string>
 	<string name="settings_mode_filemanager">file-manager</string>
+	
+	<string name="settings_file_paths_title">File paths</string>
+	<string name="settings_file_paths_summary">application file paths</string>
+	<string name="settings_file_paths_title_detail">ECG save folder</string>
 </resources>
 
 

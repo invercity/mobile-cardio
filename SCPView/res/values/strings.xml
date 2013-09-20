@@ -112,8 +112,8 @@
 		<item>Gray - Blue</item>
 	</string-array>
 	<string-array name="settings_colors_theme_values">
+		<item>0</item>
 		<item>1</item>
-		<item>2</item>
 	</string-array>
 	
 	<string name="settings_mode_title">Mode</string>
@@ -123,8 +123,8 @@
 		<item>QR-code</item>
 	</string-array>
 	<string-array name="settings_mode_values">
-		<item selected="true">1</item>
-		<item>2</item>
+		<item selected="true">0</item>
+		<item>1</item>
 	</string-array>
 	<string name="settings_mode_qrcode">qr-code</string>
 	<string name="settings_mode_filemanager">file-manager</string>

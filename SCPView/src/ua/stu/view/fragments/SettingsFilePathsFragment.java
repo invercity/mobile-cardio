@@ -1,14 +1,10 @@
 package ua.stu.view.fragments;
 
-import group.pals.android.lib.ui.filechooser.FileChooserActivity;
-import group.pals.android.lib.ui.filechooser.io.localfile.LocalFile;
 import group.pals.android.lib.ui.filechooser.services.IFileProvider;
 import ua.stu.view.scpview.R;
 import ua.stu.view.scpview.SCPViewActivity;
 import ua.stu.view.scpview.Settings;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -35,6 +31,6 @@ public class SettingsFilePathsFragment extends PreferenceFragment implements OnP
 			Settings settings = (Settings)getActivity();
 			settings.runFileChooser(R.style.Theme_Sherlock, SCPViewActivity.ROOT_PATH, IFileProvider.FilterMode.DirectoriesOnly);
 		}
-		return false;
+		return true;
 	}
 }

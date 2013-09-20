@@ -81,7 +81,7 @@ public class Settings extends PreferenceActivity implements OnClickListener{
 		int colorGraphPaper 	= android.graphics.Color.RED;
 		int colorCharacter 		= android.graphics.Color.BLUE;
 		int colorGrap 			= android.graphics.Color.BLACK;
-		if (settingsColorsValue.equals("2")) {
+		if (settingsColorsValue.equals("1")) {
 			colorGraphPaper 	= android.graphics.Color.GRAY;
 			colorCharacter 		= android.graphics.Color.BLACK;
 			colorGrap 			= android.graphics.Color.BLUE;
@@ -100,12 +100,12 @@ public class Settings extends PreferenceActivity implements OnClickListener{
 		
 		Editor ed = preferences.edit();
 		//file manager mode
-		if (settingsModeValue.equals("1")) {
+		if (settingsModeValue.equals("0")) {
 			ed.putBoolean(getResources().getString(R.string.settings_mode_filemanager),true);
 			ed.putBoolean(getResources().getString(R.string.settings_mode_qrcode),false);
 		}
 		//qr-code mode
-		else if (settingsModeValue.equals("2")) {
+		else if (settingsModeValue.equals("1")) {
 			ed.putBoolean(getResources().getString(R.string.settings_mode_qrcode),true);
 			ed.putBoolean(getResources().getString(R.string.settings_mode_filemanager),false);
 		}
@@ -156,10 +156,8 @@ public class Settings extends PreferenceActivity implements OnClickListener{
 		 * is not available, "/" will be used
 		 */
 		intent.putExtra(FileChooserActivity._Theme, style);
-		intent.putExtra(FileChooserActivity._Rootpath,
-				(Parcelable) new LocalFile(rootPath));
-		intent.putExtra(FileChooserActivity._FilterMode,
-				mode);
+		intent.putExtra(FileChooserActivity._Rootpath,(Parcelable) new LocalFile(rootPath));
+		intent.putExtra(FileChooserActivity._FilterMode,mode);
 		startActivityForResult(intent, SCPViewActivity.REQUEST_CHOOSE_FILE);
 	}
 }

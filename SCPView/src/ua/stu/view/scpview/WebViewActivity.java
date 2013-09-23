@@ -44,7 +44,7 @@ public class WebViewActivity extends Activity{
 		if (extras != null) {
 			String url = extras.getString(SCPViewActivity.URL);
 			android.content.SharedPreferences settings = getSharedPreferences(getResources().getString( R.string.app_settings_file ), MODE_PRIVATE);
-			path = settings.getString(getResources().getString(R.string.app_settings_file_paths), SCPViewActivity.ROOT_PATH);
+			path = settings.getString(getResources().getString(R.string.app_settings_file_paths_ecg), SCPViewActivity.ROOT_PATH);
 			webView.loadUrl(url);
 		}
 		

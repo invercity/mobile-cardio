@@ -19,6 +19,7 @@ public class WebViewActivity extends Activity{
 	
 	private WebView webView;
 	private String path;
+	private String filename;
 	 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,7 +34,7 @@ public class WebViewActivity extends Activity{
 			     // wait while file will be download
 			     while (d.working());
 			     Intent intent = new Intent();
-			     intent.putExtra(SCPViewActivity.FILE,path);
+			     intent.putExtra(SCPViewActivity.FILE,filename);
 			     setResult(RESULT_OK, intent);
 			     finish();
 			     return true; 
@@ -42,7 +43,8 @@ public class WebViewActivity extends Activity{
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			String url = extras.getString(SCPViewActivity.URL);
-			path = extras.getString(SCPViewActivity.ROOT);
+			android.content.SharedPreferences settings = getSharedPreferences(getResources().getString( R.string.app_settings_file ), MODE_PRIVATE);
+			path = settings.getString(getResources().getString(R.string.app_settings_file_paths), SCPViewActivity.ROOT_PATH);
 			webView.loadUrl(url);
 		}
 		
@@ -58,7 +60,8 @@ public class WebViewActivity extends Activity{
 	            URL url = new URL(sUrl[0]);
 	            URLConnection connection = url.openConnection();
 	            connection.connect();
-			    File f = new File(path + '/' + url.getFile());
+	            filename = path + '/' + url.getFile();
+			    File f = new File(filename);
 	            if (!f.exists()) f.createNewFile();
 	            InputStream input = new BufferedInputStream(url.openStream());
 	            OutputStream output = new FileOutputStream(f,false);

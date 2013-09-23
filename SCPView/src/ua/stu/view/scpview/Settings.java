@@ -142,7 +142,6 @@ public class Settings extends PreferenceActivity implements OnClickListener{
 						.getSerializableExtra(FileChooserActivity._Results);
 				
 				ecgFilePath = files.get(0).getPath();
-				System.out.println(ecgFilePath);
 				saveFilePathsSettings(ecgFilePath);
 			}
 			break;
@@ -155,6 +154,7 @@ public class Settings extends PreferenceActivity implements OnClickListener{
 		 * by default, if not specified, default rootpath is sdcard, if sdcard
 		 * is not available, "/" will be used
 		 */
+		System.out.println("ROOT PATH" + rootPath);
 		intent.putExtra(FileChooserActivity._Theme, style);
 		intent.putExtra(FileChooserActivity._Rootpath,
 				(Parcelable) new LocalFile(rootPath));

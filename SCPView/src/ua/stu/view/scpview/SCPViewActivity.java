@@ -35,6 +35,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	private SCPViewActivity v = this;
 	public static final int REQUEST_CHOOSE_FILE = 0;
 	private static final int REQUEST_SCAN_QRCODE = 1;
+	private static final int REQUEST_PATH = 2;
 	private static final int REQUEST_GET_FILE = 3;
 	public 	static final String SCAN = "la.droid.qr.scan";
 	public 	static final String RESULT = "la.droid.qr.result";
@@ -42,7 +43,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	public static final String FILE = "ua.stu.view.file";
 	public static final String ROOT = "ua.stu.view.root";
 	
-	public static String ROOT_PATH = null;
+	public static final String ROOT_PATH = "/mnt/sdcard";
 
 	private ECGPanelFragment ecgPanel;
 	private DataHandler h;
@@ -65,8 +66,6 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 		state = savedInstanceState;
 		// get settings
 		settings = getSharedPreferences(getResources().getString( R.string.app_settings_file ), MODE_PRIVATE);
-		// get work directory from settings
-		ROOT_PATH = settings.getString(getResources().getString(R.string.app_settings_file_paths_ecg), "/mnt/sdcard");
 		final android.content.Intent intent = getIntent();
 
 		if (intent != null) {
@@ -239,7 +238,6 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 				final Context context = this;
 				Intent intent = new Intent(context, WebViewActivity.class);
 				intent.putExtra(URL,result);
-				intent.putExtra(ROOT, ROOT_PATH);
 			    startActivityForResult(intent, REQUEST_GET_FILE);
 			}
 			break;
@@ -247,10 +245,10 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 		case REQUEST_GET_FILE:
 			if (resultCode == RESULT_OK) {
 				ecgFilePath = data.getExtras().getString(FILE);
-				dialog.hide();
+				//dialog.hide();
 			}
 			break;
-		}
+		}	
 		
 		// this option was excluded on September 13, 2013
 		//if ( ecgFilePath.equals(""))

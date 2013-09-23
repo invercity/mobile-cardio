@@ -132,6 +132,7 @@
 	<string name="settings_file_paths_title">File paths</string>
 	<string name="settings_file_paths_summary">application file paths</string>
 	<string name="settings_file_paths_title_detail">ECG save folder</string>
+	<string name="error_decode_qr">Error during decoding qr-code</string>
 </resources>
 
 

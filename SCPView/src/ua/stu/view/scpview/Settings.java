@@ -3,21 +3,17 @@ package ua.stu.view.scpview;
 import group.pals.android.lib.ui.filechooser.FileChooserActivity;
 import group.pals.android.lib.ui.filechooser.io.localfile.LocalFile;
 import group.pals.android.lib.ui.filechooser.services.IFileProvider;
-import group.pals.android.lib.ui.filechooser.services.IFileProvider.FilterMode;
 
 import java.util.List;
 
-import ua.stu.view.fragments.SettingsFilePathsFragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.preference.Preference.OnPreferenceClickListener;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -154,7 +150,6 @@ public class Settings extends PreferenceActivity implements OnClickListener{
 		 * by default, if not specified, default rootpath is sdcard, if sdcard
 		 * is not available, "/" will be used
 		 */
-		System.out.println("ROOT PATH" + rootPath);
 		intent.putExtra(FileChooserActivity._Theme, style);
 		intent.putExtra(FileChooserActivity._Rootpath,(Parcelable) new LocalFile(rootPath));
 		intent.putExtra(FileChooserActivity._FilterMode,mode);

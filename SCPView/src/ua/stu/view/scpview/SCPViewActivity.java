@@ -35,9 +35,11 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	private SCPViewActivity v = this;
 	public static final int REQUEST_CHOOSE_FILE = 0;
 	private static final int REQUEST_SCAN_QRCODE = 1;
-	private static final int REQUEST_PATH = 2;
+	private static final int REQUEST_DECODE_QR = 2;
 	private static final int REQUEST_GET_FILE = 3;
 	public 	static final String SCAN = "la.droid.qr.scan";
+	public static final String DECODE = "la.droid.qr.decode";
+	public static final String IMG = "la.droid.qr.image";
 	public 	static final String RESULT = "la.droid.qr.result";
 	public static final String URL = "ua.stu.view.URL";
 	public static final String FILE = "ua.stu.view.file";
@@ -68,11 +70,18 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 		settings = getSharedPreferences(getResources().getString( R.string.app_settings_file ), MODE_PRIVATE);
 		final android.content.Intent intent = getIntent();
 
-		if (intent != null) {
+		if ((intent != null) && (intent.getData() != null)) {
 			final android.net.Uri data = intent.getData();
-			if (data != null) ecgFilePath = data.getEncodedPath();
+			String f = data.getEncodedPath();
+			// this is image
+			if (mimeType(f).indexOf("image") != -1) {
+				Intent qrDroid = new Intent(SCPViewActivity.DECODE);
+				qrDroid.putExtra(SCPViewActivity.IMG, f);
+				startActivityForResult(qrDroid, SCPViewActivity.REQUEST_DECODE_QR);
+			}
+			else ecgFilePath = f;
 		} // if
-		if ( (state == null) && (ecgFilePath == "") ) {
+		else if (state == null) {
 			//runActionDialog();
 			// check app mode
 			if (settings.getBoolean(getResources().getString(R.string.settings_mode_qrcode), false)) runScanner();
@@ -80,7 +89,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 		}
 	}
 
-	public String mimePype(String filename) {
+	public String mimeType(String filename) {
 		String ext;
 		String type;
 
@@ -246,6 +255,17 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 			if (resultCode == RESULT_OK) {
 				ecgFilePath = data.getExtras().getString(FILE);
 				//dialog.hide();
+			}
+			break;
+		case REQUEST_DECODE_QR:
+			if (resultCode == RESULT_OK) {
+				final Context context = this;
+				Intent intent = new Intent(context, WebViewActivity.class);
+				intent.putExtra(URL,data.getExtras().getString(RESULT));
+			    startActivityForResult(intent, REQUEST_GET_FILE);
+			}	
+			else {
+				Toast.makeText(SCPViewActivity.this, R.string.error_decode_qr,Toast.LENGTH_SHORT).show();
 			}
 			break;
 		}	

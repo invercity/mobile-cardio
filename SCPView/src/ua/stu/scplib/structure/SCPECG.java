@@ -231,9 +231,9 @@ public class SCPECG {
 						else {
 							if (samplingRateDecimationFactor <= 1) {	// should never happen, but if we didn't check, division by zero
 								if (section2!=null)	value = decoder.decode();
-								else {
+								else if ((sample -1) < useNumberOfSamples - 2){
 									value = leadData[lead][sample-1];
-									value*=amplitudeValueMultiplier/1000;
+									value*=(float) amplitudeValueMultiplier/1000;
 								}
 							}
 							else {

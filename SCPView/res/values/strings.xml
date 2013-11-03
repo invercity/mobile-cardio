@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SCPView</string>
+    <string name="app_name">mobileCardio</string>
     <string name="app_patient">PatientInfo</string>
     <string name="app_other">OtherInfo</string>
     <string name="app_file_path">FilePath</string>
@@ -133,6 +133,7 @@
 	<string name="settings_file_paths_summary">application file paths</string>
 	<string name="settings_file_paths_title_detail">ECG save folder</string>
 	<string name="error_decode_qr">Error during decoding qr-code</string>
+	<string name="app_version">0.1</string>
 </resources>
 
 

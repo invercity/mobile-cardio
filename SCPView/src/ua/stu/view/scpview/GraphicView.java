@@ -303,81 +303,81 @@ public class GraphicView extends AwtView {
 			usableSamples=widthOfTileInSamples-1;
 		}
 		//bound between channels
-		float drawingOffsetY = 0;
-		//offset for channel middle line
-		float currentYChannelOffset = 0;
-		float maxY,minY;
-		int channel = 0;
-		GeneralPath thePath = new GeneralPath();
-		//calculating the ideal title offset
-		float tile = yPixelsInMillivolts*duim/sizeScreen;
-		float yIdealTiles = 4*tile - (int)(tile/2);
-		float beforeYChannelOffset = 0;
-		// main cycle
-		for (int row=0;row<nTilesPerColumn && channel<g.getNumberOfChannels();++row) {
-			//getting the maximum and minimum values of Y offset
-			maxY = 0;
-			minY = 0;
-			int k = timeOffsetInSamples + 1;
-			float curY = 0;
-			short[] currenSamplesForThisChannel = g.getSamples()[g.getDisplaySequence()[channel]];
-			float currentRescaleY = g.getAmplitudeScalingFactorInMilliVolts()[g.getDisplaySequence()[channel]]*yPixelsInMillivolts;
-			for (int j=1;j<usableSamples;++j) {
-				if (invert) curY = currenSamplesForThisChannel[k]*currentRescaleY;
-				else curY = - currenSamplesForThisChannel[k]*currentRescaleY;
-				if (curY<minY) minY = curY;
-				if (curY>maxY) maxY = curY;
-				k++;
-			}
-			// Values were found
-			// Calculating offset Y for current channel
-			currentYChannelOffset = drawingOffsetY - minY;
-			// check if ideal signal signal y offset larger than current y offset
-			if (currentYChannelOffset < yIdealTiles + beforeYChannelOffset + 5) 
-				// make it equal ideal signal offset + 5 pixels 
-				currentYChannelOffset = beforeYChannelOffset + yIdealTiles + 5;
-			for (int col=0;col<nTilesPerRow && channel<g.getNumberOfChannels();++col) {
-				short[] samplesForThisChannel = g.getSamples()[g.getDisplaySequence()[channel]];			
-				int i = timeOffsetInSamples;
-				// YScale attribute
-				float rescaleY = g.getAmplitudeScalingFactorInMilliVolts()[g.getDisplaySequence()[channel]]*yPixelsInMillivolts;
-				float fromXValue = 0;
-				float fromYValue;
-				if (invert) fromYValue = currentYChannelOffset + samplesForThisChannel[i]*rescaleY;
-				else fromYValue = currentYChannelOffset - samplesForThisChannel[i]*rescaleY;
-				thePath.reset();
-				thePath.moveTo(fromXValue,fromYValue);
-				++i;
-				for (int j=1;j<usableSamples;++j) {
-					float toXValue = fromXValue + widthOfSampleInPixels;
-					float toYValue;
-					if (invert) toYValue = currentYChannelOffset + samplesForThisChannel[i]*rescaleY;
-					else toYValue = currentYChannelOffset - samplesForThisChannel[i]*rescaleY;					
-					i++;
-					if ((int)fromXValue != (int)toXValue || (int)fromYValue != (int)toYValue) {
-						thePath.lineTo(toXValue,toYValue);
-					}
-					fromXValue=toXValue;
-					fromYValue=toYValue;
-				}
-				g2.draw(thePath);
-				++channel;
-			}
-			// calculating bound between channels
-			drawingOffsetY = (currentYChannelOffset + maxY);
-			// set each value in offset array
-			offsets[row] = currentYChannelOffset;
-			// save current offset for next calculation
-			beforeYChannelOffset = currentYChannelOffset;
-		}
-		currentYChannelOffset = 0;
-		beforeYChannelOffset = 0;
-		// update offsets for channels, and redraw them
-		if (drawChanels!=null) {
-			drawChanels.setOffsets(offsets);
-			drawChanels.invalidate();
-		}
-		return;
+        float drawingOffsetY = 0;
+        //offset for channel middle line
+        float currentYChannelOffset = 0;
+        float maxY,minY;
+        int channel = 0;
+        GeneralPath thePath = new GeneralPath();
+        //calculating the ideal title offset
+        float tile = yPixelsInMillivolts*duim/sizeScreen;
+        float yIdealTiles = 4*tile - (int)(tile/2);
+        // offset from the top of the screen
+        float beforeY = 10;
+        // float between names of channels
+        float borderBetweenChannelNames = 15;
+        // main cycle
+        for (int row=0;row<nTilesPerColumn && channel<g.getNumberOfChannels();++row) {
+                //getting the maximum and minimum values of Y offset
+                maxY = -9999;
+                minY = 9999;
+                int k = timeOffsetInSamples;
+                float curY = 0;
+                short[] currenSamplesForThisChannel = g.getSamples()[g.getDisplaySequence()[channel]];
+                float currentRescaleY = g.getAmplitudeScalingFactorInMilliVolts()[g.getDisplaySequence()[channel]]*yPixelsInMillivolts;
+                // getting the width of channel
+                for (int j=1;j<usableSamples;++j) {
+                        if (invert) curY = currenSamplesForThisChannel[k]*currentRescaleY;
+                        else curY = - currenSamplesForThisChannel[k]*currentRescaleY;
+                        if (curY<minY) minY = curY;
+                        if (curY>maxY) maxY = curY;
+                        k++;
+                }
+                // Calculating offset Y for current channel
+                currentYChannelOffset = drawingOffsetY - minY;
+                for (int col=0;col<nTilesPerRow && channel<g.getNumberOfChannels();++col) {
+                        short[] samplesForThisChannel = g.getSamples()[g.getDisplaySequence()[channel]];                        
+                        int i = timeOffsetInSamples;
+                        // YScale attribute
+                        float rescaleY = g.getAmplitudeScalingFactorInMilliVolts()[g.getDisplaySequence()[channel]]*yPixelsInMillivolts;
+                        float fromXValue = 0;
+                        float fromYValue;
+                        if (invert) fromYValue = currentYChannelOffset + samplesForThisChannel[i]*rescaleY;
+                        else fromYValue = currentYChannelOffset - samplesForThisChannel[i]*rescaleY;
+                        // value for auto-trimming
+                        float delta = 0;
+                        if (fromYValue > beforeY + (maxY - minY)) delta = beforeY + (maxY - minY) - fromYValue +20;
+                        if (fromYValue < beforeY + yIdealTiles + borderBetweenChannelNames) delta = beforeY + yIdealTiles - fromYValue + borderBetweenChannelNames;
+                        beforeY = fromYValue + delta;
+                        if (col == 0) offsets[row] = fromYValue + delta;
+                        thePath.reset();
+                        thePath.moveTo(fromXValue,fromYValue + delta);
+                        ++i;
+                        for (int j=1;j<usableSamples;++j) {
+                                float toXValue = fromXValue + widthOfSampleInPixels;
+                                float toYValue;
+                                if (invert) toYValue = currentYChannelOffset + samplesForThisChannel[i]*rescaleY + delta;
+                                else toYValue = currentYChannelOffset - samplesForThisChannel[i]*rescaleY + delta;                                        
+                                i++;
+                                if ((int)fromXValue != (int)toXValue || (int)fromYValue != (int)toYValue) {
+                                        thePath.lineTo(toXValue,toYValue);
+                                }
+                                fromXValue=toXValue;
+                                fromYValue=toYValue;
+                        }
+                        g2.draw(thePath);
+                        ++channel;
+                }
+                // calculating bound between channels
+                drawingOffsetY = (currentYChannelOffset + maxY);
+        }
+        currentYChannelOffset = 0;
+        // update offsets for channels, and redraw them
+        if (drawChanels!=null) {
+                drawChanels.setOffsets(offsets);
+                drawChanels.invalidate();
+        }
+        return;
 	}
 
 	/*

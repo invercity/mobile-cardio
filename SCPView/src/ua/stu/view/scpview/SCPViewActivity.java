@@ -7,6 +7,9 @@ import group.pals.android.lib.ui.filechooser.services.IFileProvider;
 import java.util.Hashtable;
 import java.util.List;
 
+import com.dm.zbar.android.scanner.ZBarConstants;
+import com.dm.zbar.android.scanner.ZBarScannerActivity;
+
 import ua.stu.scplib.data.DataHandler;
 import ua.stu.view.fragments.ECGPanelFragment;
 import ua.stu.view.fragments.ECGPanelFragment.OnClickSliderContentListener;
@@ -16,6 +19,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -23,6 +27,7 @@ import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.MimeTypeMap;
@@ -243,12 +248,18 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 			break;
 		case REQUEST_SCAN_QRCODE:
 			if (resultCode == RESULT_OK) {
-				String result = data.getExtras().getString(RESULT);
+				String result =  data.getStringExtra(ZBarConstants.SCAN_RESULT);
 				final Context context = this;
 				Intent intent = new Intent(context, WebViewActivity.class);
 				intent.putExtra(URL,result);
 			    startActivityForResult(intent, REQUEST_GET_FILE);
 			}
+			else if(resultCode == RESULT_CANCELED && data != null) {
+                String error = data.getStringExtra(ZBarConstants.ERROR_INFO);
+                if(!TextUtils.isEmpty(error)) {
+                    Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+                }
+            }
 			break;
 			// retrieve file name after downloading, and open this file
 		case REQUEST_GET_FILE:
@@ -288,6 +299,11 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	    }
 	}
 	
+	public boolean isCameraAvailable() {
+        PackageManager pm = getPackageManager();
+        return pm.hasSystemFeature(PackageManager.FEATURE_CAMERA);
+    }
+	
 	public void runActionDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    builder.setTitle(R.string.choose_action).setItems(R.array.choose_action_array, new DialogInterface.OnClickListener() {
@@ -315,8 +331,12 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	}
 	
 	private final void runScanner() {
-		Intent intent = new Intent(SCAN);
-		startActivityForResult(intent, REQUEST_SCAN_QRCODE);
+		if (isCameraAvailable()) {
+            Intent intent = new Intent(this, ZBarScannerActivity.class);
+            startActivityForResult(intent, REQUEST_SCAN_QRCODE);
+        } else {
+            Toast.makeText(this, "Rear Facing Camera Unavailable", Toast.LENGTH_SHORT).show();
+        }
 	}
 
 	private final void runFileChooser(int style, String rootPath, IFileProvider.FilterMode mode) {

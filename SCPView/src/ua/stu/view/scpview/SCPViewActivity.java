@@ -334,9 +334,9 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 		if (isCameraAvailable()) {
             Intent intent = new Intent(this, ZBarScannerActivity.class);
             startActivityForResult(intent, REQUEST_SCAN_QRCODE);
-        } else {
+        } /*else {
             Toast.makeText(this, "Rear Facing Camera Unavailable", Toast.LENGTH_SHORT).show();
-        }
+        }*/
 	}
 
 	private final void runFileChooser(int style, String rootPath, IFileProvider.FilterMode mode) {

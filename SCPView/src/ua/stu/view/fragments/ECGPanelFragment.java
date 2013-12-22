@@ -250,10 +250,11 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		sliderPanel		= ( MultiDirectionSlidingDrawer )view.findViewById( R.id.slider_panel );
 
 		int orientation = view.getResources().getConfiguration().orientation;
-		int topOffset = displayHeight - displayHeight/SLIDER_SCREEN_PART_HORIZONTAL;
+		int topOffset = displayHeight - (int)getResources().getDimension(R.dimen.slider_top_dimension_land);
+		Log.d(TAG,"Land"+getResources().getDimension(R.dimen.slider_top_dimension_land));
 		if ( orientation == Configuration.ORIENTATION_PORTRAIT ) {
-			Log.d(TAG,"ORIENTATION_PORTRAIT");
-			topOffset 	= displayHeight - displayHeight/SLIDER_SCREEN_PART_VERTICAL;
+			Log.d(TAG,"ORIENTATION_PORTRAIT"+getResources().getDimension(R.dimen.slider_top_dimension_port));
+			topOffset 	= displayHeight - (int)getResources().getDimension(R.dimen.slider_top_dimension_port);
 		}
 			
 		sliderPanel.setTopOffset( topOffset );

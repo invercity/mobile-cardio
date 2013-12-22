@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="slider_top_dimension_land">50dp</dimen>
+    <dimen name="slider_top_dimension_port">50dp</dimen>
+</resources>

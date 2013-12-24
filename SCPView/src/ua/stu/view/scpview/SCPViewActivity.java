@@ -8,6 +8,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import com.dm.zbar.android.scanner.ZBarConstants;
+import com.dm.zbar.android.scanner.ZBarDecoderActivity;
 import com.dm.zbar.android.scanner.ZBarScannerActivity;
 
 import ua.stu.scplib.data.DataHandler;
@@ -24,7 +25,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
@@ -64,7 +64,6 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	
 	private boolean isSliderExpand = false;
 	
-	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -80,9 +79,9 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 			String f = data.getEncodedPath();
 			// this is image
 			if (mimeType(f).indexOf("image") != -1) {
-				Intent qrDroid = new Intent(SCPViewActivity.DECODE);
-				qrDroid.putExtra(SCPViewActivity.IMG, f);
-				startActivityForResult(qrDroid, SCPViewActivity.REQUEST_DECODE_QR);
+				Intent decoder = new Intent(this, ZBarDecoderActivity.class);
+				decoder.putExtra(ZBarConstants.RESPONSE_DECODE_IMAGE, f);
+				startActivityForResult(decoder, SCPViewActivity.REQUEST_DECODE_QR);
 			}
 			else ecgFilePath = f;
 		} // if
@@ -247,6 +246,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 			}
 			break;
 		case REQUEST_SCAN_QRCODE:
+			Log.d(TAG,"scan file");
 			if (resultCode == RESULT_OK) {
 				String result =  data.getStringExtra(ZBarConstants.SCAN_RESULT);
 				final Context context = this;
@@ -264,15 +264,17 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 			// retrieve file name after downloading, and open this file
 		case REQUEST_GET_FILE:
 			if (resultCode == RESULT_OK) {
+				Log.d(TAG,"Get file");
 				ecgFilePath = data.getExtras().getString(FILE);
 				//dialog.hide();
 			}
 			break;
 		case REQUEST_DECODE_QR:
 			if (resultCode == RESULT_OK) {
+				Log.d(TAG,"Decode file");
 				final Context context = this;
 				Intent intent = new Intent(context, WebViewActivity.class);
-				intent.putExtra(URL,data.getExtras().getString(RESULT));
+				intent.putExtra(URL,data.getExtras().getString(ZBarConstants.SCAN_RESULT));
 			    startActivityForResult(intent, REQUEST_GET_FILE);
 			}	
 			else {
@@ -334,9 +336,9 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 		if (isCameraAvailable()) {
             Intent intent = new Intent(this, ZBarScannerActivity.class);
             startActivityForResult(intent, REQUEST_SCAN_QRCODE);
-        } /*else {
+		} else {
             Toast.makeText(this, "Rear Facing Camera Unavailable", Toast.LENGTH_SHORT).show();
-        }*/
+        }
 	}
 
 	private final void runFileChooser(int style, String rootPath, IFileProvider.FilterMode mode) {

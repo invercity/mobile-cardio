@@ -1,12 +1,16 @@
 package com.dm.zbar.android.scanner;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.hardware.Camera.CameraInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import net.sourceforge.zbar.Config;
@@ -67,12 +71,43 @@ public class ZBarScannerActivity extends Activity implements Camera.PreviewCallb
         }
     }
 
-    @Override
+    @SuppressLint("NewApi")
+	public Camera open() {
+        
+        int numCameras = Camera.getNumberOfCameras();
+        if (numCameras == 0) {
+          Log.w(TAG, "No cameras!");
+          return null;
+        }
+
+        int index = 0;
+        while (index < numCameras) {
+          Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+          Camera.getCameraInfo(index, cameraInfo);
+          if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+            break;
+          }
+          index++;
+        }
+        
+        Camera camera;
+        if (index < numCameras) {
+          Log.i(TAG, "Opening camera #" + index);
+          camera = Camera.open(index);
+        } else {
+          Log.i(TAG, "No camera facing back; returning camera #0");
+          camera = Camera.open(0);
+        }
+
+        return camera;
+      }
+    
+    @SuppressLint("NewApi")
+	@Override
     protected void onResume() {
         super.onResume();
 
-        // Open the default i.e. the first rear facing camera.
-        mCamera = Camera.open();
+        mCamera = open();
         if(mCamera == null) {
             // Cancel request if mCamera is null.
             cancelRequest();

@@ -2,11 +2,9 @@ package com.dm.zbar.android.scanner;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
-import android.hardware.Camera.CameraInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -113,7 +111,7 @@ public class ZBarScannerActivity extends Activity implements Camera.PreviewCallb
             cancelRequest();
             return;
         }
-
+        
         mPreview.setCamera(mCamera);
         mPreview.showSurfaceView();
 
@@ -143,9 +141,10 @@ public class ZBarScannerActivity extends Activity implements Camera.PreviewCallb
         }
     }
 
-    public boolean isCameraAvailable() {
+    @SuppressLint("InlinedApi")
+	public boolean isCameraAvailable() {
         PackageManager pm = getPackageManager();
-        return pm.hasSystemFeature(PackageManager.FEATURE_CAMERA);
+        return (pm.hasSystemFeature(PackageManager.FEATURE_CAMERA) || pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT));
     }
 
     public void cancelRequest() {
@@ -187,6 +186,7 @@ public class ZBarScannerActivity extends Activity implements Camera.PreviewCallb
         public void run() {
             if(mCamera != null && mPreviewing) {
                 mCamera.autoFocus(autoFocusCB);
+                Log.d(TAG, "do auto focus");
             }
         }
     };
@@ -195,6 +195,7 @@ public class ZBarScannerActivity extends Activity implements Camera.PreviewCallb
     Camera.AutoFocusCallback autoFocusCB = new Camera.AutoFocusCallback() {
         public void onAutoFocus(boolean success, Camera camera) {
             mAutoFocusHandler.postDelayed(doAutoFocus, 1000);
+            Log.d(TAG, "auto focusing call back");
         }
     };
 }

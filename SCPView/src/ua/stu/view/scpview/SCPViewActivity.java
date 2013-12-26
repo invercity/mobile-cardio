@@ -7,6 +7,8 @@ import group.pals.android.lib.ui.filechooser.services.IFileProvider;
 import java.util.Hashtable;
 import java.util.List;
 
+import net.sourceforge.zbar.Symbol;
+
 import com.dm.zbar.android.scanner.ZBarConstants;
 import com.dm.zbar.android.scanner.ZBarDecoderActivity;
 import com.dm.zbar.android.scanner.ZBarScannerActivity;
@@ -303,7 +305,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	
 	public boolean isCameraAvailable() {
         PackageManager pm = getPackageManager();
-        return pm.hasSystemFeature(PackageManager.FEATURE_CAMERA);
+        return (pm.hasSystemFeature(PackageManager.FEATURE_CAMERA) || pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT));
     }
 	
 	public void runActionDialog() {
@@ -335,6 +337,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	private final void runScanner() {
 		if (isCameraAvailable()) {
             Intent intent = new Intent(this, ZBarScannerActivity.class);
+            intent.putExtra(ZBarConstants.SCAN_MODES, new int[]{Symbol.QRCODE});
             startActivityForResult(intent, REQUEST_SCAN_QRCODE);
 		} else {
             Toast.makeText(this, "Rear Facing Camera Unavailable", Toast.LENGTH_SHORT).show();

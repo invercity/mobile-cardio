@@ -15,11 +15,11 @@
         android:allowBackup="false"
         android:hardwareAccelerated="false"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" >
+        android:label="@string/app_mobile_name" >
         <activity
             android:name="SCPViewActivity"
             android:theme="@style/Theme.Sherlock.Fullscreen"
-            android:label="@string/app_name" >
+            android:label="@string/app_mobile_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -71,9 +71,22 @@
         <activity android:name="Settings"
             android:theme="@style/Theme.Sherlock.Fullscreen">
         </activity>
-        <activity 	android:name="com.dm.zbar.android.scanner.ZBarScannerActivity"
-            		android:screenOrientation="landscape"
-                 	android:label="@string/app_name"></activity>
         <activity android:name="com.dm.zbar.android.scanner.ZBarDecoderActivity"></activity>
+        
+        <activity
+            android:name="com.google.zxing.client.android.CaptureActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.google.zxing.client.android.SCAN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>

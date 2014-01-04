@@ -336,11 +336,11 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	
 	private final void runScanner() {
 		if (isCameraAvailable()) {
-            Intent intent = new Intent(this, ZBarScannerActivity.class);
-            intent.putExtra(ZBarConstants.SCAN_MODES, new int[]{Symbol.QRCODE});
-            startActivityForResult(intent, REQUEST_SCAN_QRCODE);
+			Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+			intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+			startActivityForResult(intent, REQUEST_SCAN_QRCODE);
 		} else {
-            Toast.makeText(this, "Rear Facing Camera Unavailable", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Camera Unavailable", Toast.LENGTH_SHORT).show();
         }
 	}
 

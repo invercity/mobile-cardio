@@ -7,11 +7,8 @@ import group.pals.android.lib.ui.filechooser.services.IFileProvider;
 import java.util.Hashtable;
 import java.util.List;
 
-import net.sourceforge.zbar.Symbol;
-
-import com.dm.zbar.android.scanner.ZBarConstants;
-import com.dm.zbar.android.scanner.ZBarDecoderActivity;
-import com.dm.zbar.android.scanner.ZBarScannerActivity;
+import com.google.zxing.client.android.ZXingConstants;
+import com.google.zxing.client.android.decode.ZXingDecoderActivity;
 
 import ua.stu.scplib.data.DataHandler;
 import ua.stu.view.fragments.ECGPanelFragment;
@@ -81,8 +78,8 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 			String f = data.getEncodedPath();
 			// this is image
 			if (mimeType(f).indexOf("image") != -1) {
-				Intent decoder = new Intent(this, ZBarDecoderActivity.class);
-				decoder.putExtra(ZBarConstants.RESPONSE_DECODE_IMAGE, f);
+				Intent decoder = new Intent(this, ZXingDecoderActivity.class);
+				decoder.putExtra(ZXingConstants.RESPONSE_DECODE_IMAGE, f);
 				startActivityForResult(decoder, SCPViewActivity.REQUEST_DECODE_QR);
 			}
 			else ecgFilePath = f;
@@ -250,14 +247,14 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 		case REQUEST_SCAN_QRCODE:
 			Log.d(TAG,"scan file");
 			if (resultCode == RESULT_OK) {
-				String result =  data.getStringExtra(ZBarConstants.SCAN_RESULT);
+				String result =  data.getStringExtra(ZXingConstants.SCAN_RESULT);
 				final Context context = this;
 				Intent intent = new Intent(context, WebViewActivity.class);
 				intent.putExtra(URL,result);
 			    startActivityForResult(intent, REQUEST_GET_FILE);
 			}
 			else if(resultCode == RESULT_CANCELED && data != null) {
-                String error = data.getStringExtra(ZBarConstants.ERROR_INFO);
+                String error = data.getStringExtra(ZXingConstants.ERROR_INFO);
                 if(!TextUtils.isEmpty(error)) {
                     Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
                 }
@@ -276,7 +273,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 				Log.d(TAG,"Decode file");
 				final Context context = this;
 				Intent intent = new Intent(context, WebViewActivity.class);
-				intent.putExtra(URL,data.getExtras().getString(ZBarConstants.SCAN_RESULT));
+				intent.putExtra(URL,data.getExtras().getString(ZXingConstants.SCAN_RESULT));
 			    startActivityForResult(intent, REQUEST_GET_FILE);
 			}	
 			else {
@@ -332,6 +329,10 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
         });
 	    dialog = builder.create();
 	    dialog.show();
+	}
+	
+	private final String runEncoder(){
+		return "";
 	}
 	
 	private final void runScanner() {

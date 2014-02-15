@@ -307,14 +307,14 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     return super.onKeyDown(keyCode, event);
   }
 
-  @Override
+  /*@Override
   public boolean onCreateOptionsMenu(Menu menu) {
     MenuInflater menuInflater = getMenuInflater();
     menuInflater.inflate(R.menu.capture, menu);
     return super.onCreateOptionsMenu(menu);
-  }
+  }*/
 
-  @Override
+  /*@Override
   public boolean onOptionsItemSelected(MenuItem item) {
     Intent intent = new Intent(Intent.ACTION_VIEW);
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
@@ -338,7 +338,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         return super.onOptionsItemSelected(item);
       }
     return true;
-  }
+  }*/
 
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent intent) {

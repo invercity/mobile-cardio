@@ -115,6 +115,8 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 
 		try {
 			h = new DataHandler(ecgFilePath);
+		}catch(Error e){
+			Log.e(TAG, e.toString());
 		} catch (Exception e) {
 			Log.e(TAG, e.toString());
 		}

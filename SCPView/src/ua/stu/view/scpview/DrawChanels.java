@@ -3,6 +3,7 @@ package ua.stu.view.scpview;
 import ua.stu.scplib.attribute.GraphicAttributeBase;
 import and.awt.BasicStroke;
 import and.awt.Color;
+import android.R.bool;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -46,31 +47,38 @@ public class DrawChanels extends AwtView{
 	Color channelNameColor = Color.black;
 	// basic font
 	Font font = null;
-	// any info?
-
 	// scrolling
-	private  GestureDetector gestureDetector;	
-	private  Scroller scroller;
+	private GestureDetector gestureDetector;	
+	private Scroller scroller;
+	// touch mode [DEFAULT]
+	private int touchMode = GestureListener.MODE_BASIC;
+	// inversion flag
+	private boolean isInvert = false;
 
 	@Override
-    public boolean onTouchEvent(MotionEvent event)
-    {
-		// check for tap and cancel fling
-		if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN)
-		{
-			if (!scroller.isFinished()) scroller.abortAnimation();
-		}	
-		// check for scroll gesture
-		if (gestureDetector.onTouchEvent(event)) return true;
+    public boolean onTouchEvent(MotionEvent event) {
+		// check mode
+		switch (this.touchMode) {
+		// basic mode
+		case GestureListener.MODE_BASIC:
+			// check for tap and cancel fling
+			if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN) {
+				if (!scroller.isFinished()) scroller.abortAnimation();
+			}	
+			// check for scroll gesture
+			if (gestureDetector.onTouchEvent(event)) return true;
+			break;
+		// linear mode
+		case GestureListener.MODE_LINEAR:
+			// TBD
+			break;
+		}
 		return true;
     }
 
-			
-	private boolean invert=false;
 	public void initscale(GestureListener mg){
 		gestureDetector = new GestureDetector(getContext(),mg);
 		scroller = new Scroller(getContext());
-
 		// init scrollbars
         setVerticalScrollBarEnabled(true);
         setHorizontalFadingEdgeEnabled(false);
@@ -120,7 +128,7 @@ public class DrawChanels extends AwtView{
 								,(int)(offsets[row])
 								,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
 								,(int)(offsets[row]));
-						if (!invert) {
+						if (!isInvert) {
 							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
 									,(int)(offsets[row])
 									,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
@@ -170,7 +178,7 @@ public class DrawChanels extends AwtView{
 	}		
 	
 	public void setInvert(boolean invert) {
-		this.invert = invert;
+		this.isInvert = invert;
 	}
 	public void setyPixelsInMillivolts(int yPixelsInMillivolts) {
 		this.yPixelsInMillivolts = yPixelsInMillivolts;
@@ -187,5 +195,9 @@ public class DrawChanels extends AwtView{
 	
 	public void setOffsets(float[] arr) {
 		offsets = arr.clone();
+	}
+	
+	public void setMode(int mode) {
+		this.touchMode = mode;
 	}
 }

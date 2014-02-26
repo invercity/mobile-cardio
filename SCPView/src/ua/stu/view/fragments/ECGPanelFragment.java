@@ -1,13 +1,5 @@
 package ua.stu.view.fragments;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Properties;
-
 import it.sephiroth.demo.slider.widget.*;
 import ua.stu.view.scpview.DrawChanels;
 import ua.stu.view.scpview.DrawGraphPaper;
@@ -16,14 +8,11 @@ import ua.stu.view.scpview.GraphicView;
 import ua.stu.view.scpview.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.res.AssetManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
@@ -36,8 +25,6 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-
 
 @SuppressLint("ValidFragment")
 public class ECGPanelFragment extends Fragment implements OnClickListener {
@@ -85,8 +72,8 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	
 	
 
-	private static int SLIDER_SCREEN_PART_HORIZONTAL 	= 10;
-	private static int SLIDER_SCREEN_PART_VERTICAL 	= 15;
+	private static int SLIDER_SCREEN_PART_HORIZONTAL = 10;
+	private static int SLIDER_SCREEN_PART_VERTICAL = 15;
 	private MultiDirectionSlidingDrawer sliderPanel;
 	
 	private GraphicView graphicView;
@@ -142,16 +129,14 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		graphicView=(GraphicView)view.findViewById(R.id.GraphicView);
 		statustext=(TextView)view.findViewById(R.id.StatusText);
 		graphPaper=(DrawGraphPaper)view.findViewById(R.id.DrawGraphPaper);
-		
 		chanels=(DrawChanels)view.findViewById(R.id.drawChanels);
-		GestureListener gl =new GestureListener(graphicView, chanels);
+		// create GestureListener for channels and main view
+		GestureListener gl = new GestureListener(graphicView, chanels);
 		chanels.initscale(gl);
 		graphicView.initscale(gl);
 	
-		
-		
 		init( view );
-		//сеиеры должны быть находится только в таком порядке
+		// don't change setters sequence !!!
 		graphicView.setDrawChanels(chanels);
 		graphicView.setTvStatus(statustext);	
 		graphicView.setH(dataHandler);

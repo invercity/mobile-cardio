@@ -64,11 +64,12 @@ public class GraphicView extends AwtView {
 	private double speed=0;
 	private double gain=0;
 	private int time=0;
+	// touch mode [DEFAULT]
+	private int touchMode = GestureListener.MODE_BASIC;
 
+	private TextView tvStatus = null;
 
-	private TextView tvStatus=null;
-
-	private boolean invert=false;
+	private boolean invert = false;
 	/*
 	 * Scrolling
 	 */
@@ -123,41 +124,48 @@ public class GraphicView extends AwtView {
 	
 	@Override
 	public boolean dispatchTouchEvent (MotionEvent event) {
-		int actionMask = event.getActionMasked();
-		switch (actionMask) {
-		case MotionEvent.ACTION_POINTER_DOWN:
-			oldDist = spacing(event);
-			if (oldDist > 10f) {
-				mode = ZOOM;
-			}
-			break;
-		case MotionEvent.ACTION_DOWN:
-			mode = DRAG;
-			break;
-		case MotionEvent.ACTION_UP:
-		case MotionEvent.ACTION_POINTER_UP:
-			mode = NONE;
-			break;
-		case MotionEvent.ACTION_MOVE:
-			if (mode == DRAG) {
-				if (!scroller.isFinished()) scroller.abortAnimation();
-			}
-			else if (mode == ZOOM) {
-				float newDist = spacing(event);
-				if (newDist > 10f) {
-					float scale = newDist / oldDist;
-					if(this.ZoomIt(scale)){
-						invalidate();
-						mode=EndZOOM;
+		// check touchMode
+		switch (this.touchMode) {
+			case GestureListener.MODE_BASIC:
+				int actionMask = event.getActionMasked();
+				switch (actionMask) {
+				case MotionEvent.ACTION_POINTER_DOWN:
+					oldDist = spacing(event);
+					if (oldDist > 10f) {
+						mode = ZOOM;
+					}
+					break;
+				case MotionEvent.ACTION_DOWN:
+					mode = DRAG;
+					break;
+				case MotionEvent.ACTION_UP:
+				case MotionEvent.ACTION_POINTER_UP:
+					mode = NONE;
+					break;
+				case MotionEvent.ACTION_MOVE:
+					if (mode == DRAG) {
+						if (!scroller.isFinished()) scroller.abortAnimation();
+					}
+					else if (mode == ZOOM) {
+						float newDist = spacing(event);
+						if (newDist > 10f) {
+							float scale = newDist / oldDist;
+							if(this.ZoomIt(scale)){
+								invalidate();
+								mode=EndZOOM;
+							}
+						}
+					break;
 					}
 				}
-			break;
-			}
+				if( (mode ==DRAG)||(mode==NONE) )
+					gestureDetector.onTouchEvent(event);
+				break;
+			case GestureListener.MODE_LINEAR:
+				// TBD
+				break;
 		}
-		if( (mode ==DRAG)||(mode==NONE) )
-			gestureDetector.onTouchEvent(event);
 		return true;
-		
 	}
 	
 	private boolean ZoomIt(float Zoom){
@@ -539,6 +547,10 @@ public class GraphicView extends AwtView {
 			if (tvStatus!=null && this.h!=null)
 				tvStatus.setText(this.time+" from start "+speed+" mm/sec. "+gain+" mV/mm");
 			}
+	}
+	
+	public void setMode(int mode) {
+		this.touchMode = mode;
 	}
 
 

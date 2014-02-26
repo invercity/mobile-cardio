@@ -80,6 +80,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	private TextView statustext;
 	private DrawGraphPaper graphPaper;
 	private DrawChanels chanels;
+	private GestureListener gestureListener = null;
 	private ua.stu.scplib.data.DataHandler dataHandler;
 
 	OnClickListener checkBoxListener;
@@ -131,10 +132,9 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		graphPaper=(DrawGraphPaper)view.findViewById(R.id.DrawGraphPaper);
 		chanels=(DrawChanels)view.findViewById(R.id.drawChanels);
 		// create GestureListener for channels and main view
-		GestureListener gl = new GestureListener(graphicView, chanels);
-		chanels.initscale(gl);
-		graphicView.initscale(gl);
-	
+		gestureListener = new GestureListener(graphicView, chanels);
+		chanels.initscale(gestureListener);
+		graphicView.initscale(gestureListener);
 		init( view );
 		// don't change setters sequence !!!
 		graphicView.setDrawChanels(chanels);
@@ -260,10 +260,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		this.displayHeight = displayHeight;
 	}
 
-
-	
 	public void onStartTrackingTouch(SeekBar arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -293,15 +290,15 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 			isRevert = true;
 			graphicView.setInvert(true);
 			graphicView.invalidate();
-			//imageViewer.loadImage(getBitmapFromView(graphicView));	
-			//imageViewer.invalidate();	
 		}
 		else {
 			isRevert = false;
 			graphicView.setInvert(false);
 			graphicView.invalidate();
-			//imageViewer.loadImage(getBitmapFromView(graphicView));	
-			//imageViewer.invalidate();	
 		}
+	}
+	
+	public void setTouchMode(int mode) {
+		if (this.gestureListener != null) this.gestureListener.setMode(mode);
 	}
 }

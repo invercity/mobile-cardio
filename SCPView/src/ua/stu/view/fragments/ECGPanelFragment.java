@@ -94,7 +94,6 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	private DrawGraphPaper graphPaper;
 	private DrawChanels chanels;
 	private ua.stu.scplib.data.DataHandler dataHandler;
-	//private ImageViewer imageViewer;
 
 	OnClickListener checkBoxListener;
 	OnTouchListener graphicViewScaleListener;

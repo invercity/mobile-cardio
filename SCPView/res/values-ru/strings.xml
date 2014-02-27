@@ -114,4 +114,5 @@
 	<string name="settings_file_paths_summary">путь к файлам приложения</string>
 	<string name="settings_file_paths_title_detail">папка с ЭКГ-файлами</string>
 	<string name="error_decode_qr">Ошибка при декодировании QR-кода</string>
+	<string name="slider_linear">Линейка</string>
 </resources>

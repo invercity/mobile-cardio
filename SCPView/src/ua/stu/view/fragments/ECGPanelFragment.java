@@ -92,6 +92,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	private RadioButton other;
 	private RadioButton ecgRevert;
 	private RadioButton settings;
+	private RadioButton linear;
 	private boolean 	isRevert = false;
 
 	public static final String PREFS_NAME = "ScpViewFile";
@@ -173,27 +174,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	
 	@Override
 	public void onClick( View view ) {
-		switch ( view.getId() ){			
-		case R.id.slider_ecg_revert:
-			eventClick.eventClickSliderContent( R.id.slider_ecg_revert );
-			break;
-		case R.id.slider_camera:
-			eventClick.eventClickSliderContent( R.id.slider_camera );
-			break;
-		case R.id.slider_file_chooser:
-			eventClick.eventClickSliderContent( R.id.slider_file_chooser );
-			break;
-		case R.id.slider_patient:
-			eventClick.eventClickSliderContent( R.id.slider_patient );
-			break;
-		case R.id.slider_other:
-			eventClick.eventClickSliderContent( R.id.slider_other );
-			break;
-		case R.id.slider_settings:
-			Log.d(TAG,"slider settings click");
-			eventClick.eventClickSliderContent( R.id.slider_settings );
-			break;
-		}
+		eventClick.eventClickSliderContent(view.getId());
 	}
 	
 	private final void init ( View view ) {
@@ -207,6 +188,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		other		= ( RadioButton )view.findViewById( R.id.slider_other );
 		ecgRevert	= ( RadioButton )view.findViewById( R.id.slider_ecg_revert );
 		settings	= ( RadioButton )view.findViewById( R.id.slider_settings );
+		linear 		= ( RadioButton )view.findViewById( R.id.slider_linear );
 		
 		camera.setOnClickListener( this );
 		fileChooser.setOnClickListener( this );
@@ -214,6 +196,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		other.setOnClickListener( this );
 		ecgRevert.setOnClickListener( this );
 		settings.setOnClickListener( this );
+		linear.setOnClickListener( this );
 		
 		if ( dataHandler != null ){
 			contentClicable( true );
@@ -227,6 +210,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		patient.setClickable( isClick );
 		other.setClickable( isClick );
 		ecgRevert.setClickable( isClick );
+		linear.setClickable( isClick );
 	}
 	
 	private final void initSliderPanel( View view ) {

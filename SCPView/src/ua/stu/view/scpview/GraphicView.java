@@ -70,9 +70,7 @@ public class GraphicView extends AwtView {
 	private TextView tvStatus = null;
 
 	private boolean invert = false;
-	/*
-	 * Scrolling
-	 */
+
 	// scrolling
 	private  GestureDetector gestureDetector;	
 
@@ -291,6 +289,24 @@ public class GraphicView extends AwtView {
 		// check DataHandler
 		if (h == null) return;
 		init();
+		// check app mode
+		switch (this.touchMode) {
+		// basic mode
+		case GestureListener.MODE_BASIC:
+			// draw ECG
+			drawECG(g2);
+			break;
+		case GestureListener.MODE_LINEAR:
+			break;
+		}
+        return;
+	}
+
+	/**
+	 * Basic ECG draw
+	 * 
+	 */
+	private void drawECG(Graphics2D g2) {
 		font=new Font("Ubuntu",0,(14));
 		float widthOfTileInPixels = getW()/nTilesPerRow;
 		float widthOfTileInMilliSeconds = widthOfTileInPixels/xPixelsInMilliseconds;
@@ -385,10 +401,9 @@ public class GraphicView extends AwtView {
                 drawChanels.setOffsets(offsets);
                 drawChanels.invalidate();
         }
-        return;
 	}
-
-	/*
+	
+	/**
 	 * Setters & getters
 	 */
 	

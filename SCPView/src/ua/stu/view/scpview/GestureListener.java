@@ -77,7 +77,6 @@ public class GestureListener extends SimpleOnGestureListener {
 		this.touchMode = mode;
 		// set active flag for views
 		if (this.graphic != null) this.graphic.setMode(mode);
-		if (this.chanels != null) this.chanels.setMode(mode);
 	}
 	
 	public int getMode() {

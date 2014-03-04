@@ -69,8 +69,6 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	
 	private float speed=50;
 	private int power=1;
-	
-	
 
 	private static int SLIDER_SCREEN_PART_HORIZONTAL = 10;
 	private static int SLIDER_SCREEN_PART_VERTICAL = 15;
@@ -106,8 +104,8 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		this.dataHandler=h;
 		this.pSettings=settings;
 	}
-	public static Bitmap getBitmapFromView(GraphicView view) {
-	    Bitmap returnedBitmap = Bitmap.createBitmap(view.getSW(), view.getSH(),Bitmap.Config.ARGB_8888);
+	public static Bitmap getBitmapFromView(View view) {
+	    Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
 	   
 	    Canvas canvas = new Canvas(returnedBitmap);
 	    Drawable bgDrawable =view.getBackground();
@@ -288,9 +286,5 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	
 	public GraphicView getView() {
 		return graphicView;
-	}
-	
-	public DrawChanels getChannels() {
-		return chanels;
 	}
 }

@@ -11,6 +11,7 @@ import com.google.zxing.client.android.ZXingConstants;
 import com.google.zxing.client.android.decode.ZXingDecoderActivity;
 
 import ua.stu.scplib.data.DataHandler;
+import ua.stu.scplib.tools.PointBuffer;
 import ua.stu.view.fragments.ECGPanelFragment;
 import ua.stu.view.fragments.ECGPanelFragment.OnClickSliderContentListener;
 import ua.stu.view.temporary.InfoO;
@@ -20,6 +21,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -29,6 +32,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
@@ -60,6 +64,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	private Bundle state;
 	// choose action dialog 
 	private AlertDialog dialog;
+	private int touchMode = GestureListener.MODE_BASIC;
 	
 	private boolean isSliderExpand = false;
 	
@@ -158,10 +163,23 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 			runSettings();
 			break;
 		case R.id.slider_linear:
-			Toast.makeText(SCPViewActivity.this, "Test linear",Toast.LENGTH_SHORT).show();
-			ecgPanel.setTouchMode(GestureListener.MODE_LINEAR);
-			ecgPanel.getView().invalidate();
-			ecgPanel.getChannels().invalidate();
+			if (touchMode == GestureListener.MODE_BASIC) {
+				// change mode
+				touchMode = GestureListener.MODE_LINEAR;
+				// show text notify
+				Toast.makeText(SCPViewActivity.this, "Linear mode on",Toast.LENGTH_SHORT).show();
+			    ecgPanel.setTouchMode(touchMode);
+				ecgPanel.getView().invalidate();
+			}
+			else if (touchMode == GestureListener.MODE_LINEAR) {
+				// change mode
+				touchMode = GestureListener.MODE_BASIC;
+				// show text notify
+				Toast.makeText(SCPViewActivity.this, "Linear mode off",Toast.LENGTH_SHORT).show();
+			    // change mode for GraphicView, Channels
+			    ecgPanel.setTouchMode(touchMode);
+				ecgPanel.getView().invalidate();
+			}
 			break;
 		}	
 	}

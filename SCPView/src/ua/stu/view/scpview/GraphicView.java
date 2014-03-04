@@ -7,6 +7,7 @@ import ua.stu.scplib.data.DataHandler;
 import ua.stu.scplib.tools.PointBuffer;
 import and.awt.BasicStroke;
 import and.awt.Color;
+import and.awt.Stroke;
 
 import and.awt.geom.GeneralPath;
 import android.annotation.SuppressLint;
@@ -69,6 +70,8 @@ public class GraphicView extends AwtView {
 	private int time=0;
 	// touch mode [DEFAULT]
 	private int touchMode = GestureListener.MODE_BASIC;
+	// fill linear rectangle
+	private boolean fillRect = false;
 
 	private TextView tvStatus = null;
 
@@ -119,16 +122,17 @@ public class GraphicView extends AwtView {
 	private static final int EndZOOM = 3;	
 	private static final int UP 	= 5;
 	private static final int DOWN	= 6;
+	private static final int CLICK = 10;
 	
 	private float oldDist;
 	private int mode;
 	
 	@Override
 	public boolean dispatchTouchEvent (MotionEvent event) {
+		int actionMask = event.getActionMasked();
 		// check touchMode
 		switch (this.touchMode) {
 			case GestureListener.MODE_BASIC:
-				int actionMask = event.getActionMasked();
 				switch (actionMask) {
 				case MotionEvent.ACTION_POINTER_DOWN:
 					oldDist = spacing(event);
@@ -163,8 +167,30 @@ public class GraphicView extends AwtView {
 					gestureDetector.onTouchEvent(event);
 				break;
 			case GestureListener.MODE_LINEAR:
-				pointBuffer.push(event.getX(), event.getY());
-				if (pointBuffer.isFull()) invalidate();
+				switch(actionMask) {
+				// click
+				case MotionEvent.ACTION_DOWN:
+					mode = CLICK;
+					break;
+				case MotionEvent.ACTION_UP:
+				case MotionEvent.ACTION_POINTER_UP:
+					if (mode == CLICK) {
+						boolean full = pointBuffer.push(event.getX(), event.getY());
+						// change fill rectangle flag
+						if ((!full) && (pointBuffer.insideRect(event.getX(), event.getY()))) {
+							if (fillRect == true) fillRect = false;
+							else fillRect = true;
+						}
+						if (pointBuffer.isFull()) invalidate();
+					}
+					break;
+				case MotionEvent.ACTION_MOVE:
+					mode = NONE;
+					boolean move = pointBuffer.move(event.getX(), event.getY());
+					// redraw while moving
+					if (move) invalidate();
+					break;
+				}
 				break;
 		}
 		return true;
@@ -301,23 +327,59 @@ public class GraphicView extends AwtView {
 			drawECG(g2);
 			break;
 		case GestureListener.MODE_LINEAR:
+			drawECG(g2);
 			if (pointBuffer.isFull()) {
 				// drawing rectangle
 				g2.setColor(curveColor);
+				// save previous options
+				Stroke defaultStroke = g2.getStroke();
+				Font defaultFont = g2.getFont();
+				// set bolder line
 				g2.setStroke(new BasicStroke((float) 3));
 				GeneralPath thePath = new GeneralPath();
 				thePath.reset();
+				// make a rectangle
 				thePath.moveTo(pointBuffer.getX1(),pointBuffer.getY1());
 				thePath.lineTo(pointBuffer.getX2(),pointBuffer.getY1());
 				thePath.lineTo(pointBuffer.getX2(),pointBuffer.getY2());
 				thePath.lineTo(pointBuffer.getX1(),pointBuffer.getY2());
 				thePath.lineTo(pointBuffer.getX1(),pointBuffer.getY1());
+				// draw it
 				g2.draw(thePath);
-				pointBuffer.clear();
+				// get width and height
+				String w = String.valueOf((int)pointBuffer.getRectW()) + " px.";
+				String h = String.valueOf((int)pointBuffer.getRectH()) + " px.";
+				// restore previous options
+				g2.setStroke(defaultStroke);
+				g2.setFont(defaultFont);
+				// draw text
+				g2.drawString(w, pointBuffer.getMaxX() + 5, pointBuffer.getMidddleHeight());
+				g2.drawString(h, pointBuffer.getMiddleWight() - 20, pointBuffer.getMaxY() + 15);
+				// fill rectangle with lines
+				if (fillRect == true) drawRect(g2, pointBuffer.getRectTopX(), pointBuffer.getRectTopY(),
+							pointBuffer.getRectW(), pointBuffer.getRectH());
 			}
 			break;
 		}
         return;
+	}
+	
+	/*
+	 * Draw a rectangle of lines
+	 */
+	private void drawRect(Graphics2D g, float x, float y,float w, float h) {
+		Color c = g.getColor();
+		g.setColor(Color.gray);
+		// get count of vertical lines
+		int freq = 10;
+		int cnt = (int)w/freq;
+		GeneralPath p = new GeneralPath();
+		for (int i=1;i<cnt + 1;i++) {
+			p.moveTo(x + i*freq, y);
+			p.lineTo(x + i*freq, y + h);
+		}
+		g.draw(p);
+		g.setColor(c);
 	}
 
 	/**
@@ -331,7 +393,6 @@ public class GraphicView extends AwtView {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);	// ugly without
 		
 		g2.setColor(curveColor);
-		//setForeground(curveColor);
 		g2.setStroke(new BasicStroke((float) 0.7));
 
 		float widthOfSampleInPixels=g.getSamplingIntervalInMilliSeconds()*xPixelsInMilliseconds;
@@ -584,10 +645,9 @@ public class GraphicView extends AwtView {
 	
 	public void setMode(int mode) {
 		this.touchMode = mode;
+		if (mode == GestureListener.MODE_BASIC) {
+			pointBuffer.clear();
+			fillRect = false;
+		}
 	}
-
-
-	
-	
-
 }

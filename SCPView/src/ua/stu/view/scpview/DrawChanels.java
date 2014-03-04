@@ -50,29 +50,16 @@ public class DrawChanels extends AwtView{
 	// scrolling
 	private GestureDetector gestureDetector;	
 	private Scroller scroller;
-	// touch mode [DEFAULT]
-	private int touchMode = GestureListener.MODE_BASIC;
 	// inversion flag
 	private boolean isInvert = false;
 
 	@Override
     public boolean onTouchEvent(MotionEvent event) {
-		// check mode
-		switch (this.touchMode) {
-		// basic mode
-		case GestureListener.MODE_BASIC:
-			// check for tap and cancel fling
-			if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN) {
-				if (!scroller.isFinished()) scroller.abortAnimation();
-			}	
-			// check for scroll gesture
-			if (gestureDetector.onTouchEvent(event)) return true;
-			break;
-		// linear mode
-		case GestureListener.MODE_LINEAR:
-			// TBD
-			break;
-		}
+		if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN) {
+			if (!scroller.isFinished()) scroller.abortAnimation();
+		}	
+		// check for scroll gesture
+		if (gestureDetector.onTouchEvent(event)) return true;
 		return true;
     }
 
@@ -170,15 +157,9 @@ public class DrawChanels extends AwtView{
 	@Override
 	public void paint(Graphics2D g2) {
 		if (g==null || offsets==null) return;
-		switch(touchMode) {
-		case GestureListener.MODE_BASIC:
-			drawChannels(g2);
-			break;
-		case GestureListener.MODE_LINEAR:
-			break;
-		}
-
+		drawChannels(g2);
 	}
+	
 	public void setGraphicAttributeBase(GraphicAttributeBase g) {
 		this.g=g;
 	}
@@ -204,9 +185,5 @@ public class DrawChanels extends AwtView{
 	
 	public void setOffsets(float[] arr) {
 		offsets = arr.clone();
-	}
-	
-	public void setMode(int mode) {
-		this.touchMode = mode;
 	}
 }

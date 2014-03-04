@@ -35,9 +35,13 @@ public class PointBuffer {
 		}
 		// if second point buffer empty, end current point is not equal to first
 		else if ((x2 == 0) && (y2 == 0) && ((deltaX1 > delta) || (deltaY1 > delta))) {
-			x2 = x;
-			y2 = y;
-			return true;
+			float tx = x1;
+			float ty = y1;
+			x1 = (tx < x) ? tx : x;
+			y1 = (ty < y) ? ty : y;
+			x2 = (tx > x) ? tx : x;
+			y2 = (ty > y) ? ty : y;
+ 			return true;
 		}
 		return false;
 	}
@@ -88,63 +92,83 @@ public class PointBuffer {
 	}
 	
 	public boolean insideRect(float x, float y) {
-		float minX = (x1 < x2) ? x1 : x2;
-		float minY = (y1 < y2) ? y1 : y2;
-		float maxX = (x1 > x2) ? x1 : x2;
-		float maxY = (y1 > y2) ? y1 : y2;
-		if ((x > minX) && (x < maxX) && (y < maxY) && (y > minY)) return true;
-		return false;
+		return ((x > x1) && (x < x2) && (y < y2) && (y > y1));
+	}
+	
+	// get distance
+	private float heron(float a, float b, float c) {
+		return (a + b + c)/2;
+	}
+	
+	private float d (float x1, float y1, float x2, float y2) {
+		return (float) Math.sqrt((x1 - x2)*(x1 - x2) + (y1 - y2) * (y1 - y2));
+	}
+	
+	private float dist(float x, float y, float x1, float y1, float x2, float y2) {
+		// distance of X1-X
+		float a = d(x,y,x1,y1);
+		// distance of X2-X
+		float b = d(x,y,x2,y2);
+		// distance of X1-X2
+		float c = d(x1,y1,x2,y2);
+		float p = heron(a,b,c);
+		return (int) (2*Math.sqrt(p*(p-a)*(p-b)*(p-c))/c);
+	}
+	
+	private float min(float a, float b, float c, float d) {
+		float min = a;
+		if (b < min) min = b;
+		if (c < min) min = c;
+		if (d < min) min = d;
+		return min;
 	}
 	
 	public boolean move(float x, float y) {
-		float minX = (x1 < x2) ? x1 : x2;
-		float minY = (y1 < y2) ? y1 : y2;
-		float maxX = (x1 > x2) ? x1 : x2;
-		float maxY = (y1 > y2) ? y1 : y2;
-		/*
-		 * 			1
-		 * ------------------
-		 * |				|
-		 * | 4			  2	|
-		 * |		3		|
-		 * ------------------
-		 * 0 - out of the rectangle
-		 */
-		// 1
-		if ((x < maxX) && (x > minX) && (Math.abs(y - minY) < delta)) {
-			if ((Math.abs(x - x1) < delta) || (Math.abs(y - y1) < delta)) y1 = y;
-			else y2 = y;
+		if (!insideRect(x, y)) {
+			if ((y < y2) && (y > y1)) {
+				if (x > x2) x2 = x;
+				else if (x < x1) x1 = x;
+			}
+			else if ((x < x2) && (x > x1)) {
+				if (y > y2) y2 = y;
+				else if (y < y1) y1 = y;
+			}
 			return true;
 		}
-		// 2
-		else if ((y > minY) && (y < maxY) && (Math.abs(x - maxX) < delta)) {
-			if ((Math.abs(x - x1) < delta) || (Math.abs(y - y1) < delta)) x1 = x;
-			else x2 = x;
-			return true;
-		}
-		else if ((x < maxX) && (x > minX) && (Math.abs(y - maxY) < delta)) {
-			if ((Math.abs(x - x1) < delta) || (Math.abs(y - y1) < delta)) y1 = y;
-			else y2 = y;
-			return true;
-		}
-		else if ((y > minY) && (y < maxY) && (Math.abs(x - minX) < delta)) {
-			if ((Math.abs(x - x1) < delta) || (Math.abs(y - y1) < delta)) x1 = x;
-			else x2 = x;
-			return true;
+		else {
+			float l1 = dist(x, y, x1, y1, x2, y1);
+			float l2 = dist(x, y, x2, y1, x2, y2);
+			float l3 = dist(x, y, x2, y2, x1, y2);
+			float l4 = dist(x, y, x1, y2, x1, y1);
+			
+			float m = min(l1,l2,l3,l4);
+			
+			if (m == l1) {
+				y1 = y;
+				return true;
+			}
+			else if (m == l2) {
+				x2 = x;
+				return true;
+			}
+			else if (m == l3) {
+				y2 = y;
+				return true;
+			}
+			else if (m == l4) {
+				x1 = x;
+				return true;
+			}
 		}
 		return false;
 	}
 	
 	public float getMidddleHeight() {
-		float minY = (y1 < y2) ? y1 : y2;
-		float maxY = (y1 > y2) ? y1 : y2;
-		return minY + (maxY - minY)/2;
+		return y1 + (y2 - y1)/2;
 	}
 	
 	public float getMiddleWight() {
-		float minX = (x1 < x2) ? x1 : x2;
-		float maxX = (x1 > x2) ? x1 : x2;
-		return minX + (maxX - minX)/2;
+		return x1 + (x2 - x1)/2;
 	}
 	
 	public float getMaxY() {

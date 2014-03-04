@@ -285,4 +285,12 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	public void setTouchMode(int mode) {
 		if (this.gestureListener != null) this.gestureListener.setMode(mode);
 	}
+	
+	public GraphicView getView() {
+		return graphicView;
+	}
+	
+	public DrawChanels getChannels() {
+		return chanels;
+	}
 }

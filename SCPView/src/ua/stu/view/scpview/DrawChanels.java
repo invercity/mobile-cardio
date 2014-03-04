@@ -95,80 +95,89 @@ public class DrawChanels extends AwtView{
 		super(context, attribSet);
 
 	}
+	
+	public void drawChannels(Graphics2D g2) {
+		// start x channel name offset
+				int channelNameXOffset = 10;
+				// start y channel name offset
+				font=new Font("Ubuntu",0,(14));		
+				float widthOfTileInPixels = W/nTilesPerRow;
+				float heightOfTileInPixels = H/nTilesPerColumn;		
+				int channel=0;
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);	
+				float tile = yPixelsInMillivolts*duim/sizeScreen;
+				float yIdealTiles = 4*tile - (int)(tile/2);	
+				for (int row=0;row<nTilesPerColumn;++row) {
+					float drawingOffsetX = 0;
+					for (int col=0;col<nTilesPerRow;++col) {
+							g2.setStroke(new BasicStroke((float) 1.0));
+					if (g.getChannelNames() != null && channel < g.getDisplaySequence().length && 
+								g.getDisplaySequence()[channel] < g.getChannelNames().length) {
+							String channelName=g.getChannelNames()[g.getDisplaySequence()[channel]];
+							if (channelName != null) {
+								g2.setStroke(new BasicStroke());
+								g2.setColor(channelNameColor);
+								g2.setFont(font);
+								g2.drawString(channelName,drawingOffsetX+channelNameXOffset,offsets[row]);
+								g2.setColor(curveColor);
+								// drawing ideal signal
+								g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/8)
+										,(int)(offsets[row])
+										,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+										,(int)(offsets[row]));
+								if (!isInvert) {
+									g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+											,(int)(offsets[row])
+											,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+											,(int)(offsets[row] - yIdealTiles));
+									g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+											,(int)(offsets[row] - yIdealTiles)
+											,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+											,(int)(offsets[row] - yIdealTiles));
+									g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+											,(int)(offsets[row] - yIdealTiles)
+											,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+											,(int)(offsets[row]));
+								}
+								else {
+									g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+											,(int)(offsets[row])
+											,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+											,(int)(offsets[row] + yIdealTiles));
+									g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+											,(int)(offsets[row] + yIdealTiles)
+											,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+											,(int)(offsets[row] + yIdealTiles));
+									g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+											,(int)(offsets[row] + yIdealTiles)
+											,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+											,(int)(offsets[row]));
+								}
+								g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+										,(int)(offsets[row])
+										,(int)(channelNameXOffset*4 + 5*heightOfTileInPixels/8)
+										,(int)(offsets[row]));
+							}
+							// ideal signal end
+						}
+						
+						drawingOffsetX+=widthOfTileInPixels;
+						++channel;
+					}
+				}
+	}
 
 	@Override
 	public void paint(Graphics2D g2) {
-
 		if (g==null || offsets==null) return;
-		// start x channel name offset
-		int channelNameXOffset = 10;
-		// start y channel name offset
-		font=new Font("Ubuntu",0,(14));		
-		float widthOfTileInPixels = W/nTilesPerRow;
-		float heightOfTileInPixels = H/nTilesPerColumn;		
-		int channel=0;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);	
-		float tile = yPixelsInMillivolts*duim/sizeScreen;
-		float yIdealTiles = 4*tile - (int)(tile/2);	
-		for (int row=0;row<nTilesPerColumn;++row) {
-			float drawingOffsetX = 0;
-			for (int col=0;col<nTilesPerRow;++col) {
-					g2.setStroke(new BasicStroke((float) 1.0));
-			if (g.getChannelNames() != null && channel < g.getDisplaySequence().length && 
-						g.getDisplaySequence()[channel] < g.getChannelNames().length) {
-					String channelName=g.getChannelNames()[g.getDisplaySequence()[channel]];
-					if (channelName != null) {
-						g2.setStroke(new BasicStroke());
-						g2.setColor(channelNameColor);
-						g2.setFont(font);
-						g2.drawString(channelName,drawingOffsetX+channelNameXOffset,offsets[row]);
-						g2.setColor(curveColor);
-						// drawing ideal signal
-						g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/8)
-								,(int)(offsets[row])
-								,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-								,(int)(offsets[row]));
-						if (!isInvert) {
-							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-									,(int)(offsets[row])
-									,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-									,(int)(offsets[row] - yIdealTiles));
-							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-									,(int)(offsets[row] - yIdealTiles)
-									,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-									,(int)(offsets[row] - yIdealTiles));
-							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-									,(int)(offsets[row] - yIdealTiles)
-									,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-									,(int)(offsets[row]));
-						}
-						else {
-							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-									,(int)(offsets[row])
-									,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-									,(int)(offsets[row] + yIdealTiles));
-							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-									,(int)(offsets[row] + yIdealTiles)
-									,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-									,(int)(offsets[row] + yIdealTiles));
-							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-									,(int)(offsets[row] + yIdealTiles)
-									,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-									,(int)(offsets[row]));
-						}
-						g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-								,(int)(offsets[row])
-								,(int)(channelNameXOffset*4 + 5*heightOfTileInPixels/8)
-								,(int)(offsets[row]));
-					}
-					// ideal signal end
-				}
-				
-				drawingOffsetX+=widthOfTileInPixels;
-				++channel;
-			}
+		switch(touchMode) {
+		case GestureListener.MODE_BASIC:
+			drawChannels(g2);
+			break;
+		case GestureListener.MODE_LINEAR:
+			break;
 		}
-		
+
 	}
 	public void setGraphicAttributeBase(GraphicAttributeBase g) {
 		this.g=g;

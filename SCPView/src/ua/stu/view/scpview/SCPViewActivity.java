@@ -133,7 +133,6 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	
 	@Override
 	public void eventClickSliderContent(int resID) {
-		System.out.println("SWITCH:######");
 		switch ( resID ) {
 		case R.id.slider_camera:
 				if (!isOnline()){
@@ -160,6 +159,9 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 			break;
 		case R.id.slider_linear:
 			Toast.makeText(SCPViewActivity.this, "Test linear",Toast.LENGTH_SHORT).show();
+			ecgPanel.setTouchMode(GestureListener.MODE_LINEAR);
+			ecgPanel.getView().invalidate();
+			ecgPanel.getChannels().invalidate();
 			break;
 		}	
 	}
@@ -335,10 +337,6 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
         });
 	    dialog = builder.create();
 	    dialog.show();
-	}
-	
-	private final String runEncoder(){
-		return "";
 	}
 	
 	private final void runScanner() {

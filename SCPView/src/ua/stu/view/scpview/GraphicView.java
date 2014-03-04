@@ -4,6 +4,7 @@ package ua.stu.view.scpview;
 import ua.stu.scplib.attribute.GraphicAttribute;
 import ua.stu.scplib.attribute.GraphicAttributeBase;
 import ua.stu.scplib.data.DataHandler;
+import ua.stu.scplib.tools.PointBuffer;
 import and.awt.BasicStroke;
 import and.awt.Color;
 
@@ -29,6 +30,8 @@ public class GraphicView extends AwtView {
 	private DataHandler h = null;
 	//class of chanels
 	private DrawChanels drawChanels=null;
+	// point buffer for Linear [NEW 04.03.2013]
+	private PointBuffer pointBuffer = new PointBuffer();
 	// window size params
 	private int W = 920;
 	private int H = 600;
@@ -160,7 +163,8 @@ public class GraphicView extends AwtView {
 					gestureDetector.onTouchEvent(event);
 				break;
 			case GestureListener.MODE_LINEAR:
-				// TBD
+				pointBuffer.push(event.getX(), event.getY());
+				if (pointBuffer.isFull()) invalidate();
 				break;
 		}
 		return true;
@@ -297,6 +301,20 @@ public class GraphicView extends AwtView {
 			drawECG(g2);
 			break;
 		case GestureListener.MODE_LINEAR:
+			if (pointBuffer.isFull()) {
+				// drawing rectangle
+				g2.setColor(curveColor);
+				g2.setStroke(new BasicStroke((float) 3));
+				GeneralPath thePath = new GeneralPath();
+				thePath.reset();
+				thePath.moveTo(pointBuffer.getX1(),pointBuffer.getY1());
+				thePath.lineTo(pointBuffer.getX2(),pointBuffer.getY1());
+				thePath.lineTo(pointBuffer.getX2(),pointBuffer.getY2());
+				thePath.lineTo(pointBuffer.getX1(),pointBuffer.getY2());
+				thePath.lineTo(pointBuffer.getX1(),pointBuffer.getY1());
+				g2.draw(thePath);
+				pointBuffer.clear();
+			}
 			break;
 		}
         return;

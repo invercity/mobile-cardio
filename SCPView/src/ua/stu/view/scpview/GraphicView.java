@@ -329,13 +329,12 @@ public class GraphicView extends AwtView {
 		case GestureListener.MODE_LINEAR:
 			drawECG(g2);
 			if (pointBuffer.isFull()) {
-				// drawing rectangle
-				g2.setColor(curveColor);
 				// save previous options
 				Stroke defaultStroke = g2.getStroke();
 				Font defaultFont = g2.getFont();
 				// set bolder line
 				g2.setStroke(new BasicStroke((float) 3));
+				g2.setColor(Color.green);
 				GeneralPath thePath = new GeneralPath();
 				thePath.reset();
 				// make a rectangle
@@ -352,6 +351,7 @@ public class GraphicView extends AwtView {
 				// restore previous options
 				g2.setStroke(defaultStroke);
 				g2.setFont(defaultFont);
+				g2.setColor(curveColor);
 				// draw text
 				g2.drawString(w, pointBuffer.getMaxX() + 5, pointBuffer.getMidddleHeight());
 				g2.drawString(h, pointBuffer.getMiddleWight() - 20, pointBuffer.getMaxY() + 15);
@@ -369,7 +369,7 @@ public class GraphicView extends AwtView {
 	 */
 	private void drawRect(Graphics2D g, float x, float y,float w, float h) {
 		Color c = g.getColor();
-		g.setColor(Color.gray);
+		g.setColor(Color.green);
 		// get count of vertical lines
 		int freq = 10;
 		int cnt = (int)w/freq;
@@ -377,6 +377,11 @@ public class GraphicView extends AwtView {
 		for (int i=1;i<cnt + 1;i++) {
 			p.moveTo(x + i*freq, y);
 			p.lineTo(x + i*freq, y + h);
+		}
+		int cnt2 = (int)h/freq;
+		for (int i=1;i<cnt2 + 1;i++) {
+			p.moveTo(x, y + i*freq);
+			p.lineTo(x + w, y + i*freq);
 		}
 		g.draw(p);
 		g.setColor(c);

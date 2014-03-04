@@ -4,8 +4,10 @@ package ua.stu.view.scpview;
 import ua.stu.scplib.attribute.GraphicAttribute;
 import ua.stu.scplib.attribute.GraphicAttributeBase;
 import ua.stu.scplib.data.DataHandler;
+import ua.stu.scplib.tools.PointBuffer;
 import and.awt.BasicStroke;
 import and.awt.Color;
+import and.awt.Stroke;
 
 import and.awt.geom.GeneralPath;
 import android.annotation.SuppressLint;
@@ -29,6 +31,8 @@ public class GraphicView extends AwtView {
 	private DataHandler h = null;
 	//class of chanels
 	private DrawChanels drawChanels=null;
+	// point buffer for Linear [NEW 04.03.2013]
+	private PointBuffer pointBuffer = new PointBuffer();
 	// window size params
 	private int W = 920;
 	private int H = 600;
@@ -64,14 +68,15 @@ public class GraphicView extends AwtView {
 	private double speed=0;
 	private double gain=0;
 	private int time=0;
+	// touch mode [DEFAULT]
+	private int touchMode = GestureListener.MODE_BASIC;
+	// fill linear rectangle
+	private boolean fillRect = false;
 
+	private TextView tvStatus = null;
 
-	private TextView tvStatus=null;
+	private boolean invert = false;
 
-	private boolean invert=false;
-	/*
-	 * Scrolling
-	 */
 	// scrolling
 	private  GestureDetector gestureDetector;	
 
@@ -117,6 +122,7 @@ public class GraphicView extends AwtView {
 	private static final int EndZOOM = 3;	
 	private static final int UP 	= 5;
 	private static final int DOWN	= 6;
+	private static final int CLICK = 10;
 	
 	private float oldDist;
 	private int mode;
@@ -124,40 +130,70 @@ public class GraphicView extends AwtView {
 	@Override
 	public boolean dispatchTouchEvent (MotionEvent event) {
 		int actionMask = event.getActionMasked();
-		switch (actionMask) {
-		case MotionEvent.ACTION_POINTER_DOWN:
-			oldDist = spacing(event);
-			if (oldDist > 10f) {
-				mode = ZOOM;
-			}
-			break;
-		case MotionEvent.ACTION_DOWN:
-			mode = DRAG;
-			break;
-		case MotionEvent.ACTION_UP:
-		case MotionEvent.ACTION_POINTER_UP:
-			mode = NONE;
-			break;
-		case MotionEvent.ACTION_MOVE:
-			if (mode == DRAG) {
-				if (!scroller.isFinished()) scroller.abortAnimation();
-			}
-			else if (mode == ZOOM) {
-				float newDist = spacing(event);
-				if (newDist > 10f) {
-					float scale = newDist / oldDist;
-					if(this.ZoomIt(scale)){
-						invalidate();
-						mode=EndZOOM;
+		// check touchMode
+		switch (this.touchMode) {
+			case GestureListener.MODE_BASIC:
+				switch (actionMask) {
+				case MotionEvent.ACTION_POINTER_DOWN:
+					oldDist = spacing(event);
+					if (oldDist > 10f) {
+						mode = ZOOM;
+					}
+					break;
+				case MotionEvent.ACTION_DOWN:
+					mode = DRAG;
+					break;
+				case MotionEvent.ACTION_UP:
+				case MotionEvent.ACTION_POINTER_UP:
+					mode = NONE;
+					break;
+				case MotionEvent.ACTION_MOVE:
+					if (mode == DRAG) {
+						if (!scroller.isFinished()) scroller.abortAnimation();
+					}
+					else if (mode == ZOOM) {
+						float newDist = spacing(event);
+						if (newDist > 10f) {
+							float scale = newDist / oldDist;
+							if(this.ZoomIt(scale)){
+								invalidate();
+								mode=EndZOOM;
+							}
+						}
+					break;
 					}
 				}
-			break;
-			}
+				if( (mode ==DRAG)||(mode==NONE) )
+					gestureDetector.onTouchEvent(event);
+				break;
+			case GestureListener.MODE_LINEAR:
+				switch(actionMask) {
+				// click
+				case MotionEvent.ACTION_DOWN:
+					mode = CLICK;
+					break;
+				case MotionEvent.ACTION_UP:
+				case MotionEvent.ACTION_POINTER_UP:
+					if (mode == CLICK) {
+						boolean full = pointBuffer.push(event.getX(), event.getY());
+						// change fill rectangle flag
+						if ((!full) && (pointBuffer.insideRect(event.getX(), event.getY()))) {
+							if (fillRect == true) fillRect = false;
+							else fillRect = true;
+						}
+						if (pointBuffer.isFull()) invalidate();
+					}
+					break;
+				case MotionEvent.ACTION_MOVE:
+					mode = NONE;
+					boolean move = pointBuffer.move(event.getX(), event.getY());
+					// redraw while moving
+					if (move) invalidate();
+					break;
+				}
+				break;
 		}
-		if( (mode ==DRAG)||(mode==NONE) )
-			gestureDetector.onTouchEvent(event);
 		return true;
-		
 	}
 	
 	private boolean ZoomIt(float Zoom){
@@ -283,13 +319,85 @@ public class GraphicView extends AwtView {
 		// check DataHandler
 		if (h == null) return;
 		init();
+		// check app mode
+		switch (this.touchMode) {
+		// basic mode
+		case GestureListener.MODE_BASIC:
+			// draw ECG
+			drawECG(g2);
+			break;
+		case GestureListener.MODE_LINEAR:
+			drawECG(g2);
+			if (pointBuffer.isFull()) {
+				// save previous options
+				Stroke defaultStroke = g2.getStroke();
+				Font defaultFont = g2.getFont();
+				// set bolder line
+				g2.setStroke(new BasicStroke((float) 3));
+				g2.setColor(Color.green);
+				GeneralPath thePath = new GeneralPath();
+				thePath.reset();
+				// make a rectangle
+				thePath.moveTo(pointBuffer.getX1(),pointBuffer.getY1());
+				thePath.lineTo(pointBuffer.getX2(),pointBuffer.getY1());
+				thePath.lineTo(pointBuffer.getX2(),pointBuffer.getY2());
+				thePath.lineTo(pointBuffer.getX1(),pointBuffer.getY2());
+				thePath.lineTo(pointBuffer.getX1(),pointBuffer.getY1());
+				// draw it
+				g2.draw(thePath);
+				// get width and height
+				String w = String.valueOf((int)pointBuffer.getRectW()) + " px.";
+				String h = String.valueOf((int)pointBuffer.getRectH()) + " px.";
+				// restore previous options
+				g2.setStroke(defaultStroke);
+				g2.setFont(defaultFont);
+				g2.setColor(curveColor);
+				// draw text
+				g2.drawString(w, pointBuffer.getMaxX() + 5, pointBuffer.getMidddleHeight());
+				g2.drawString(h, pointBuffer.getMiddleWight() - 20, pointBuffer.getMaxY() + 15);
+				// fill rectangle with lines
+				if (fillRect == true) drawRect(g2, pointBuffer.getRectTopX(), pointBuffer.getRectTopY(),
+							pointBuffer.getRectW(), pointBuffer.getRectH());
+			}
+			break;
+		}
+        return;
+	}
+	
+	/*
+	 * Draw a rectangle of lines
+	 */
+	private void drawRect(Graphics2D g, float x, float y,float w, float h) {
+		Color c = g.getColor();
+		g.setColor(Color.green);
+		// get count of vertical lines
+		int freq = 10;
+		int cnt = (int)w/freq;
+		GeneralPath p = new GeneralPath();
+		for (int i=1;i<cnt + 1;i++) {
+			p.moveTo(x + i*freq, y);
+			p.lineTo(x + i*freq, y + h);
+		}
+		int cnt2 = (int)h/freq;
+		for (int i=1;i<cnt2 + 1;i++) {
+			p.moveTo(x, y + i*freq);
+			p.lineTo(x + w, y + i*freq);
+		}
+		g.draw(p);
+		g.setColor(c);
+	}
+
+	/**
+	 * Basic ECG draw
+	 * 
+	 */
+	private void drawECG(Graphics2D g2) {
 		font=new Font("Ubuntu",0,(14));
 		float widthOfTileInPixels = getW()/nTilesPerRow;
 		float widthOfTileInMilliSeconds = widthOfTileInPixels/xPixelsInMilliseconds;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);	// ugly without
 		
 		g2.setColor(curveColor);
-		//setForeground(curveColor);
 		g2.setStroke(new BasicStroke((float) 0.7));
 
 		float widthOfSampleInPixels=g.getSamplingIntervalInMilliSeconds()*xPixelsInMilliseconds;
@@ -377,10 +485,9 @@ public class GraphicView extends AwtView {
                 drawChanels.setOffsets(offsets);
                 drawChanels.invalidate();
         }
-        return;
 	}
-
-	/*
+	
+	/**
 	 * Setters & getters
 	 */
 	
@@ -540,9 +647,12 @@ public class GraphicView extends AwtView {
 				tvStatus.setText(this.time+" from start "+speed+" mm/sec. "+gain+" mV/mm");
 			}
 	}
-
-
 	
-	
-
+	public void setMode(int mode) {
+		this.touchMode = mode;
+		if (mode == GestureListener.MODE_BASIC) {
+			pointBuffer.clear();
+			fillRect = false;
+		}
+	}
 }

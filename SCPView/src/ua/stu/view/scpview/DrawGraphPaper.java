@@ -68,7 +68,6 @@ public class DrawGraphPaper extends View {
 			mPts[i * 4 + 1] = 0;
 			mPts[i * 4] = mPts[i * 4 + 2] = (i - NumXLines) * XBcm;
 			mPts[i * 4 + 3] = Height;
-
 		}
 	}
 
@@ -137,5 +136,4 @@ public class DrawGraphPaper extends View {
 	public void setColorLinesAndDot(int colorLinesAndDot) {
 		this.colorLinesAndDot = colorLinesAndDot;
 	}
-	
 }

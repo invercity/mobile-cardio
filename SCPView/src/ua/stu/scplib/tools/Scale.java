@@ -6,7 +6,7 @@ import java.lang.Math;
  * Tool class for working with point coordinates during
  * touch events
  */
-public class PointBuffer {
+public class Scale {
 	
 	// first point coordinates
 	private float x1;
@@ -17,7 +17,7 @@ public class PointBuffer {
 	// delta value (for comparing)
 	private float delta = 22;
 	
-	public PointBuffer() {
+	public Scale() {
 		x1 = 0;
 		x2 = 0;
 		y1 = 0;

@@ -134,7 +134,7 @@
 	<string name="settings_file_paths_title_detail">ECG save folder</string>
 	<string name="error_decode_qr">Error during decoding qr-code</string>
 	<string name="app_version">0.1</string>
-	<string name="slider_linear">Linear</string>
+	<string name="slider_linear">Scale</string>
 </resources>
 
 

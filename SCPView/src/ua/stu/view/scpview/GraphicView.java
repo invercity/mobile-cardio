@@ -4,7 +4,7 @@ package ua.stu.view.scpview;
 import ua.stu.scplib.attribute.GraphicAttribute;
 import ua.stu.scplib.attribute.GraphicAttributeBase;
 import ua.stu.scplib.data.DataHandler;
-import ua.stu.scplib.tools.PointBuffer;
+import ua.stu.scplib.tools.Scale;
 import and.awt.BasicStroke;
 import and.awt.Color;
 import and.awt.Stroke;
@@ -29,14 +29,14 @@ import net.pbdavey.awt.RenderingHints;
 public class GraphicView extends AwtView {
 	// object which holds all required data for drawing
 	private DataHandler h = null;
-	//class of chanels
+	//class of channels
 	private DrawChanels drawChanels=null;
-	// point buffer for Linear [NEW 04.03.2013]
-	private PointBuffer pointBuffer = new PointBuffer();
-	// window size params
+	// scale function
+	private Scale scale = new Scale();
+	// window size param.
 	private int W = 920;
 	private int H = 600;
-	// scroll window params
+	// scroll window param.
 	private int SW = 920;
 	private int SH = 600;
 	// inch constant
@@ -55,31 +55,27 @@ public class GraphicView extends AwtView {
 	private float xPixelsInMilliseconds;
 	//how much of the sample data to skip, specified in milliseconds from the start of the samples
 	private float timeOffsetInMilliSeconds;
-	//offset for graphic
-	//private float xTitlesOffset =2* sizeScreen/3;
 	// color map
 	Color curveColor = Color.blue;
 	// basic font
 	Font font = null;
 	// array for channel offsets
 	private float offsets[] = new float[12];
-	// any info?
-	//переменны для вывода в строку состояния
+	// status bar variables
 	private double speed=0;
 	private double gain=0;
 	private int time=0;
 	// touch mode [DEFAULT]
 	private int touchMode = GestureListener.MODE_BASIC;
-	// fill linear rectangle
+	// flag - fill linear rectangle
 	private boolean fillRect = false;
-
+	// status bar 
 	private TextView tvStatus = null;
-
+	// invert flag
 	private boolean invert = false;
-
-	// scrolling
+	// touch gestures
 	private  GestureDetector gestureDetector;	
-
+	// scroll
 	private Scroller scroller;
 		
 	public void initscale(GestureListener mg){
@@ -88,7 +84,6 @@ public class GraphicView extends AwtView {
 	}
 	
 	public GraphicView(Context context) {
-
 		super(context);
 		// init scrollbars
         setHorizontalScrollBarEnabled(true);
@@ -98,7 +93,6 @@ public class GraphicView extends AwtView {
 	    a.recycle();
 	}
 	
-	
 	public GraphicView(Context context, AttributeSet attribSet) {
 		super(context, attribSet);
 		// init scrollbars
@@ -107,15 +101,17 @@ public class GraphicView extends AwtView {
         TypedArray a = context.obtainStyledAttributes(R.styleable.View);
         initializeScrollbars(a);
         a.recycle();
-
 	}
 	
+	// optional speed values
 	private static double[] SPEEDS 		= {12.5,25,50,100};
+	// optional volt values
 	private static double[] VOLTS 		= {2.5,5,10,20};
 	
 	private int indexX;
 	private int indexY;
 	
+	// gesture types
 	private static final int NONE = -1;
 	private static final int DRAG = 1;
 	private static final int ZOOM = 2;
@@ -125,6 +121,7 @@ public class GraphicView extends AwtView {
 	private static final int CLICK = 10;
 	
 	private float oldDist;
+	// gesture mode
 	private int mode;
 	
 	@Override
@@ -175,18 +172,18 @@ public class GraphicView extends AwtView {
 				case MotionEvent.ACTION_UP:
 				case MotionEvent.ACTION_POINTER_UP:
 					if (mode == CLICK) {
-						boolean full = pointBuffer.push(event.getX(), event.getY());
+						boolean full = scale.push(event.getX(), event.getY());
 						// change fill rectangle flag
-						if ((!full) && (pointBuffer.insideRect(event.getX(), event.getY()))) {
+						if ((!full) && (scale.insideRect(event.getX(), event.getY()))) {
 							if (fillRect == true) fillRect = false;
 							else fillRect = true;
 						}
-						if (pointBuffer.isFull()) invalidate();
+						if (scale.isFull()) invalidate();
 					}
 					break;
 				case MotionEvent.ACTION_MOVE:
 					mode = NONE;
-					boolean move = pointBuffer.move(event.getX(), event.getY());
+					boolean move = scale.move(event.getX(), event.getY());
 					// redraw while moving
 					if (move) invalidate();
 					break;
@@ -234,12 +231,8 @@ public class GraphicView extends AwtView {
 			}
 		}
 		else if ( mode == DOWN ) {
-			if ( (indexY - 1) != NONE ) {
-				out = VOLTS[indexY - 1];
-			}
-			else {
-				out = VOLTS[0];
-			}
+			if ( (indexY - 1) != NONE ) out = VOLTS[indexY - 1];
+		 	else out = VOLTS[0];
 		}
 		return out;
 	}
@@ -256,45 +249,29 @@ public class GraphicView extends AwtView {
 			}
 		}
 		else if ( mode == DOWN ) {
-			if ( (indexX - 1) != NONE ) {
-				out = SPEEDS[indexX - 1];
-			}
-			else {
-				out = SPEEDS[0];
-			}
+			if ( (indexX - 1) != NONE ) out = SPEEDS[indexX - 1];
+			else out = SPEEDS[0];
 		}
 		return out;
 	}
 	
 	private void reDrawY( double y ) {
-		if ( y != NONE ) {
-			this.setYScale((float)( y ));
-		}
+		if ( y != NONE ) this.setYScale((float)( y ));
 	}
 	
 	private void reDrawX( double x ) {
-		if ( x != NONE ) {
-			this.setXScale((float)( x ));
-		}
+		if ( x != NONE ) this.setXScale((float)( x ));
 	}
 	
 	private int getIndexX( double value ) {
 		int index = NONE;
-		for (int i = 0; i < SPEEDS.length; i++) {
-			if ( SPEEDS[i] == value ) {
-				index = i;
-			}
-		}
+		for (int i = 0; i < SPEEDS.length; i++) if ( SPEEDS[i] == value ) index = i;
 		return index;
 	}
 
 	private int getIndexY( double value ) {
 		int index = NONE;
-		for (int i = 0; i < VOLTS.length; i++) {
-			if ( VOLTS[i] == value ) {
-				index = i;
-			}
-		}
+		for (int i = 0; i < VOLTS.length; i++) if ( VOLTS[i] == value ) index = i;
 		return index;
 	}
 	
@@ -319,8 +296,42 @@ public class GraphicView extends AwtView {
 		// check DataHandler
 		if (h == null) return;
 		init();
+		drawECG(g2);
+		if ((this.touchMode == GestureListener.MODE_LINEAR) && (scale.isFull())) {
+			// save previous options
+			Stroke defaultStroke = g2.getStroke();
+			Font defaultFont = g2.getFont();
+			// set bolder line
+			g2.setStroke(new BasicStroke((float) 3));
+			g2.setColor(Color.green);
+			GeneralPath thePath = new GeneralPath();
+			thePath.reset();
+			// make a rectangle
+			thePath.moveTo(scale.getX1(),scale.getY1());
+			thePath.lineTo(scale.getX2(),scale.getY1());
+			thePath.lineTo(scale.getX2(),scale.getY2());
+			thePath.lineTo(scale.getX1(),scale.getY2());
+			thePath.lineTo(scale.getX1(),scale.getY1());
+			// draw it
+			g2.draw(thePath);
+			// get width and height
+			String w = String.valueOf((int)scale.getRectW()) + " px.";
+			String h = String.valueOf((int)scale.getRectH()) + " px.";
+			// restore previous options
+			g2.setStroke(defaultStroke);
+			g2.setFont(defaultFont);
+			g2.setColor(Color.black);
+			// draw text
+			g2.drawString(w, scale.getMaxX() + 5, scale.getMidddleHeight());
+			g2.drawString(h, scale.getMiddleWight() - 20, scale.getMaxY() + 15);
+			// restore color 
+			g2.setColor(curveColor);
+			// fill rectangle with lines
+			if (fillRect == true) drawRect(g2, scale.getRectTopX(), scale.getRectTopY(),
+						scale.getRectW(), scale.getRectH());
+		}
 		// check app mode
-		switch (this.touchMode) {
+	/*	switch (this.touchMode) {
 		// basic mode
 		case GestureListener.MODE_BASIC:
 			// draw ECG
@@ -328,7 +339,7 @@ public class GraphicView extends AwtView {
 			break;
 		case GestureListener.MODE_LINEAR:
 			drawECG(g2);
-			if (pointBuffer.isFull()) {
+			if (scale.isFull()) {
 				// save previous options
 				Stroke defaultStroke = g2.getStroke();
 				Font defaultFont = g2.getFont();
@@ -338,29 +349,31 @@ public class GraphicView extends AwtView {
 				GeneralPath thePath = new GeneralPath();
 				thePath.reset();
 				// make a rectangle
-				thePath.moveTo(pointBuffer.getX1(),pointBuffer.getY1());
-				thePath.lineTo(pointBuffer.getX2(),pointBuffer.getY1());
-				thePath.lineTo(pointBuffer.getX2(),pointBuffer.getY2());
-				thePath.lineTo(pointBuffer.getX1(),pointBuffer.getY2());
-				thePath.lineTo(pointBuffer.getX1(),pointBuffer.getY1());
+				thePath.moveTo(scale.getX1(),scale.getY1());
+				thePath.lineTo(scale.getX2(),scale.getY1());
+				thePath.lineTo(scale.getX2(),scale.getY2());
+				thePath.lineTo(scale.getX1(),scale.getY2());
+				thePath.lineTo(scale.getX1(),scale.getY1());
 				// draw it
 				g2.draw(thePath);
 				// get width and height
-				String w = String.valueOf((int)pointBuffer.getRectW()) + " px.";
-				String h = String.valueOf((int)pointBuffer.getRectH()) + " px.";
+				String w = String.valueOf((int)scale.getRectW()) + " px.";
+				String h = String.valueOf((int)scale.getRectH()) + " px.";
 				// restore previous options
 				g2.setStroke(defaultStroke);
 				g2.setFont(defaultFont);
-				g2.setColor(curveColor);
+				g2.setColor(Color.black);
 				// draw text
-				g2.drawString(w, pointBuffer.getMaxX() + 5, pointBuffer.getMidddleHeight());
-				g2.drawString(h, pointBuffer.getMiddleWight() - 20, pointBuffer.getMaxY() + 15);
+				g2.drawString(w, scale.getMaxX() + 5, scale.getMidddleHeight());
+				g2.drawString(h, scale.getMiddleWight() - 20, scale.getMaxY() + 15);
+				// restore color 
+				g2.setColor(curveColor);
 				// fill rectangle with lines
-				if (fillRect == true) drawRect(g2, pointBuffer.getRectTopX(), pointBuffer.getRectTopY(),
-							pointBuffer.getRectW(), pointBuffer.getRectH());
+				if (fillRect == true) drawRect(g2, scale.getRectTopX(), scale.getRectTopY(),
+							scale.getRectW(), scale.getRectH());
 			}
 			break;
-		}
+		} */
         return;
 	}
 	
@@ -651,7 +664,7 @@ public class GraphicView extends AwtView {
 	public void setMode(int mode) {
 		this.touchMode = mode;
 		if (mode == GestureListener.MODE_BASIC) {
-			pointBuffer.clear();
+			scale.clear();
 			fillRect = false;
 		}
 	}

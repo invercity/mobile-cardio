@@ -11,7 +11,7 @@ import com.google.zxing.client.android.ZXingConstants;
 import com.google.zxing.client.android.decode.ZXingDecoderActivity;
 
 import ua.stu.scplib.data.DataHandler;
-import ua.stu.scplib.tools.PointBuffer;
+import ua.stu.scplib.tools.Scale;
 import ua.stu.view.fragments.ECGPanelFragment;
 import ua.stu.view.fragments.ECGPanelFragment.OnClickSliderContentListener;
 import ua.stu.view.temporary.InfoO;

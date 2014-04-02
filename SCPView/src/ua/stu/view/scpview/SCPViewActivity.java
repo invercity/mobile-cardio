@@ -31,6 +31,7 @@ import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -58,8 +59,10 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 
 	private ECGPanelFragment ecgPanel;
 	private DataHandler h;
+	// device params
 	private int displayWight;
 	private int displayHeight;
+	private int displayDensity;
 
 	private String ecgFilePath = "";
 	public static final String PREFS_NAME = "ScpViewFile";
@@ -75,12 +78,18 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        // get display size
         Point point = new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
         displayHeight = point.y;
         displayWight = point.x;
+        // get display density
+        DisplayMetrics metrics = new DisplayMetrics();    
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);    
+        displayDensity = metrics.densityDpi;
         System.out.println("W: " + displayWight);
         System.out.println("H: " + displayHeight);
+        System.out.println("Density: " + displayDensity);
 		state = savedInstanceState;
 		// get settings
 		settings = getSharedPreferences(getResources().getString( R.string.app_settings_file ), MODE_PRIVATE);

@@ -46,29 +46,19 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	}
 	
 	private static final String TAG = "ECGPanelFragment ";
-	/**
-	 * Длина экрана
-	 */
+	// display metrics
 	private int displayWidth;
-	/**
-	 * Ширина экрана
-	 */
 	private int displayHeight;
-	/**
-	 * Максимальная скорость ЕКГ
-	 */
+	private int displayDensity;
+	// ECG max speed
 	private static int MAX_SPEED = 100;
-	/**
-	 * Кореляция усиления для слайдера(потому что отображает только целый шаг)
-	 */
+	//Кореляция усиления для слайдера(потому что отображает только целый шаг)
 	private static int CORRECTION_POWER = 4;
-	/**
-	 * Максимальное усиление ЕКГ
-	 */
+	// ECG max power
 	private static int MAX_POWER = 16;
-	
-	private float speed=50;
-	private int power=1;
+	// default values
+	private float speed = 50;
+	private int power = 1;
 
 	private static int SLIDER_SCREEN_PART_HORIZONTAL = 10;
 	private static int SLIDER_SCREEN_PART_VERTICAL = 15;
@@ -119,9 +109,9 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){	
 		DisplayMetrics metrics = inflater.getContext().getResources().getDisplayMetrics();
-		setDisplayWidth(metrics.widthPixels);
-		setDisplayHeight(metrics.heightPixels);
-		
+		this.displayWidth = metrics.widthPixels;
+		this.displayHeight = metrics.heightPixels;
+		this.displayDensity = metrics.densityDpi;
 		View view = inflater.inflate( R.layout.ecg_panel, null );
 
 		//Fragment doesn't call onDestroy и onCreate
@@ -144,7 +134,6 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		graphicView.setYScale((float) 10);			
 		//pSettings.getInt("cGraphPaper", Color.rgb(173, 216, 230));
 		
-		//System.out.println("oll="+pSettings.getAll());
 		setColorThem(pSettings.getInt(getResources().getString( R.string.app_settings_colorGp ), Color.rgb(173, 216, 230)),
 				pSettings.getInt(getResources().getString( R.string.app_settings_colorG ), Color.rgb(76, 76, 76)),
 						pSettings.getInt(getResources().getString( R.string.app_settings_colorCh ), Color.BLACK));
@@ -267,7 +256,6 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	}
 
 	public void revertECG (View view){
-		String zoomText = view.getResources().getString(R.string.zoom);
 		if ( !isRevert ){
 			isRevert = true;
 			graphicView.setInvert(true);

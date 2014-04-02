@@ -11,7 +11,6 @@ import com.google.zxing.client.android.ZXingConstants;
 import com.google.zxing.client.android.decode.ZXingDecoderActivity;
 
 import ua.stu.scplib.data.DataHandler;
-import ua.stu.scplib.tools.Scale;
 import ua.stu.view.fragments.ECGPanelFragment;
 import ua.stu.view.fragments.ECGPanelFragment.OnClickSliderContentListener;
 import ua.stu.view.temporary.InfoO;
@@ -21,9 +20,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -31,10 +27,8 @@ import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
@@ -42,7 +36,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	
 	private static final String TAG = "SCPViewActivity";
 	
-	private SCPViewActivity v = this;
+	private SCPViewActivity _this = this;
 	public static final int REQUEST_CHOOSE_FILE = 0;
 	private static final int REQUEST_SCAN_QRCODE = 1;
 	private static final int REQUEST_DECODE_QR = 2;
@@ -54,18 +48,14 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	public static final String URL = "ua.stu.view.URL";
 	public static final String FILE = "ua.stu.view.file";
 	public static final String ROOT = "ua.stu.view.root";
-	
+	public static final String PREFS_NAME = "ScpViewFile";
 	public static final String ROOT_PATH = "/mnt/sdcard";
 
 	private ECGPanelFragment ecgPanel;
 	private DataHandler h;
-	// device params
-	private int displayWight;
-	private int displayHeight;
-	private int displayDensity;
 
 	private String ecgFilePath = "";
-	public static final String PREFS_NAME = "ScpViewFile";
+	
 	android.content.SharedPreferences settings ;
 	private Bundle state;
 	// choose action dialog 
@@ -78,18 +68,6 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        // get display size
-        Point point = new Point();
-        getWindowManager().getDefaultDisplay().getSize(point);
-        displayHeight = point.y;
-        displayWight = point.x;
-        // get display density
-        DisplayMetrics metrics = new DisplayMetrics();    
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);    
-        displayDensity = metrics.densityDpi;
-        System.out.println("W: " + displayWight);
-        System.out.println("H: " + displayHeight);
-        System.out.println("Density: " + displayDensity);
 		state = savedInstanceState;
 		// get settings
 		settings = getSharedPreferences(getResources().getString( R.string.app_settings_file ), MODE_PRIVATE);
@@ -364,7 +342,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
             		break;
             	}
             	case 2: {
-            		v.finish();
+            		_this.finish();
             		break;
             	}
             	}

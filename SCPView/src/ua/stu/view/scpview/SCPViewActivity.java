@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -57,6 +58,8 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 
 	private ECGPanelFragment ecgPanel;
 	private DataHandler h;
+	private int displayWight;
+	private int displayHeight;
 
 	private String ecgFilePath = "";
 	public static final String PREFS_NAME = "ScpViewFile";
@@ -71,8 +74,13 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
         setContentView(R.layout.main);
+        Point point = new Point();
+        getWindowManager().getDefaultDisplay().getSize(point);
+        displayHeight = point.y;
+        displayWight = point.x;
+        System.out.println("W: " + displayWight);
+        System.out.println("H: " + displayHeight);
 		state = savedInstanceState;
 		// get settings
 		settings = getSharedPreferences(getResources().getString( R.string.app_settings_file ), MODE_PRIVATE);

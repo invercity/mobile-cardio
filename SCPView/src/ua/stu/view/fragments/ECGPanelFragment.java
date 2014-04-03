@@ -91,8 +91,8 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	}
 	
 	public ECGPanelFragment(ua.stu.scplib.data.DataHandler h,android.content.SharedPreferences settings ){
-		this.dataHandler=h;
-		this.pSettings=settings;
+		this.dataHandler = h;
+		this.pSettings = settings;
 	}
 	public static Bitmap getBitmapFromView(View view) {
 	    Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
@@ -116,14 +116,15 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 
 		//Fragment doesn't call onDestroy и onCreate
 		setRetainInstance(true);
-		graphicView=(GraphicView)view.findViewById(R.id.GraphicView);
-		statustext=(TextView)view.findViewById(R.id.StatusText);
-		graphPaper=(DrawGraphPaper)view.findViewById(R.id.DrawGraphPaper);
-		chanels=(DrawChanels)view.findViewById(R.id.drawChanels);
+		graphicView = (GraphicView)view.findViewById(R.id.GraphicView);
+		statustext = (TextView)view.findViewById(R.id.StatusText);
+		graphPaper = (DrawGraphPaper)view.findViewById(R.id.DrawGraphPaper);
+		chanels = (DrawChanels)view.findViewById(R.id.drawChanels);
 		// create GestureListener for channels and main view
 		gestureListener = new GestureListener(graphicView, chanels);
 		chanels.initscale(gestureListener);
 		graphicView.initscale(gestureListener);
+		graphicView.setDisplayMetrics(displayWidth, displayHeight, displayDensity);
 		init( view );
 		// don't change setters sequence !!!
 		graphicView.setDrawChanels(chanels);

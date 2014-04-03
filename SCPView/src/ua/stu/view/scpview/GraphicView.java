@@ -1,6 +1,9 @@
 package ua.stu.view.scpview;
 
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import ua.stu.scplib.attribute.GraphicAttribute;
 import ua.stu.scplib.attribute.GraphicAttributeBase;
 import ua.stu.scplib.data.DataHandler;
@@ -8,7 +11,6 @@ import ua.stu.scplib.tools.Scale;
 import and.awt.BasicStroke;
 import and.awt.Color;
 import and.awt.Stroke;
-
 import and.awt.geom.GeneralPath;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -39,6 +41,10 @@ public class GraphicView extends AwtView {
 	// scroll window param.
 	private int SW = 920;
 	private int SH = 600;
+	// display metrics
+	private int displayHeight;
+	private int displayWidht;
+	private int displayDensity;
 	// inch constant
 	private float duim = (float) 25.4;
 	// screen size in dpi
@@ -176,13 +182,12 @@ public class GraphicView extends AwtView {
 				case MotionEvent.ACTION_UP:
 				case MotionEvent.ACTION_POINTER_UP:
 					if (mode == CLICK) {
-						boolean full = scale.push(event.getX(), event.getY());
-						// change fill rectangle flag
-						if ((!full) && (scale.insideRect(event.getX(), event.getY()))) {
+						// fill/clear rectangle
+						if ((scale.insideRect(event.getX(), event.getY()))) {
 							if (fillRect == true) fillRect = false;
 							else fillRect = true;
 						}
-						if (scale.isFull()) invalidate();
+						invalidate();
 					}
 					break;
 				case MotionEvent.ACTION_MOVE:
@@ -287,7 +292,7 @@ public class GraphicView extends AwtView {
 	public void init() {
 		if (h!=null) {
 			g = h.getGraphic();
-			if (drawChanels!=null) drawChanels.setGraphicAttributeBase(g);	
+			if (drawChanels != null) drawChanels.setGraphicAttributeBase(g);	
 		}
 	}
 
@@ -319,15 +324,20 @@ public class GraphicView extends AwtView {
 			// draw it
 			g2.draw(thePath);
 			// get width and height
-			String w = String.valueOf((int)scale.getRectW()) + " px.";
-			String h = String.valueOf((int)scale.getRectH()) + " px.";
+			double width = scale.getRectW()/(float)(displayDensity/duim);
+			double height = scale.getRectH()/(float)(displayDensity/duim);
+			// round to 0.01
+			width = new BigDecimal(width).setScale(2, RoundingMode.UP).doubleValue();
+			height = new BigDecimal(height).setScale(2, RoundingMode.UP).doubleValue();
+			String w = String.valueOf(width) + " mm.";
+			String h = String.valueOf(height) + " mm.";
 			// restore previous options
 			g2.setStroke(defaultStroke);
 			g2.setFont(defaultFont);
 			g2.setColor(Color.black);
 			// draw text
-			g2.drawString(w, scale.getMaxX() + 5 + xOffset, scale.getMidddleHeight() + yOffset);
-			g2.drawString(h, scale.getMiddleWight() - 20 + xOffset, scale.getMaxY() + 15 + yOffset);
+			g2.drawString(h, scale.getMaxX() + 5 + xOffset, scale.getMidddleHeight() + yOffset);
+			g2.drawString(w, scale.getMiddleWight() - 20 + xOffset, scale.getMaxY() + 15 + yOffset);
 			// restore color 
 			g2.setColor(curveColor);
 			// fill rectangle with lines
@@ -638,9 +648,20 @@ public class GraphicView extends AwtView {
 	
 	public void setMode(int mode) {
 		this.touchMode = mode;
+		// clear scale
 		if (mode == GestureListener.MODE_BASIC) {
 			scale.clear();
 			fillRect = false;
 		}
+		// create basic rectangle (scale)
+		else if (mode == GestureListener.MODE_LINEAR) {
+			scale.makeBasicRect(displayWidht, displayHeight);
+		}
+	}
+	
+	public void setDisplayMetrics(int width, int height, int density) {
+		this.displayDensity = density;
+		this.displayHeight = height;
+		this.displayWidht = width;
 	}
 }

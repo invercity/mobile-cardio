@@ -36,7 +36,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	
 	private static final String TAG = "SCPViewActivity";
 	
-	private SCPViewActivity v = this;
+	private SCPViewActivity _this = this;
 	public static final int REQUEST_CHOOSE_FILE = 0;
 	private static final int REQUEST_SCAN_QRCODE = 1;
 	private static final int REQUEST_DECODE_QR = 2;
@@ -48,25 +48,25 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 	public static final String URL = "ua.stu.view.URL";
 	public static final String FILE = "ua.stu.view.file";
 	public static final String ROOT = "ua.stu.view.root";
-	
+	public static final String PREFS_NAME = "ScpViewFile";
 	public static final String ROOT_PATH = "/mnt/sdcard";
 
 	private ECGPanelFragment ecgPanel;
 	private DataHandler h;
 
 	private String ecgFilePath = "";
-	public static final String PREFS_NAME = "ScpViewFile";
+	
 	android.content.SharedPreferences settings ;
 	private Bundle state;
 	// choose action dialog 
 	private AlertDialog dialog;
+	private int touchMode = GestureListener.MODE_BASIC;
 	
 	private boolean isSliderExpand = false;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
         setContentView(R.layout.main);
 		state = savedInstanceState;
 		// get settings
@@ -156,6 +156,25 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
 			break;
 		case R.id.slider_settings:
 			runSettings();
+			break;
+		case R.id.slider_linear:
+			if (touchMode == GestureListener.MODE_BASIC) {
+				// change mode
+				touchMode = GestureListener.MODE_LINEAR;
+				// show text notify
+				Toast.makeText(SCPViewActivity.this, "Linear mode on",Toast.LENGTH_SHORT).show();
+			    ecgPanel.setTouchMode(touchMode);
+				ecgPanel.getView().invalidate();
+			}
+			else if (touchMode == GestureListener.MODE_LINEAR) {
+				// change mode
+				touchMode = GestureListener.MODE_BASIC;
+				// show text notify
+				Toast.makeText(SCPViewActivity.this, "Linear mode off",Toast.LENGTH_SHORT).show();
+			    // change mode for GraphicView, Channels
+			    ecgPanel.setTouchMode(touchMode);
+				ecgPanel.getView().invalidate();
+			}
 			break;
 		}	
 	}
@@ -323,7 +342,7 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
             		break;
             	}
             	case 2: {
-            		v.finish();
+            		_this.finish();
             		break;
             	}
             	}
@@ -331,10 +350,6 @@ public class SCPViewActivity extends FragmentActivity implements OnClickSliderCo
         });
 	    dialog = builder.create();
 	    dialog.show();
-	}
-	
-	private final String runEncoder(){
-		return "";
 	}
 	
 	private final void runScanner() {

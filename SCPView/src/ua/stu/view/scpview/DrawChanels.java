@@ -3,6 +3,7 @@ package ua.stu.view.scpview;
 import ua.stu.scplib.attribute.GraphicAttributeBase;
 import and.awt.BasicStroke;
 import and.awt.Color;
+import android.R.bool;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -46,18 +47,15 @@ public class DrawChanels extends AwtView{
 	Color channelNameColor = Color.black;
 	// basic font
 	Font font = null;
-	// any info?
-
 	// scrolling
-	private  GestureDetector gestureDetector;	
-	private  Scroller scroller;
+	private GestureDetector gestureDetector;	
+	private Scroller scroller;
+	// inversion flag
+	private boolean isInvert = false;
 
 	@Override
-    public boolean onTouchEvent(MotionEvent event)
-    {
-		// check for tap and cancel fling
-		if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN)
-		{
+    public boolean onTouchEvent(MotionEvent event) {
+		if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN) {
 			if (!scroller.isFinished()) scroller.abortAnimation();
 		}	
 		// check for scroll gesture
@@ -65,12 +63,9 @@ public class DrawChanels extends AwtView{
 		return true;
     }
 
-			
-	private boolean invert=false;
 	public void initscale(GestureListener mg){
 		gestureDetector = new GestureDetector(getContext(),mg);
 		scroller = new Scroller(getContext());
-
 		// init scrollbars
         setVerticalScrollBarEnabled(true);
         setHorizontalFadingEdgeEnabled(false);
@@ -87,81 +82,84 @@ public class DrawChanels extends AwtView{
 		super(context, attribSet);
 
 	}
+	
+	public void drawChannels(Graphics2D g2) {
+		// start x channel name offset
+				int channelNameXOffset = 10;
+				// start y channel name offset
+				font=new Font("Ubuntu",0,(14));		
+				float widthOfTileInPixels = W/nTilesPerRow;
+				float heightOfTileInPixels = H/nTilesPerColumn;		
+				int channel=0;
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);	
+				float tile = yPixelsInMillivolts*duim/sizeScreen;
+				float yIdealTiles = 4*tile - (int)(tile/2);	
+				for (int row=0;row<nTilesPerColumn;++row) {
+					float drawingOffsetX = 0;
+					for (int col=0;col<nTilesPerRow;++col) {
+							g2.setStroke(new BasicStroke((float) 1.0));
+					if (g.getChannelNames() != null && channel < g.getDisplaySequence().length && 
+								g.getDisplaySequence()[channel] < g.getChannelNames().length) {
+							String channelName=g.getChannelNames()[g.getDisplaySequence()[channel]];
+							if (channelName != null) {
+								g2.setStroke(new BasicStroke());
+								g2.setColor(channelNameColor);
+								g2.setFont(font);
+								g2.drawString(channelName,drawingOffsetX+channelNameXOffset,offsets[row]);
+								g2.setColor(curveColor);
+								// drawing ideal signal
+								g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/8)
+										,(int)(offsets[row])
+										,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+										,(int)(offsets[row]));
+								if (!isInvert) {
+									g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+											,(int)(offsets[row])
+											,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+											,(int)(offsets[row] - yIdealTiles));
+									g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+											,(int)(offsets[row] - yIdealTiles)
+											,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+											,(int)(offsets[row] - yIdealTiles));
+									g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+											,(int)(offsets[row] - yIdealTiles)
+											,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+											,(int)(offsets[row]));
+								}
+								else {
+									g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+											,(int)(offsets[row])
+											,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+											,(int)(offsets[row] + yIdealTiles));
+									g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
+											,(int)(offsets[row] + yIdealTiles)
+											,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+											,(int)(offsets[row] + yIdealTiles));
+									g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+											,(int)(offsets[row] + yIdealTiles)
+											,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+											,(int)(offsets[row]));
+								}
+								g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/2)
+										,(int)(offsets[row])
+										,(int)(channelNameXOffset*4 + 5*heightOfTileInPixels/8)
+										,(int)(offsets[row]));
+							}
+							// ideal signal end
+						}
+						
+						drawingOffsetX+=widthOfTileInPixels;
+						++channel;
+					}
+				}
+	}
 
 	@Override
 	public void paint(Graphics2D g2) {
-
 		if (g==null || offsets==null) return;
-		// start x channel name offset
-		int channelNameXOffset = 10;
-		// start y channel name offset
-		font=new Font("Ubuntu",0,(14));		
-		float widthOfTileInPixels = W/nTilesPerRow;
-		float heightOfTileInPixels = H/nTilesPerColumn;		
-		int channel=0;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);	
-		float tile = yPixelsInMillivolts*duim/sizeScreen;
-		float yIdealTiles = 4*tile - (int)(tile/2);	
-		for (int row=0;row<nTilesPerColumn;++row) {
-			float drawingOffsetX = 0;
-			for (int col=0;col<nTilesPerRow;++col) {
-					g2.setStroke(new BasicStroke((float) 1.0));
-			if (g.getChannelNames() != null && channel < g.getDisplaySequence().length && 
-						g.getDisplaySequence()[channel] < g.getChannelNames().length) {
-					String channelName=g.getChannelNames()[g.getDisplaySequence()[channel]];
-					if (channelName != null) {
-						g2.setStroke(new BasicStroke());
-						g2.setColor(channelNameColor);
-						g2.setFont(font);
-						g2.drawString(channelName,drawingOffsetX+channelNameXOffset,offsets[row]);
-						g2.setColor(curveColor);
-						// drawing ideal signal
-						g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/8)
-								,(int)(offsets[row])
-								,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-								,(int)(offsets[row]));
-						if (!invert) {
-							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-									,(int)(offsets[row])
-									,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-									,(int)(offsets[row] - yIdealTiles));
-							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-									,(int)(offsets[row] - yIdealTiles)
-									,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-									,(int)(offsets[row] - yIdealTiles));
-							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-									,(int)(offsets[row] - yIdealTiles)
-									,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-									,(int)(offsets[row]));
-						}
-						else {
-							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-									,(int)(offsets[row])
-									,(int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-									,(int)(offsets[row] + yIdealTiles));
-							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/4)
-									,(int)(offsets[row] + yIdealTiles)
-									,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-									,(int)(offsets[row] + yIdealTiles));
-							g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-									,(int)(offsets[row] + yIdealTiles)
-									,(int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-									,(int)(offsets[row]));
-						}
-						g2.drawLine((int)(channelNameXOffset*4 + heightOfTileInPixels/2)
-								,(int)(offsets[row])
-								,(int)(channelNameXOffset*4 + 5*heightOfTileInPixels/8)
-								,(int)(offsets[row]));
-					}
-					// ideal signal end
-				}
-				
-				drawingOffsetX+=widthOfTileInPixels;
-				++channel;
-			}
-		}
-		
+		drawChannels(g2);
 	}
+	
 	public void setGraphicAttributeBase(GraphicAttributeBase g) {
 		this.g=g;
 	}
@@ -170,7 +168,7 @@ public class DrawChanels extends AwtView{
 	}		
 	
 	public void setInvert(boolean invert) {
-		this.invert = invert;
+		this.isInvert = invert;
 	}
 	public void setyPixelsInMillivolts(int yPixelsInMillivolts) {
 		this.yPixelsInMillivolts = yPixelsInMillivolts;

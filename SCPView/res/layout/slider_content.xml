@@ -54,6 +54,14 @@
 		/>
 
 		<RadioButton
+		  android:id="@+id/slider_linear"
+		  style="@style/slider_panel"
+		  android:background="@drawable/slider_background_selector"
+		  android:drawableTop="@drawable/linear_default"
+		  android:text="@string/slider_linear"
+		/>
+		
+		<RadioButton
 		  android:id="@+id/slider_settings"
 		  style="@style/slider_panel"
 		  android:background="@drawable/slider_background_selector"

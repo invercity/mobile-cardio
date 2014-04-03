@@ -1,13 +1,5 @@
 package ua.stu.view.fragments;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Properties;
-
 import it.sephiroth.demo.slider.widget.*;
 import ua.stu.view.scpview.DrawChanels;
 import ua.stu.view.scpview.DrawGraphPaper;
@@ -16,14 +8,11 @@ import ua.stu.view.scpview.GraphicView;
 import ua.stu.view.scpview.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.res.AssetManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
@@ -36,8 +25,6 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-
 
 @SuppressLint("ValidFragment")
 public class ECGPanelFragment extends Fragment implements OnClickListener {
@@ -59,42 +46,30 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	}
 	
 	private static final String TAG = "ECGPanelFragment ";
-	/**
-	 * Длина экрана
-	 */
+	// display metrics
 	private int displayWidth;
-	/**
-	 * Ширина экрана
-	 */
 	private int displayHeight;
-	/**
-	 * Максимальная скорость ЕКГ
-	 */
+	private int displayDensity;
+	// ECG max speed
 	private static int MAX_SPEED = 100;
-	/**
-	 * Кореляция усиления для слайдера(потому что отображает только целый шаг)
-	 */
+	//Кореляция усиления для слайдера(потому что отображает только целый шаг)
 	private static int CORRECTION_POWER = 4;
-	/**
-	 * Максимальное усиление ЕКГ
-	 */
+	// ECG max power
 	private static int MAX_POWER = 16;
-	
-	private float speed=50;
-	private int power=1;
-	
-	
+	// default values
+	private float speed = 50;
+	private int power = 1;
 
-	private static int SLIDER_SCREEN_PART_HORIZONTAL 	= 10;
-	private static int SLIDER_SCREEN_PART_VERTICAL 	= 15;
+	private static int SLIDER_SCREEN_PART_HORIZONTAL = 10;
+	private static int SLIDER_SCREEN_PART_VERTICAL = 15;
 	private MultiDirectionSlidingDrawer sliderPanel;
 	
 	private GraphicView graphicView;
 	private TextView statustext;
 	private DrawGraphPaper graphPaper;
 	private DrawChanels chanels;
+	private GestureListener gestureListener = null;
 	private ua.stu.scplib.data.DataHandler dataHandler;
-	//private ImageViewer imageViewer;
 
 	OnClickListener checkBoxListener;
 	OnTouchListener graphicViewScaleListener;
@@ -105,6 +80,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	private RadioButton other;
 	private RadioButton ecgRevert;
 	private RadioButton settings;
+	private RadioButton linear;
 	private boolean 	isRevert = false;
 
 	public static final String PREFS_NAME = "ScpViewFile";
@@ -115,11 +91,11 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	}
 	
 	public ECGPanelFragment(ua.stu.scplib.data.DataHandler h,android.content.SharedPreferences settings ){
-		this.dataHandler=h;
-		this.pSettings=settings;
+		this.dataHandler = h;
+		this.pSettings = settings;
 	}
-	public static Bitmap getBitmapFromView(GraphicView view) {
-	    Bitmap returnedBitmap = Bitmap.createBitmap(view.getSW(), view.getSH(),Bitmap.Config.ARGB_8888);
+	public static Bitmap getBitmapFromView(View view) {
+	    Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
 	   
 	    Canvas canvas = new Canvas(returnedBitmap);
 	    Drawable bgDrawable =view.getBackground();
@@ -133,26 +109,24 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){	
 		DisplayMetrics metrics = inflater.getContext().getResources().getDisplayMetrics();
-		setDisplayWidth(metrics.widthPixels);
-		setDisplayHeight(metrics.heightPixels);
-		
+		this.displayWidth = metrics.widthPixels;
+		this.displayHeight = metrics.heightPixels;
+		this.displayDensity = metrics.densityDpi;
 		View view = inflater.inflate( R.layout.ecg_panel, null );
 
 		//Fragment doesn't call onDestroy и onCreate
 		setRetainInstance(true);
-		graphicView=(GraphicView)view.findViewById(R.id.GraphicView);
-		statustext=(TextView)view.findViewById(R.id.StatusText);
-		graphPaper=(DrawGraphPaper)view.findViewById(R.id.DrawGraphPaper);
-		
-		chanels=(DrawChanels)view.findViewById(R.id.drawChanels);
-		GestureListener gl =new GestureListener(graphicView, chanels);
-		chanels.initscale(gl);
-		graphicView.initscale(gl);
-	
-		
-		
+		graphicView = (GraphicView)view.findViewById(R.id.GraphicView);
+		statustext = (TextView)view.findViewById(R.id.StatusText);
+		graphPaper = (DrawGraphPaper)view.findViewById(R.id.DrawGraphPaper);
+		chanels = (DrawChanels)view.findViewById(R.id.drawChanels);
+		// create GestureListener for channels and main view
+		gestureListener = new GestureListener(graphicView, chanels);
+		chanels.initscale(gestureListener);
+		graphicView.initscale(gestureListener);
+		graphicView.setDisplayMetrics(displayWidth, displayHeight, displayDensity);
 		init( view );
-		//сеиеры должны быть находится только в таком порядке
+		// don't change setters sequence !!!
 		graphicView.setDrawChanels(chanels);
 		graphicView.setTvStatus(statustext);	
 		graphicView.setH(dataHandler);
@@ -161,7 +135,6 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		graphicView.setYScale((float) 10);			
 		//pSettings.getInt("cGraphPaper", Color.rgb(173, 216, 230));
 		
-		//System.out.println("oll="+pSettings.getAll());
 		setColorThem(pSettings.getInt(getResources().getString( R.string.app_settings_colorGp ), Color.rgb(173, 216, 230)),
 				pSettings.getInt(getResources().getString( R.string.app_settings_colorG ), Color.rgb(76, 76, 76)),
 						pSettings.getInt(getResources().getString( R.string.app_settings_colorCh ), Color.BLACK));
@@ -189,27 +162,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	
 	@Override
 	public void onClick( View view ) {
-		switch ( view.getId() ){			
-		case R.id.slider_ecg_revert:
-			eventClick.eventClickSliderContent( R.id.slider_ecg_revert );
-			break;
-		case R.id.slider_camera:
-			eventClick.eventClickSliderContent( R.id.slider_camera );
-			break;
-		case R.id.slider_file_chooser:
-			eventClick.eventClickSliderContent( R.id.slider_file_chooser );
-			break;
-		case R.id.slider_patient:
-			eventClick.eventClickSliderContent( R.id.slider_patient );
-			break;
-		case R.id.slider_other:
-			eventClick.eventClickSliderContent( R.id.slider_other );
-			break;
-		case R.id.slider_settings:
-			Log.d(TAG,"slider settings click");
-			eventClick.eventClickSliderContent( R.id.slider_settings );
-			break;
-		}
+		eventClick.eventClickSliderContent(view.getId());
 	}
 	
 	private final void init ( View view ) {
@@ -223,6 +176,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		other		= ( RadioButton )view.findViewById( R.id.slider_other );
 		ecgRevert	= ( RadioButton )view.findViewById( R.id.slider_ecg_revert );
 		settings	= ( RadioButton )view.findViewById( R.id.slider_settings );
+		linear 		= ( RadioButton )view.findViewById( R.id.slider_linear );
 		
 		camera.setOnClickListener( this );
 		fileChooser.setOnClickListener( this );
@@ -230,6 +184,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		other.setOnClickListener( this );
 		ecgRevert.setOnClickListener( this );
 		settings.setOnClickListener( this );
+		linear.setOnClickListener( this );
 		
 		if ( dataHandler != null ){
 			contentClicable( true );
@@ -243,6 +198,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		patient.setClickable( isClick );
 		other.setClickable( isClick );
 		ecgRevert.setClickable( isClick );
+		linear.setClickable( isClick );
 	}
 	
 	private final void initSliderPanel( View view ) {
@@ -276,10 +232,7 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 		this.displayHeight = displayHeight;
 	}
 
-
-	
 	public void onStartTrackingTouch(SeekBar arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -304,20 +257,23 @@ public class ECGPanelFragment extends Fragment implements OnClickListener {
 	}
 
 	public void revertECG (View view){
-		String zoomText = view.getResources().getString(R.string.zoom);
 		if ( !isRevert ){
 			isRevert = true;
 			graphicView.setInvert(true);
 			graphicView.invalidate();
-			//imageViewer.loadImage(getBitmapFromView(graphicView));	
-			//imageViewer.invalidate();	
 		}
 		else {
 			isRevert = false;
 			graphicView.setInvert(false);
 			graphicView.invalidate();
-			//imageViewer.loadImage(getBitmapFromView(graphicView));	
-			//imageViewer.invalidate();	
 		}
+	}
+	
+	public void setTouchMode(int mode) {
+		if (this.gestureListener != null) this.gestureListener.setMode(mode);
+	}
+	
+	public GraphicView getView() {
+		return graphicView;
 	}
 }

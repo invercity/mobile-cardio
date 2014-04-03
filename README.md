@@ -2,7 +2,7 @@ mobileCardio
 =====
 Android application for viewing ECG cardiograms with SCP format.
 
-Current version: ```0.2-alpha```
+Current version: ```0.2-beta```
 
 #### Features:  
 * SCP format support

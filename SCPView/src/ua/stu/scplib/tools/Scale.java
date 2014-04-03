@@ -2,6 +2,8 @@ package ua.stu.scplib.tools;
 
 import java.lang.Math;
 
+import android.util.DisplayMetrics;
+
 /*
  * Tool class for working with point coordinates during
  * touch events
@@ -22,6 +24,19 @@ public class Scale {
 		x2 = 0;
 		y1 = 0;
 		y2 = 0;
+	}
+	
+	public void makeBasicRect(int width, int height) {
+		// rectangle size
+		int rectSize = height/5;
+		// 70 - draw channels width
+		int midX = (width - 70)/2;
+		int midY = height/2;
+		int midRect = rectSize/2;
+		x1 = midX - midRect;
+		x2 = midX + midRect;
+		y1 = midY - midRect;
+		y2 = midY + midRect;
 	}
 	
 	public boolean push(float x, float y) {

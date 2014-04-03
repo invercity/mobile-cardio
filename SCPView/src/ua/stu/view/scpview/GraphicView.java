@@ -45,6 +45,9 @@ public class GraphicView extends AwtView {
 	private int displayHeight;
 	private int displayWidht;
 	private int displayDensity;
+	// scale parameters
+	private String scaleHeightValueText = "";
+	private String scaleWidthValueText = "";
 	// inch constant
 	private float duim = (float) 25.4;
 	// screen size in dpi
@@ -68,9 +71,9 @@ public class GraphicView extends AwtView {
 	// array for channel offsets
 	private float offsets[] = new float[12];
 	// status bar variables
-	private double speed=0;
-	private double gain=0;
-	private int time=0;
+	private double speed = 0;
+	private double gain = 0;
+	private int time = 0;
 	// X scroll offset
 	private float xOffset = 0;
 	// Y scroll offset
@@ -193,8 +196,12 @@ public class GraphicView extends AwtView {
 				case MotionEvent.ACTION_MOVE:
 					mode = NONE;
 					boolean move = scale.move(event.getX(), event.getY());
-					// redraw while moving
-					if (move) invalidate();
+					if (move) {
+						// redraw while moving
+						invalidate();
+						// update tv status
+						setTime(0);
+					}
 					break;
 				}
 				break;
@@ -203,7 +210,7 @@ public class GraphicView extends AwtView {
 	}
 	
 	private boolean ZoomIt(float Zoom){
-		if(Zoom>1.2){
+		if(Zoom > 1.2){
 			double y = nextY(DOWN);
 			double x = nextX(UP);
 			
@@ -211,7 +218,7 @@ public class GraphicView extends AwtView {
 			reDrawX(x);
 			return true;
 		}
-		else if(Zoom<0.8){
+		else if(Zoom < 0.8){
 			double x = nextX(DOWN);
 			double y = nextY(UP);
 
@@ -305,14 +312,18 @@ public class GraphicView extends AwtView {
 		// check DataHandler
 		if (h == null) return;
 		init();
+		// draw ECG
 		drawECG(g2);
+		// draw Scale
 		if ((this.touchMode == GestureListener.MODE_LINEAR) && (scale.isFull())) {
-			// save previous options
+			// save previous graphic options
 			Stroke defaultStroke = g2.getStroke();
 			Font defaultFont = g2.getFont();
 			// set bolder line
 			g2.setStroke(new BasicStroke((float) 3));
+			// set color
 			g2.setColor(Color.green);
+			// make line path
 			GeneralPath thePath = new GeneralPath();
 			thePath.reset();
 			// make a rectangle
@@ -321,25 +332,24 @@ public class GraphicView extends AwtView {
 			thePath.lineTo(scale.getX2() + xOffset,scale.getY2() + yOffset);
 			thePath.lineTo(scale.getX1() + xOffset,scale.getY2() + yOffset);
 			thePath.lineTo(scale.getX1() + xOffset,scale.getY1() + yOffset);
-			// draw it
+			// draw rectangle
 			g2.draw(thePath);
-			// get width and height
-			double width = scale.getRectW()/(float)(displayDensity/duim);
-			double height = scale.getRectH()/(float)(displayDensity/duim);
-			// round to 0.01
-			width = new BigDecimal(width).setScale(2, RoundingMode.UP).doubleValue();
-			height = new BigDecimal(height).setScale(2, RoundingMode.UP).doubleValue();
-			String w = String.valueOf(width) + " mm.";
-			String h = String.valueOf(height) + " mm.";
+			// update scale values
+			updateScaleParameters();
 			// restore previous options
 			g2.setStroke(defaultStroke);
 			g2.setFont(defaultFont);
+			// set black color for line
 			g2.setColor(Color.black);
-			// draw text
-			g2.drawString(h, scale.getMaxX() + 5 + xOffset, scale.getMidddleHeight() + yOffset);
-			g2.drawString(w, scale.getMiddleWight() - 20 + xOffset, scale.getMaxY() + 15 + yOffset);
-			// restore color 
+			// draw text for rectangles
+			g2.drawString(scaleHeightValueText, scale.getMaxX() + 5 + xOffset, scale.getMidddleHeight() + yOffset);
+			g2.drawString(scaleWidthValueText, scale.getMiddleWight() - 20 + xOffset, scale.getMaxY() + 15 + yOffset);
+			// restore default color 
 			g2.setColor(curveColor);
+			// ------------------
+			g2.setStroke(defaultStroke);
+			g2.setFont(defaultFont);
+			// ------------------
 			// fill rectangle with lines
 			if (fillRect == true) {
 				drawRect(g2, scale.getRectTopX() + xOffset, scale.getRectTopY() + yOffset,
@@ -349,27 +359,43 @@ public class GraphicView extends AwtView {
         return;
 	}
 	
+	private void updateScaleParameters() {
+		// get width and height, convert to millimeters
+		double width = scale.getRectW()/(float)(displayDensity/duim);
+		double height = scale.getRectH()/(float)(displayDensity/duim);
+		// round to 0.01
+		width = new BigDecimal(width).setScale(2, RoundingMode.UP).doubleValue();
+		height = new BigDecimal(height).setScale(2, RoundingMode.UP).doubleValue();
+		// make string values
+		scaleWidthValueText = String.valueOf(width) + " mm.";
+		scaleHeightValueText = String.valueOf(height) + " mm.";
+	}
+	
 	/*
 	 * Draw a rectangle of lines
 	 */
 	private void drawRect(Graphics2D g, float x, float y,float w, float h) {
-		Color c = g.getColor();
+		// set green color for rectangle
 		g.setColor(Color.green);
 		// get count of vertical lines
-		int freq = 10;
-		int cnt = (int)w/freq;
+		int frequency = 10;
+		int cnt = (int)w/frequency;
 		GeneralPath p = new GeneralPath();
+		// make vertical lines
 		for (int i=1;i<cnt + 1;i++) {
-			p.moveTo(x + i*freq, y);
-			p.lineTo(x + i*freq, y + h);
+			p.moveTo(x + i*frequency, y);
+			p.lineTo(x + i*frequency, y + h);
 		}
-		int cnt2 = (int)h/freq;
+		int cnt2 = (int)h/frequency;
+		// make horizontal lines
 		for (int i=1;i<cnt2 + 1;i++) {
-			p.moveTo(x, y + i*freq);
-			p.lineTo(x + w, y + i*freq);
+			p.moveTo(x, y + i*frequency);
+			p.lineTo(x + w, y + i*frequency);
 		}
+		// draw rectangle
 		g.draw(p);
-		g.setColor(c);
+		// restore default color
+		g.setColor(curveColor);
 	}
 
 	/**
@@ -377,11 +403,14 @@ public class GraphicView extends AwtView {
 	 * 
 	 */
 	private void drawECG(Graphics2D g2) {
+		// set font
 		font = new Font("Ubuntu",0,(14));
+		// get curve parameters
 		float widthOfTileInPixels = getW()/nTilesPerRow;
 		float widthOfTileInMilliSeconds = widthOfTileInPixels/xPixelsInMilliseconds;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);	// ugly without
-		
+		// ugly without
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);	
+		// set default color
 		g2.setColor(curveColor);
 		g2.setStroke(new BasicStroke((float) 0.7));
 
@@ -390,11 +419,8 @@ public class GraphicView extends AwtView {
 		int widthOfTileInSamples = (int)(widthOfTileInMilliSeconds/g.getSamplingIntervalInMilliSeconds());
 		int usableSamples = g.getNumberOfSamplesPerChannel()-timeOffsetInSamples;
 
-		if (usableSamples <= 0) {/*usableSamples=0;*/return;}
-		
-		else if (usableSamples > widthOfTileInSamples) {
-			usableSamples=widthOfTileInSamples-1;
-		}
+		if (usableSamples <= 0) return;
+		else if (usableSamples > widthOfTileInSamples) usableSamples = widthOfTileInSamples - 1;
 		//bound between channels
         float drawingOffsetY = 0;
         //offset for channel middle line
@@ -421,14 +447,14 @@ public class GraphicView extends AwtView {
                 // getting the width of channel
                 for (int j=1;j<usableSamples;++j) {
                         if (invert) curY = currenSamplesForThisChannel[k]*currentRescaleY;
-                        else curY = - currenSamplesForThisChannel[k]*currentRescaleY;
-                        if (curY<minY) minY = curY;
-                        if (curY>maxY) maxY = curY;
+                        else curY = -currenSamplesForThisChannel[k]*currentRescaleY;
+                        if (curY < minY) minY = curY;
+                        if (curY > maxY) maxY = curY;
                         k++;
                 }
                 // Calculating offset Y for current channel
                 currentYChannelOffset = drawingOffsetY - minY;
-                for (int col=0;col<nTilesPerRow && channel<g.getNumberOfChannels();++col) {
+                for (int col=0;col < nTilesPerRow && channel < g.getNumberOfChannels();++col) {
                         short[] samplesForThisChannel = g.getSamples()[g.getDisplaySequence()[channel]];                        
                         int i = timeOffsetInSamples;
                         // YScale attribute
@@ -452,11 +478,10 @@ public class GraphicView extends AwtView {
                                 if (invert) toYValue = currentYChannelOffset + samplesForThisChannel[i]*rescaleY + delta;
                                 else toYValue = currentYChannelOffset - samplesForThisChannel[i]*rescaleY + delta;                                        
                                 i++;
-                                if ((int)fromXValue != (int)toXValue || (int)fromYValue != (int)toYValue) {
+                                if ((int)fromXValue != (int)toXValue || (int)fromYValue != (int)toYValue)
                                         thePath.lineTo(toXValue,toYValue);
-                                }
-                                fromXValue=toXValue;
-                                fromYValue=toYValue;
+                                fromXValue = toXValue;
+                                fromYValue = toYValue;
                         }
                         g2.draw(thePath);
                         ++channel;
@@ -471,10 +496,6 @@ public class GraphicView extends AwtView {
                 drawChanels.invalidate();
         }
 	}
-	
-	/**
-	 * Setters & getters
-	 */
 	
 	public GraphicAttributeBase getG() {
 		return g;
@@ -572,15 +593,16 @@ public class GraphicView extends AwtView {
 	}
 	
 	public void setYScale(float santimetersPerMillivolt) {
-		float millimetersPerMillivolt=santimetersPerMillivolt/10;
+		float millimetersPerMillivolt = santimetersPerMillivolt/10;
 		this.yPixelsInMillivolts = (7/millimetersPerMillivolt/(duim/sizeScreen));
 		if (drawChanels != null){
-		drawChanels.setYScale(millimetersPerMillivolt);
-		drawChanels.invalidate();
-		this.gain = santimetersPerMillivolt;		
+			drawChanels.setYScale(millimetersPerMillivolt);
+			drawChanels.invalidate();
+			this.gain = santimetersPerMillivolt;		
 		}	
-		if (tvStatus != null && this.h != null)
-			tvStatus.setText(time + " from start " + speed + " mm/sec. " + gain + " mV/mm");
+		// update status field
+		updateStatus();
+			
 	}
 	
 	public void setXScale(float millimetersPerSecond) {
@@ -588,15 +610,16 @@ public class GraphicView extends AwtView {
 		this.W = (int) (millimetersPerSecond*32);
 		this.SW = (int) ((int)millimetersPerSecond*(32.65)+50);	
 		this.speed = millimetersPerSecond;
-		if (tvStatus != null && this.h != null)
-		tvStatus.setText(time + " from start " + speed + " mm/sec. " + gain + " mV/mm");
+		// update status field
+		updateStatus();
+		
 	
 	}
 	public void setInvert(boolean invert) {
 		this.invert = invert;
 		if (drawChanels != null){
-		drawChanels.setInvert(invert);
-		drawChanels.invalidate();
+			drawChanels.setInvert(invert);
+			drawChanels.invalidate();
 		}
 	}
 	public void setDrawChanels(DrawChanels drawChanels){
@@ -615,7 +638,9 @@ public class GraphicView extends AwtView {
 	}
 	
 	public void setXScrollOffset(float distanse) {
+		// update x offset
 		xOffset += distanse;
+		// update status
 		setTime(distanse);
 	}
 	
@@ -623,22 +648,39 @@ public class GraphicView extends AwtView {
 		yOffset += distanse;
 	}
 	
+	private void updateStatus() {
+		// check tvStatus and file
+		if (tvStatus != null && this.h != null) {
+			// prepare text values
+			String text = time + " from start " + speed + " mm/sec. " + gain + " mV/mm.";
+			// if scale mode selected
+			if (this.touchMode == GestureListener.MODE_LINEAR) 
+				// update status both with scale parameters
+				text += " \tScale: height " + scaleHeightValueText + ", width " + scaleWidthValueText;
+			// set prepared text
+			tvStatus.setText(text);
+		}
+	}
+	
 	private void setTime(float distanse) {
-		// koef to make value equeal 10 sec
+		// koef. to make value equal 10 seconds
 		float koef = (float) 2.05;
+		// check data nadler
 		if(h != null){
 			if (g.isFlNonsection2())
 					this.time += (int) distanse*(((g.getNumberOfSamplesPerChannel())*koef)/getW())*2;
 			else this.time += (int) distanse*(((g.getNumberOfSamplesPerChannel())*koef)/getW());
-		if (tvStatus != null && this.h != null)
-			tvStatus.setText(this.time + " from start " + speed + " mm/sec. " + gain + " mV/mm");
+			// update status field
+			updateStatus();
 		}
 	}	
 	public void setXScrollOffsetNull() {
+		// check data handler
 		if (h != null) {
+			// set time value for 0
 			this.time = 0;
-			if (tvStatus != null && this.h != null) 
-				tvStatus.setText(this.time + " from start " + speed + " mm/sec. " + gain + " mV/mm");
+			// update status field
+			updateStatus();
 		}
 	}
 	
@@ -647,15 +689,28 @@ public class GraphicView extends AwtView {
 	}
 	
 	public void setMode(int mode) {
+		// update mode
 		this.touchMode = mode;
 		// clear scale
 		if (mode == GestureListener.MODE_BASIC) {
+			// clear scale values
 			scale.clear();
+			// clear rectangle parameters
+			scaleHeightValueText = "";
+			scaleWidthValueText = "";
+			// set fill rectangle flag
 			fillRect = false;
+			// update status field
+			updateStatus();
 		}
 		// create basic rectangle (scale)
 		else if (mode == GestureListener.MODE_LINEAR) {
+			// create basic Scale rectangle
 			scale.makeBasicRect(displayWidht, displayHeight);
+			// update Scale height and width
+			updateScaleParameters();
+			// update status field
+			updateStatus();
 		}
 	}
 	

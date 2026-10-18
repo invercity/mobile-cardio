@@ -36,6 +36,11 @@ public class Settings extends PreferenceActivity implements OnClickListener {
 		super.onBuildHeaders(target);
 	    loadHeadersFromResource(R.layout.settings_headers, target);
 	}
+
+	@Override
+	protected boolean isValidFragment(String fragmentName) {
+		return true;
+	}
 	
 	private void init() {
 		save = new Button(this);

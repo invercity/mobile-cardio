@@ -100,9 +100,6 @@ public class GraphicView extends View {
 		initPaints();
 		setHorizontalScrollBarEnabled(true);
 		setVerticalScrollBarEnabled(true);
-		TypedArray a = context.obtainStyledAttributes(R.styleable.View);
-		initializeScrollbars(a);
-		a.recycle();
 	}
 	
 	public GraphicView(Context context, AttributeSet attribSet) {
@@ -110,9 +107,6 @@ public class GraphicView extends View {
 		initPaints();
 		setHorizontalScrollBarEnabled(true);
 		setVerticalScrollBarEnabled(true);
-		TypedArray a = context.obtainStyledAttributes(R.styleable.View);
-		initializeScrollbars(a);
-		a.recycle();
 	}
 
 	private void initPaints() {

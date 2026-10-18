@@ -91,9 +91,6 @@ public class DrawChanels extends View {
 		setVerticalScrollBarEnabled(true);
 		setHorizontalFadingEdgeEnabled(false);
 		setHorizontalScrollBarEnabled(false);
-		TypedArray a = getContext().obtainStyledAttributes(R.styleable.View);       
-		initializeScrollbars(a);
-		a.recycle();
 	}
 
 	@Override

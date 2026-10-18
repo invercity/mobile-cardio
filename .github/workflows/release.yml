@@ -1,0 +1,99 @@
+name: Release — Auto Tag, Build APK & GitHub Release
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Tag, Build APK & GitHub Release
+    runs-on: ubuntu-latest
+    if: "!startsWith(github.event.head_commit.message, 'chore(release):')"
+
+    steps:
+      - name: Checkout repository with full history and tags
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build Release APK
+        run: ./gradlew assembleRelease --stacktrace
+
+      - name: Locate and prepare APK artifact
+        id: apk
+        run: |
+          APK_PATH=$(find app/build/outputs/apk/release -name "*.apk" | head -n 1)
+          if [ -z "$APK_PATH" ] || [ ! -f "$APK_PATH" ]; then
+            echo "ERROR: Release APK not found!"
+            exit 1
+          fi
+          echo "Found APK at: $APK_PATH"
+          cp "$APK_PATH" ./mobile-cardio-release.apk
+          echo "apk_path=./mobile-cardio-release.apk" >> "$GITHUB_OUTPUT"
+
+      - name: Determine next version tag
+        id: version
+        run: |
+          LATEST_TAG=$(git tag -l "v[0-9]*.[0-9]*.[0-9]*" --sort=-v:refname | head -n 1)
+          if [ -z "$LATEST_TAG" ]; then
+            LATEST_TAG="v1.0.0"
+            NEXT_TAG="v1.0.0"
+          else
+            CLEAN_VER="${LATEST_TAG#v}"
+            CLEAN_VER="${CLEAN_VER%%-*}"
+            IFS='.' read -r MAJOR MINOR PATCH <<< "$CLEAN_VER"
+
+            COMMIT_MSG=$(git log -1 --pretty=%B)
+            if echo "$COMMIT_MSG" | grep -qiE "(BREAKING CHANGE|!:|^major)"; then
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+            elif echo "$COMMIT_MSG" | grep -qiE "(^feat|feat\(|feat:|merge.*feat)"; then
+              MINOR=$((MINOR + 1))
+              PATCH=0
+            elif echo "$COMMIT_MSG" | grep -qiE "(^fix|fix\(|fix:|merge.*fix)"; then
+              PATCH=$((PATCH + 1))
+            else
+              PATCH=$((PATCH + 1))
+            fi
+
+            NEXT_TAG="v${MAJOR}.${MINOR}.${PATCH}"
+          fi
+
+          echo "Using release tag: $NEXT_TAG"
+          echo "tag=$NEXT_TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Create Git Tag and GitHub Release with APK
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.version.outputs.tag }}
+          APK_FILE: ${{ steps.apk.outputs.apk_path }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git tag -a "$TAG" -m "Release $TAG"
+          git push origin "$TAG"
+
+          VERSIONED_APK="mobile-cardio-${TAG}.apk"
+          mv "$APK_FILE" "$VERSIONED_APK"
+
+          gh release create "$TAG" "$VERSIONED_APK" \
+            --title "Release $TAG" \
+            --generate-notes \
+            --verify-tag

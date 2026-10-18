@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_mobile_name"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".SCPViewActivity"
+            android:label="@string/app_mobile_name"
+            android:theme="@style/AppTheme"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>            
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:mimeType="*/*" android:scheme="file" android:pathPattern=".*\\.scp" android:host="*" />
+                <data android:mimeType="*/*" android:scheme="content" android:pathPattern=".*\\.scp" />
+                <data android:mimeType="*/*" android:scheme="file" android:pathPattern=".*\\.jpg" android:host="*" />
+                <data android:mimeType="*/*" android:scheme="file" android:pathPattern=".*\\.png" android:host="*" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".WebViewActivity"
+            android:theme="@style/AppTheme"
+            android:exported="false" />
+
+        <activity
+            android:name=".PatientInfo" 
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme"
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
+
+        <activity
+            android:name=".OtherInfo" 
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme"
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
+
+        <activity
+            android:name=".Settings"
+            android:theme="@style/AppTheme"
+            android:exported="false" />
+
+    </application>
+</manifest>

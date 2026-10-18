@@ -2,12 +2,6 @@ package ua.stu.scplib.attribute;
 
 import java.util.*;
 import java.io.*;
-import javax.imageio.*;
-import javax.imageio.stream.ImageInputStream;
-import javax.imageio.spi.*;
-import javax.imageio.event.IIOReadProgressListener;
-import java.awt.image.*; 
-
 import java.util.zip.*;
 
 /**
@@ -146,62 +140,13 @@ public class AttributeList extends TreeMap {
 	/***/
 	private static final String identString = "@(#) $Header: /userland/cvs/pixelmed/imgbook/com/pixelmed/dicom/AttributeList.java,v 1.73 2007/08/01 11:41:24 dclunie Exp $";
 
-	//private final long maximumSaneFixedValueLength = 1000000000l; // 1GB seems large enough
-	
-	private static boolean haveScannedForCodecs;
-
 	/***/
 	private static DicomDictionary dictionary;
-	
+
 	/***/
 	private void createDictionaryifNecessary() {
 		if (dictionary == null) {
-//System.err.println("AttributeList.createDictionaryifNecessary(): creating static dictionary");
 			dictionary = new DicomDictionary();
-		}
-	}
-	
-	private void dumpListOfAllAvailableReaders(PrintStream out) {
-		String[] formats=ImageIO.getReaderFormatNames();
-		for (int i=0; formats != null && i<formats.length; ++i) {
-			out.println(formats[i]+":");
-			Iterator readers = ImageIO.getImageReadersByFormatName(formats[i]);
-			while (readers.hasNext()) {
-				ImageReader reader = (ImageReader)readers.next();
-				ImageReaderSpi spi = reader.getOriginatingProvider();
-				out.println("\t"+spi.getDescription(Locale.US)+" "+spi.getVendorName()+" "+spi.getVersion());
-			}
-		}
-	}
-
-
-	private class OurIIOReadProgressListener implements IIOReadProgressListener {
-		public void imageComplete(ImageReader source) {
-//System.out.println("OurIIOReadProgressListener:imageComplete()");
-		}
-		public void imageProgress(ImageReader source,float percentageDone) {
-//System.out.println("OurIIOReadProgressListener:imageProgress(): percentageDone="+percentageDone);
-		}
-		public void imageStarted(ImageReader source,int imageIndex) {
-//System.out.println("OurIIOReadProgressListener:imageStarted(): imageIndex="+imageIndex);
-		}
-		public void readAborted(ImageReader source) {
-//System.out.println("OurIIOReadProgressListener:readAborted()");
-		}
-		public void sequenceComplete(ImageReader source) {
-//System.out.println("OurIIOReadProgressListener:sequenceComplete()");
-		}
-		public void sequenceStarted(ImageReader source,int minIndex) {
-//System.out.println("OurIIOReadProgressListener:sequenceStarted(): minIndex="+minIndex);
-		}
-		public void thumbnailComplete(ImageReader source) {
-//System.out.println("OurIIOReadProgressListener:thumbnailComplete()");
-		}
-		public void thumbnailProgress(ImageReader source,float percentageDone) {
-//System.out.println("OurIIOReadProgressListener:thumbnailProgress(): percentageDone="+percentageDone);
-		}
-		public void thumbnailStarted(ImageReader source,int imageIndex,int thumbnailIndex) {
-//System.out.println("OurIIOReadProgressListener:thumbnailStarted(): imageIndex="+imageIndex+" thumbnailIndex="+thumbnailIndex);
 		}
 	}
 
@@ -470,117 +415,7 @@ System.err.println("Ignoring bad Item at "+byteOffset+" "+tag+" VL=<0x"+Long.toH
 							}
 						}
 						else {
-							if (!haveScannedForCodecs) {
-System.err.println("AttributeList.read(): Scanning for ImageIO plugin codecs");
-								ImageIO.scanForPlugins();
-								haveScannedForCodecs=true;
-							}
-							String readerWanted = null;
-							if (tsuid.equals(TransferSyntax.JPEGBaseline) || tsuid.equals(TransferSyntax.JPEGExtended)) {
-								readerWanted="JPEG";
-//System.err.println("Undefined length encapsulated Pixel Data in JPEG Baseline");
-							}
-							else if (tsuid.equals(TransferSyntax.JPEG2000) || tsuid.equals(TransferSyntax.JPEG2000Lossless)) {
-								readerWanted="JPEG2000";
-//System.err.println("Undefined length encapsulated Pixel Data in JPEG 2000");
-							}
-							else if (tsuid.equals(TransferSyntax.JPEGLossless) || tsuid.equals(TransferSyntax.JPEGLosslessSV1)) {
-								readerWanted="jpeg-lossless";
-//System.err.println("Undefined length encapsulated Pixel Data in JPEG Lossless");
-							}
-							else if (tsuid.equals(TransferSyntax.JPEGLS) || tsuid.equals(TransferSyntax.JPEGNLS)) {
-								readerWanted="jpeg-ls";
-//System.err.println("Undefined length encapsulated Pixel Data in JPEG-LS");
-							}
-							if (readerWanted != null) {
-								ImageReader reader = null;
-								ImageReaderSpi spi = null;
-								try {
-									reader =  (ImageReader)(ImageIO.getImageReadersByFormatName(readerWanted).next());
-									spi = reader.getOriginatingProvider();
-System.out.println("Using reader from "+spi.getDescription(Locale.US)+" "+spi.getVendorName()+" "+spi.getVersion());
-									OurIIOReadProgressListener progressListener = new OurIIOReadProgressListener();
-									reader.addIIOReadProgressListener(progressListener);
-//System.out.println("Back from reader.addIIOReadProgressListener()");
-								}
-								catch (Exception e) {
-									dumpListOfAllAvailableReaders(System.err);
-									throw new DicomException("No reader for "+readerWanted+" available for Transfer Syntax "+tsuid);
-								}
-								if (reader != null) {
-									byte[]  bytePixelData = null;	// lazy instantiation of one or the other
-									short[] shortPixelData = null;
-									int pixelsPerFrame = columns*rows*samplesPerPixel;
-									int pixelsPerMultiFrameImage = pixelsPerFrame*frames;
-									for (int f=0; f<frames; ++f) {
-//System.out.println("Starting frame "+f);
-										BufferedImage image = null;
-										ImageInputStream iiois = ImageIO.createImageInputStream(ei);
-										reader.setInput(iiois,true/*seekForwardOnly*/,true/*ignoreMetadata*/);
-										image = reader.read(0);
-//System.out.println("Back from frame "+f+" reader.read(), BufferedImage="+image);
-										if (image == null) {
-											throw new DicomException("Reader "+spi.getDescription(Locale.US)+" "+spi.getVendorName()+" "+spi.getVersion()
-												+" returned null image for Transfer Syntax "+tsuid);
-										}
-										else {
-											Raster raster = image.getData();
-											int numDataElements = raster.getNumDataElements();
-//System.out.println("getNumDataElements="+numDataElements);
-											if (numDataElements == samplesPerPixel) {
-												int transferType = raster.getTransferType();
-//System.out.println("getTransferType="+transferType);
-												if (transferType == DataBuffer.TYPE_BYTE) {
-//System.out.println("Getting "+(samplesPerPixel > 1 ? "interleaved " : "")+samplesPerPixel+" channel byte data");
-													byte[] vPixelData = (byte[])(raster.getDataElements(0,0,columns,rows,null));
-//System.out.println("Decompressed byte array length "+vPixelData.length+" expected "+pixelsPerFrame);
-													if (bytePixelData == null) {
-														if (frames == 1) {
-															bytePixelData = vPixelData;
-														}
-														else {
-															bytePixelData = new byte[pixelsPerMultiFrameImage];
-														}
-													}
-													if (vPixelData != null) {
-														System.arraycopy(vPixelData,0,bytePixelData,pixelsPerFrame*f,pixelsPerFrame);
-													}
-												}
-												else if (transferType == DataBuffer.TYPE_SHORT
-												      || transferType == DataBuffer.TYPE_USHORT) {
-//System.out.println("Getting "+(samplesPerPixel > 1 ? "interleaved " : "")+samplesPerPixel+" channel byte data");
-													short[] vPixelData = (short[])(raster.getDataElements(0,0,columns,rows,null));
-//System.out.println("Decompressed short array length "+vPixelData.length+" expected "+pixelsPerFrame);
-													if (shortPixelData == null) {
-														if (frames == 1) {
-															shortPixelData = vPixelData;
-														}
-														else {
-															shortPixelData = new short[pixelsPerMultiFrameImage];
-														}
-													}
-													if (vPixelData != null) {
-														System.arraycopy(vPixelData,0,shortPixelData,pixelsPerFrame*f,pixelsPerFrame);
-													}
-												}
-											}
-										}
-										ei.nextFrame();
-									}
-									if (bytePixelData != null) {
-										a = new OtherByteAttribute(tag);
-										a.setValues(bytePixelData);
-									}
-									else if (shortPixelData != null) {
-										a = new OtherWordAttribute(tag);
-										a.setValues(shortPixelData);
-									}
-									doneReadingEncapsulatedData=true;
-								}
-							}
-							else {
-								throw new DicomException("Unrecognized Transfer Syntax "+tsuid);
-							}
+							throw new DicomException("Encapsulated pixel data reading is not supported on Android for Transfer Syntax " + tsuid);
 						}
 					}
 					//catch (Exception e) {
